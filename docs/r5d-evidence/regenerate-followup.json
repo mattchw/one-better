@@ -1,0 +1,378 @@
+{
+  "reason": "Fix overly broad duration guard: available hours is qualitative, not a new duration",
+  "providerCalls": 1,
+  "unchangedPrompt": true,
+  "unchangedModel": true,
+  "unchangedScenario": true,
+  "priorPayloadPassesCorrectedValidator": true,
+  "contextFingerprint": "9244cb032b6e2f49e0b1becad7fba3681ea85ef61fd631d38222a3a5f74e908b",
+  "run": {
+    "id": "81c407e3-f35f-48a2-bac6-9217d5f2e3d1",
+    "contextType": "calendar",
+    "week": "2028-01-03",
+    "fingerprint": "9244cb032b6e2f49e0b1becad7fba3681ea85ef61fd631d38222a3a5f74e908b",
+    "provider": "anthropic",
+    "model": "claude-haiku-4-5-20251001",
+    "generatedAt": "2028-01-05T08:00:00.000Z",
+    "status": "succeeded",
+    "recommendations": [
+      {
+        "href": null,
+        "title": "Test the first-week onboarding flow",
+        "evidence": [
+          {
+            "key": "commitment:e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+            "label": "Test the first-week onboarding flow: 240m committed, 105m scheduled, 135m still unscheduled, 30m recorded Focus"
+          },
+          {
+            "key": "goal:76155cc6-97ef-43a7-8faf-e8536d3c9c31",
+            "label": "Current Focus includes Ship a small trustworthy One Better beta"
+          },
+          {
+            "key": "schedule_candidate_85b601d1de0b48ab",
+            "label": "2028-01-05 09:00–10:00 Europe/London: 60m Calendar-open inside Focusable Hours; 135m still unscheduled"
+          }
+        ],
+        "proposal": {
+          "type": "schedule_candidate",
+          "signalId": "signal_unscheduled_e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+          "rationale": "Deliberately scheduling a block of work toward shipping the beta clarifies progress and protects focus time, while preserving flexibility for the remaining unscheduled portion.",
+          "candidateId": "schedule_candidate_85b601d1de0b48ab",
+          "evidenceRefs": [
+            "commitment:e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+            "goal:76155cc6-97ef-43a7-8faf-e8536d3c9c31"
+          ]
+        },
+        "candidate": {
+          "id": "schedule_candidate_85b601d1de0b48ab",
+          "end": "2028-01-05T10:00:00Z",
+          "start": "2028-01-05T09:00:00Z",
+          "localDate": "2028-01-05",
+          "commitmentId": "e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+          "endLocalTime": "10:00",
+          "calendarStatus": "available",
+          "focusableHours": "inside",
+          "startLocalTime": "09:00",
+          "durationMinutes": 60,
+          "remainingUnscheduledMinutes": 135
+        },
+        "placement": {
+          "interval": {
+            "end": "2028-01-05T10:00:00Z",
+            "start": "2028-01-05T09:00:00Z"
+          },
+          "fetchedAt": "2028-01-05T08:00:00.000Z",
+          "reviewKey": "c4fb7454f90b0a525756cd8d3e80c707417691bfbf395e18a0dcbbc7a44627b7",
+          "adjustments": [],
+          "planVersion": 3,
+          "busyConflict": false,
+          "outsideHours": false,
+          "budgetMinutes": 240,
+          "calendarStatus": "fresh",
+          "hoursConfigured": true,
+          "resultingMinutes": 165,
+          "scheduledMinutes": 105
+        },
+        "unavailable": null
+      }
+    ],
+    "failure": null,
+    "usage": {
+      "inputTokens": 3892,
+      "outputTokens": 173,
+      "cachedInputTokens": 0
+    },
+    "latencyMs": 2404,
+    "stale": false,
+    "interrupted": false
+  },
+  "rawOutput": {
+    "recommendations": [
+      {
+        "type": "schedule_candidate",
+        "signalId": "signal_unscheduled_e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+        "rationale": "Deliberately scheduling a block of work toward shipping the beta clarifies progress and protects focus time, while preserving flexibility for the remaining unscheduled portion.",
+        "evidenceRefs": [
+          "commitment:e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+          "goal:76155cc6-97ef-43a7-8faf-e8536d3c9c31"
+        ],
+        "candidateId": "schedule_candidate_85b601d1de0b48ab"
+      }
+    ]
+  },
+  "schemaAccepted": true,
+  "grounded": true,
+  "approximateTextCostUSD": 0.004757,
+  "preview": {
+    "view": {
+      "planId": "07d79ad4-2132-4a65-ac3f-26efeb1ce885",
+      "weekStartDate": "2028-01-03",
+      "timezone": "Europe/London",
+      "userTimezone": "Europe/London",
+      "planVersion": 3,
+      "canSchedule": true,
+      "commitments": [
+        {
+          "id": "e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+          "actionId": "03125ca8-8327-45a0-8af7-b0b0d24df30c",
+          "budgetMinutes": 240,
+          "source": {
+            "goalId": "76155cc6-97ef-43a7-8faf-e8536d3c9c31",
+            "goalVersion": 1,
+            "milestoneId": null,
+            "actionVersion": 1,
+            "milestoneVersion": null
+          },
+          "snapshot": {
+            "goal": {
+              "id": "76155cc6-97ef-43a7-8faf-e8536d3c9c31",
+              "title": "Ship a small trustworthy One Better beta",
+              "outcome": "Ten people can independently plan, focus and review a useful week."
+            },
+            "action": {
+              "id": "03125ca8-8327-45a0-8af7-b0b0d24df30c",
+              "title": "Test the first-week onboarding flow",
+              "doneWhen": "Five users finish onboarding without assistance.",
+              "estimateMinutes": 240
+            },
+            "milestone": null
+          },
+          "recordedMilliseconds": 1800000,
+          "scheduledMinutes": 105
+        },
+        {
+          "id": "63792355-9c0c-41c4-b118-19dee5ccbef6",
+          "actionId": "4df46e16-6b84-4a3b-8a0e-bf8cf99efe19",
+          "budgetMinutes": 60,
+          "source": {
+            "goalId": "2d1297e6-9cb2-4b8e-ada1-b0a35eb3f08a",
+            "goalVersion": 1,
+            "milestoneId": null,
+            "actionVersion": 1,
+            "milestoneVersion": null
+          },
+          "snapshot": {
+            "goal": {
+              "id": "2d1297e6-9cb2-4b8e-ada1-b0a35eb3f08a",
+              "title": "Maintain a sustainable running rhythm",
+              "outcome": "Run consistently while protecting recovery."
+            },
+            "action": {
+              "id": "4df46e16-6b84-4a3b-8a0e-bf8cf99efe19",
+              "title": "Complete one steady run",
+              "doneWhen": "Finish an easy run with time for recovery.",
+              "estimateMinutes": 60
+            },
+            "milestone": null
+          },
+          "recordedMilliseconds": 3600000,
+          "scheduledMinutes": 60
+        },
+        {
+          "id": "2936fefa-d2fe-4204-88e5-5abeb85187f3",
+          "actionId": "5580c337-ecb9-4e90-b7fb-da35bf64cf8c",
+          "budgetMinutes": 60,
+          "source": {
+            "goalId": "09b0f2d9-63bf-4c36-892e-da19df06a522",
+            "goalVersion": 1,
+            "milestoneId": null,
+            "actionVersion": 1,
+            "milestoneVersion": null
+          },
+          "snapshot": {
+            "goal": {
+              "id": "09b0f2d9-63bf-4c36-892e-da19df06a522",
+              "title": "Publish one practical essay each week",
+              "outcome": "Share one useful lesson from building the planning loop."
+            },
+            "action": {
+              "id": "5580c337-ecb9-4e90-b7fb-da35bf64cf8c",
+              "title": "Draft the planning essay",
+              "doneWhen": "A clear first draft with one concrete example exists.",
+              "estimateMinutes": 60
+            },
+            "milestone": null
+          },
+          "recordedMilliseconds": 0,
+          "scheduledMinutes": 60
+        }
+      ],
+      "blocks": [
+        {
+          "id": "209b0c7a-59ac-45c6-884c-84914a49f6bf",
+          "planId": "07d79ad4-2132-4a65-ac3f-26efeb1ce885",
+          "commitmentId": "63792355-9c0c-41c4-b118-19dee5ccbef6",
+          "start": "2028-01-03T09:00:00.000Z",
+          "end": "2028-01-03T10:00:00.000Z",
+          "state": "planned",
+          "version": 1,
+          "snapshot": {
+            "goal": {
+              "id": "2d1297e6-9cb2-4b8e-ada1-b0a35eb3f08a",
+              "title": "Maintain a sustainable running rhythm",
+              "outcome": "Run consistently while protecting recovery."
+            },
+            "action": {
+              "id": "4df46e16-6b84-4a3b-8a0e-bf8cf99efe19",
+              "title": "Complete one steady run",
+              "doneWhen": "Finish an easy run with time for recovery.",
+              "estimateMinutes": 60
+            },
+            "milestone": null
+          },
+          "createdAt": "2027-12-27T08:00:00.000Z",
+          "updatedAt": "2027-12-27T08:00:00.000Z",
+          "cancelledAt": null,
+          "executionLocked": true,
+          "recordedMilliseconds": 3600000,
+          "canFocus": true,
+          "reviewRequired": false,
+          "canCancel": false,
+          "canEdit": false
+        },
+        {
+          "id": "756eb9c0-171f-4e52-a07f-908f0d9bd8f4",
+          "planId": "07d79ad4-2132-4a65-ac3f-26efeb1ce885",
+          "commitmentId": "e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+          "start": "2028-01-04T09:00:00.000Z",
+          "end": "2028-01-04T09:45:00.000Z",
+          "state": "planned",
+          "version": 1,
+          "snapshot": {
+            "goal": {
+              "id": "76155cc6-97ef-43a7-8faf-e8536d3c9c31",
+              "title": "Ship a small trustworthy One Better beta",
+              "outcome": "Ten people can independently plan, focus and review a useful week."
+            },
+            "action": {
+              "id": "03125ca8-8327-45a0-8af7-b0b0d24df30c",
+              "title": "Test the first-week onboarding flow",
+              "doneWhen": "Five users finish onboarding without assistance.",
+              "estimateMinutes": 240
+            },
+            "milestone": null
+          },
+          "createdAt": "2027-12-27T08:00:00.000Z",
+          "updatedAt": "2027-12-27T08:00:00.000Z",
+          "cancelledAt": null,
+          "executionLocked": true,
+          "recordedMilliseconds": 1800000,
+          "canFocus": true,
+          "reviewRequired": false,
+          "canCancel": false,
+          "canEdit": false
+        },
+        {
+          "id": "9623ecd6-29dd-45bb-89ea-ce1040e2b649",
+          "planId": "07d79ad4-2132-4a65-ac3f-26efeb1ce885",
+          "commitmentId": "e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+          "start": "2028-01-06T10:00:00.000Z",
+          "end": "2028-01-06T11:00:00.000Z",
+          "state": "planned",
+          "version": 1,
+          "snapshot": {
+            "goal": {
+              "id": "76155cc6-97ef-43a7-8faf-e8536d3c9c31",
+              "title": "Ship a small trustworthy One Better beta",
+              "outcome": "Ten people can independently plan, focus and review a useful week."
+            },
+            "action": {
+              "id": "03125ca8-8327-45a0-8af7-b0b0d24df30c",
+              "title": "Test the first-week onboarding flow",
+              "doneWhen": "Five users finish onboarding without assistance.",
+              "estimateMinutes": 240
+            },
+            "milestone": null
+          },
+          "createdAt": "2028-01-05T08:00:00.000Z",
+          "updatedAt": "2028-01-05T08:00:00.000Z",
+          "cancelledAt": null,
+          "executionLocked": false,
+          "recordedMilliseconds": 0,
+          "canFocus": true,
+          "reviewRequired": false,
+          "canCancel": true,
+          "canEdit": true
+        },
+        {
+          "id": "fb95370c-31ff-422c-8a73-a89c42c8ab3a",
+          "planId": "07d79ad4-2132-4a65-ac3f-26efeb1ce885",
+          "commitmentId": "2936fefa-d2fe-4204-88e5-5abeb85187f3",
+          "start": "2028-01-06T14:00:00.000Z",
+          "end": "2028-01-06T15:00:00.000Z",
+          "state": "planned",
+          "version": 1,
+          "snapshot": {
+            "goal": {
+              "id": "09b0f2d9-63bf-4c36-892e-da19df06a522",
+              "title": "Publish one practical essay each week",
+              "outcome": "Share one useful lesson from building the planning loop."
+            },
+            "action": {
+              "id": "5580c337-ecb9-4e90-b7fb-da35bf64cf8c",
+              "title": "Draft the planning essay",
+              "doneWhen": "A clear first draft with one concrete example exists.",
+              "estimateMinutes": 60
+            },
+            "milestone": null
+          },
+          "createdAt": "2027-12-27T08:00:00.000Z",
+          "updatedAt": "2027-12-27T08:00:00.000Z",
+          "cancelledAt": null,
+          "executionLocked": false,
+          "recordedMilliseconds": 0,
+          "canFocus": true,
+          "reviewRequired": false,
+          "canCancel": true,
+          "canEdit": true
+        }
+      ]
+    },
+    "review": {
+      "interval": {
+        "start": "2028-01-05T09:00:00Z",
+        "end": "2028-01-05T10:00:00Z"
+      },
+      "adjustments": [],
+      "outsideHours": false,
+      "hoursConfigured": true,
+      "busyConflict": false,
+      "calendarStatus": "fresh",
+      "fetchedAt": "2028-01-05T08:00:00.000Z",
+      "budgetMinutes": 240,
+      "scheduledMinutes": 105,
+      "resultingMinutes": 165,
+      "planVersion": 3,
+      "reviewKey": "c4fb7454f90b0a525756cd8d3e80c707417691bfbf395e18a0dcbbc7a44627b7"
+    },
+    "editor": {
+      "commitmentId": "e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+      "snapshot": {
+        "goal": {
+          "id": "76155cc6-97ef-43a7-8faf-e8536d3c9c31",
+          "title": "Ship a small trustworthy One Better beta",
+          "outcome": "Ten people can independently plan, focus and review a useful week."
+        },
+        "action": {
+          "id": "03125ca8-8327-45a0-8af7-b0b0d24df30c",
+          "title": "Test the first-week onboarding flow",
+          "doneWhen": "Five users finish onboarding without assistance.",
+          "estimateMinutes": 240
+        },
+        "milestone": null
+      },
+      "prefill": {
+        "date": "2028-01-05",
+        "startTime": "09:00",
+        "endTime": "10:00"
+      }
+    }
+  },
+  "acceptance": {
+    "source": "live saved recommendation → existing UI Preview → explicit Schedule block",
+    "accepted": true,
+    "onlyTimeBlockChanged": true,
+    "adviceStaleAfterAcceptance": true,
+    "scheduledMinutes": 165
+  }
+}

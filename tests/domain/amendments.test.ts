@@ -1,0 +1,25 @@
+import { it, expect } from "vitest";
+import { randomUUID } from "node:crypto";
+import { amendSchema, effectivePlan, planDifference, canAmend, type Amendment } from "../../src/modules/amendments/domain";
+import { plan, source, now } from "../planning-fixtures";
+const baseline = { ...plan, state: "committed" as const, committedAt: now, commitments: plan.commitments.map(c => ({ ...c, snapshot: source.context })) };
+const effective = effectivePlan(baseline, []);
+const amendment: Amendment = { ...effective, id: randomUUID(), planId: plan.id, sequenceNumber: 1, reason: "Incident reduced capacity", version: 3, createdAt: now, provisionalCapacityMinutes: 600 };
+const input = { mutationId: randomUUID(), expectedVersion: 2, reason: "Reality changed", provisionalCapacityMinutes: 720, reserveMinutes: 180, commitments: effective.commitments.map(({ actionId, budgetMinutes }) => ({ actionId, budgetMinutes })) };
+it("derives baseline-only effective values without mutable references", () => { expect(effective.commitments[0]).toMatchObject(baseline.commitments[0].snapshot ? { snapshot: source.context } : {}); const v = effectivePlan(baseline, []); v.commitments[0].snapshot.action.title = "changed"; expect(baseline.commitments[0].snapshot.action.title).toBe(source.context.action.title); });
+it("selects highest sequence independent of list order and excludes metadata", () => { const second = { ...amendment, sequenceNumber: 2, reserveMinutes: 120 }; expect(effectivePlan(baseline, [second, amendment])).toEqual({ ...effective, provisionalCapacityMinutes: 600, reserveMinutes: 120 }); });
+it.each(["capacity", "reserve", "added", "dropped", "budgets"] as const)("pure deterministic diff detects %s", kind => {
+  const next = structuredClone(effective);
+  if (kind === "capacity") next.provisionalCapacityMinutes = 600;
+  if (kind === "reserve") next.reserveMinutes = 120;
+  if (kind === "added") next.commitments.push({ ...next.commitments[0], id: randomUUID(), actionId: randomUUID() });
+  if (kind === "dropped") next.commitments = [];
+  if (kind === "budgets") next.commitments[0].budgetMinutes = 90;
+  const before = JSON.stringify(effective); const diff = planDifference(effective, next); expect(diff.changed).toBe(true); if (kind === "capacity") expect(diff.capacity).toEqual({ previous: 720, next: 600 }); else if (kind === "reserve") expect(diff.reserve).toEqual({ previous: 180, next: 120 }); else expect(diff[kind]).toHaveLength(1); expect(JSON.stringify(effective)).toBe(before); expect(diff).toEqual(planDifference(effective, { ...next, commitments: [...next.commitments].reverse() }));
+});
+it("diff matches by Action identity and ignores row IDs/text; summary accounts for breathing room", () => { const next = { ...effective, commitments: effective.commitments.map(c => ({ ...c, id: randomUUID(), snapshot: { ...c.snapshot, action: { ...c.snapshot.action, title: "source edited" } } })) }; expect(planDifference(effective, next)).toMatchObject({ changed: false, previousSummary: { usableMinutes: 540, totalMinutes: 180, remainingMinutes: 360 } }); });
+it.each(["", "  ", "x".repeat(501), "\u0000", "\ud800"])("rejects invalid reason %j", reason => expect(amendSchema.safeParse({ ...input, reason }).success).toBe(false));
+it("accepts trimmed Unicode reason boundary", () => { const v = amendSchema.parse({ ...input, reason: `  ${"🌱".repeat(500)}  ` }); expect([...v.reason]).toHaveLength(500); });
+it.each([{ provisionalCapacityMinutes: 0, reserveMinutes: 1, commitments: [] }, { provisionalCapacityMinutes: 0, reserveMinutes: 0 }, { provisionalCapacityMinutes: 1.5 }, { provisionalCapacityMinutes: 10081 }, { reserveMinutes: 720 }, { commitments: [{ actionId: source.actionId, budgetMinutes: 0 }] }, { commitments: [...input.commitments, ...input.commitments] }, { ownerId: "other" }, { snapshot: source.context }])("rejects malformed capacity/budget/membership/history input %j", extra => expect(amendSchema.safeParse({ ...input, ...extra }).success).toBe(false));
+it("allows zero capacity only with zero reserve and commitments; nonzero capacity may have no commitments", () => { for (const provisionalCapacityMinutes of [0, 720]) expect(amendSchema.safeParse({ ...input, provisionalCapacityMinutes, reserveMinutes: 0, commitments: [] }).success).toBe(true); });
+it("uses current User timezone Monday boundary for past/current/future, including DST", () => { expect(canAmend(baseline, "2026-10-04T23:30:00Z", "Europe/London")).toBe(false); expect(canAmend(baseline, "2026-10-04T23:30:00Z", "America/Los_Angeles")).toBe(true); expect(canAmend({ ...baseline, weekStartDate: "2026-10-26" }, "2026-10-25T01:30:00Z", "Europe/London")).toBe(true); expect(canAmend(plan, now, "Europe/London")).toBe(false); });

@@ -1,0 +1,51 @@
+{
+  "contextType": "weekly_review",
+  "week": "2028-01-03",
+  "schemaVersion": 3,
+  "stateFingerprint": "b36d3625fc2824d8117cbb8d9919ba580e9bb938eb5c852be6e25691de592464",
+  "requestTime": "2028-01-12T08:00:00Z",
+  "today": "2028-01-12",
+  "timezone": "Europe/London",
+  "planId": "28c47057-cf30-442a-86ae-03c9ba7bb1c8",
+  "facts": [
+    {
+      "key": "daily_reflection:2028-01-05",
+      "label": "Finalized daily reflection: 2028-01-05",
+      "data": {
+        "date": "2028-01-05",
+        "note": "An ordinary record of deliberately selected work.",
+        "finalizedAt": "2028-01-06T08:00:00.000Z"
+      },
+      "reference": null
+    },
+    {
+      "key": "review_summary",
+      "label": "Week 2028-01-03: 240m baseline commitments → 240m final commitments; 60m scheduled; 30m recorded Focus",
+      "data": {
+        "original": {
+          "usableMinutes": 540,
+          "totalMinutes": 240,
+          "remainingMinutes": 300
+        },
+        "final": {
+          "usableMinutes": 540,
+          "totalMinutes": 240,
+          "remainingMinutes": 300
+        }
+      },
+      "reference": null
+    },
+    {
+      "key": "weekly_reflection",
+      "label": "Finalized weekly reflection",
+      "data": {
+        "note": "Reflect on the recorded week and preserve breathing room.",
+        "finalizedAt": "2028-01-10T09:00:00.000Z"
+      },
+      "reference": null
+    }
+  ],
+  "signals": [],
+  "scheduleCandidates": [],
+  "reviewCandidates": []
+}

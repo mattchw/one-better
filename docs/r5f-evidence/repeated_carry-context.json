@@ -1,0 +1,138 @@
+{
+  "contextType": "weekly_review",
+  "week": "2028-01-03",
+  "schemaVersion": 3,
+  "stateFingerprint": "2ba36fb54073ab99e36f54f733868bef00533667568ab83c690dde4e776b03b4",
+  "requestTime": "2028-01-12T08:00:00Z",
+  "today": "2028-01-12",
+  "timezone": "Europe/London",
+  "planId": "8672b245-c0b5-4f43-a235-6c9709d2d61d",
+  "facts": [
+    {
+      "key": "daily_reflection:2028-01-05",
+      "label": "Finalized daily reflection: 2028-01-05",
+      "data": {
+        "date": "2028-01-05",
+        "note": "An ordinary record of deliberately selected work.",
+        "finalizedAt": "2028-01-06T08:00:00.000Z"
+      },
+      "reference": null
+    },
+    {
+      "key": "following:c5bcaefc-e9b4-43bf-9809-5bcff8847798",
+      "label": "Following week 2028-01-10: no saved plan\nHuman Carry intent: 90m; selection in the next plan is recorded separately.",
+      "data": {
+        "week": "2028-01-10",
+        "state": "absent",
+        "budgetMinutes": 0,
+        "scheduledMinutes": 0,
+        "carryIntentMinutes": 90
+      },
+      "reference": null
+    },
+    {
+      "key": "review_carry:c5bcaefc-e9b4-43bf-9809-5bcff8847798",
+      "label": "Ship guided first-week planning: human Carry decisions in 2028-01-03, 2027-12-27 (2 distinct finalized Reviews)",
+      "data": {
+        "actionId": "c5bcaefc-e9b4-43bf-9809-5bcff8847798",
+        "carries": [
+          {
+            "week": "2028-01-03",
+            "minutes": 90
+          },
+          {
+            "week": "2027-12-27",
+            "minutes": 90
+          }
+        ]
+      },
+      "reference": null
+    },
+    {
+      "key": "review_commitment:c6ad10ad-ddf9-453c-b9f3-662fd9a8a1cf",
+      "label": "Ship guided first-week planning: 120m committed; 60m scheduled; 30m recorded Focus in 2028-01-03",
+      "data": {
+        "budgetMinutes": 120,
+        "scheduledMinutes": 60,
+        "recordedMinutes": 30,
+        "actionId": "c5bcaefc-e9b4-43bf-9809-5bcff8847798",
+        "goalId": "ddb51626-4e07-4e7a-9c70-1fa4986ae718"
+      },
+      "reference": {
+        "kind": "commitment",
+        "id": "c6ad10ad-ddf9-453c-b9f3-662fd9a8a1cf"
+      }
+    },
+    {
+      "key": "review_summary",
+      "label": "Week 2028-01-03: 120m baseline commitments → 120m final commitments; 60m scheduled; 30m recorded Focus",
+      "data": {
+        "original": {
+          "usableMinutes": 540,
+          "totalMinutes": 120,
+          "remainingMinutes": 420
+        },
+        "final": {
+          "usableMinutes": 540,
+          "totalMinutes": 120,
+          "remainingMinutes": 420
+        }
+      },
+      "reference": null
+    },
+    {
+      "key": "weekly_reflection",
+      "label": "Finalized weekly reflection",
+      "data": {
+        "note": "I want a fresh attempt to involve a changed approach rather than unchanged intent.",
+        "finalizedAt": "2028-01-10T09:00:00.000Z"
+      },
+      "reference": null
+    }
+  ],
+  "signals": [],
+  "scheduleCandidates": [],
+  "reviewCandidates": [
+    {
+      "id": "review_insight_9825f19bda576821a656da90",
+      "type": "repeated_carry",
+      "title": "Ship guided first-week planning",
+      "subjects": [
+        {
+          "kind": "commitment",
+          "id": "c6ad10ad-ddf9-453c-b9f3-662fd9a8a1cf"
+        },
+        {
+          "kind": "action",
+          "id": "c5bcaefc-e9b4-43bf-9809-5bcff8847798"
+        },
+        {
+          "kind": "goal",
+          "id": "ddb51626-4e07-4e7a-9c70-1fa4986ae718"
+        }
+      ],
+      "evidenceRefs": [
+        "review_commitment:c6ad10ad-ddf9-453c-b9f3-662fd9a8a1cf",
+        "following:c5bcaefc-e9b4-43bf-9809-5bcff8847798",
+        "review_carry:c5bcaefc-e9b4-43bf-9809-5bcff8847798"
+      ],
+      "week": "2028-01-03",
+      "followingWeek": "2028-01-10",
+      "reflectionRefs": [],
+      "following": {
+        "state": "absent",
+        "budgetMinutes": 0,
+        "scheduledMinutes": 0,
+        "carryIntentMinutes": 90
+      },
+      "allowedInterpretation": [
+        "Interpret the supplied relationship only; factual names, quantities, dates, decisions and history belong in server Evidence.",
+        "Recorded Focus is not completion; missing recorded Focus is not proof of no work.",
+        "Ask a conditional useful question; never choose Carry, Defer or Drop, prescribe scheduling, or invent work.",
+        "No inferred causal explanation, unsupported history, ratings or score.",
+        "Examine what condition would distinguish a fresh attempt from unchanged intent; never choose the rollover decision.",
+        "No permitted relevant reflection explains this relationship; do not invent an interruption, blocker, motivation or reason."
+      ]
+    }
+  ]
+}

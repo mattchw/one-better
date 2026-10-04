@@ -1,0 +1,446 @@
+{
+  "status": "Partial live gate: Anthropic observed; quality issues found; OpenAI unavailable. Follow-up evidence linked separately.",
+  "live": true,
+  "calls": 4,
+  "promptHash": "6fdda7fa5f038861c29696de40a60e4cb3acb01a7fd3aad0e0beb47f1a2b02ef",
+  "schemaHash": "9b297a8bc080591b30f8ed2afadd71f88e544278b96e769815affc196da88421",
+  "providers": [
+    {
+      "provider": "openai",
+      "model": null,
+      "endpoint": "https://api.openai.com/v1/responses"
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "endpoint": "https://api.anthropic.com/v1/messages"
+    }
+  ],
+  "observations": [
+    {
+      "kind": "calendar",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "contextFingerprint": "2524f36edb0f3d935aad0ed2b885c8de310144a3245e65cff04c96f93340e7b6",
+      "run": {
+        "id": "7864d7a5-1eb0-4514-a0f3-a7442fdc1c0d",
+        "contextType": "calendar",
+        "week": "2028-01-03",
+        "fingerprint": "2524f36edb0f3d935aad0ed2b885c8de310144a3245e65cff04c96f93340e7b6",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [
+          {
+            "href": null,
+            "evidence": [
+              {
+                "key": "commitment:00f35a11-abb1-4b5f-a097-e5efc7a56e40",
+                "label": "Test the first-week onboarding flow: 240m committed, 45m scheduled"
+              },
+              {
+                "key": "execution",
+                "label": "Recorded Focus outcomes; no tracking does not mean no work"
+              }
+            ],
+            "proposal": {
+              "type": "observation",
+              "title": "Test the first-week onboarding flow has 195 unscheduled minutes remaining",
+              "explanation": "This action is budgeted for 240 minutes but only 45 minutes are scheduled and 30 minutes recorded. The remaining 195 minutes need deliberate time blocks to make progress toward the goal of ten independent users.",
+              "evidenceRefs": [
+                "commitment:00f35a11-abb1-4b5f-a097-e5efc7a56e40",
+                "execution"
+              ]
+            },
+            "placement": null,
+            "unavailable": null
+          },
+          {
+            "href": null,
+            "evidence": [
+              {
+                "key": "commitment:00f35a11-abb1-4b5f-a097-e5efc7a56e40",
+                "label": "Test the first-week onboarding flow: 240m committed, 45m scheduled"
+              },
+              {
+                "key": "open:2028-01-04:1",
+                "label": "2028-01-04 14:00\u201316:00 Europe/London: Calendar-open inside Focusable Hours"
+              }
+            ],
+            "proposal": {
+              "type": "schedule_time",
+              "title": "Schedule unscheduled work on the onboarding test",
+              "reason": "Available focusable time remains on Thursday. Two 90-minute sessions would move toward completion while respecting the weekly recovery intent.",
+              "localDate": "2028-01-04",
+              "commitmentId": "00f35a11-abb1-4b5f-a097-e5efc7a56e40",
+              "endLocalTime": "15:30",
+              "evidenceRefs": [
+                "commitment:00f35a11-abb1-4b5f-a097-e5efc7a56e40",
+                "open:2028-01-04:1"
+              ],
+              "startLocalTime": "14:00"
+            },
+            "placement": null,
+            "unavailable": "Choose a future start time. Past schedule history cannot be created or rewritten."
+          },
+          {
+            "href": null,
+            "evidence": [
+              {
+                "key": "commitment:416dd032-002f-46ff-997c-07acb2e02f4e",
+                "label": "Complete one steady run: 60m committed, 60m scheduled"
+              },
+              {
+                "key": "commitment:aa9b9755-1eb1-4c99-be96-bdde097bb3fc",
+                "label": "Draft the planning essay: 60m committed, 60m scheduled"
+              },
+              {
+                "key": "focus_cycle:7fd09f27-f4f4-42f8-a270-2d7b0c348694",
+                "label": "Current Focus: Make the weekly loop useful and sustainable"
+              }
+            ],
+            "proposal": {
+              "type": "observation",
+              "title": "Running and essay work are scheduled and tracked; focus on onboarding completion",
+              "explanation": "The run and essay commitments are fully scheduled (60m each) and the run has been recorded. The onboarding test remains the primary unscheduled work within the current focus cycle's three goals.",
+              "evidenceRefs": [
+                "commitment:416dd032-002f-46ff-997c-07acb2e02f4e",
+                "commitment:aa9b9755-1eb1-4c99-be96-bdde097bb3fc",
+                "focus_cycle:7fd09f27-f4f4-42f8-a270-2d7b0c348694"
+              ]
+            },
+            "placement": null,
+            "unavailable": null
+          }
+        ],
+        "failure": null,
+        "usage": {
+          "inputTokens": 6429,
+          "outputTokens": 441,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 5901,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawApplicationOutput": {
+        "recommendations": [
+          {
+            "type": "observation",
+            "title": "Test the first-week onboarding flow has 195 unscheduled minutes remaining",
+            "evidenceRefs": [
+              "commitment:00f35a11-abb1-4b5f-a097-e5efc7a56e40",
+              "execution"
+            ],
+            "explanation": "This action is budgeted for 240 minutes but only 45 minutes are scheduled and 30 minutes recorded. The remaining 195 minutes need deliberate time blocks to make progress toward the goal of ten independent users."
+          },
+          {
+            "type": "schedule_time",
+            "title": "Schedule unscheduled work on the onboarding test",
+            "evidenceRefs": [
+              "commitment:00f35a11-abb1-4b5f-a097-e5efc7a56e40",
+              "open:2028-01-04:1"
+            ],
+            "commitmentId": "00f35a11-abb1-4b5f-a097-e5efc7a56e40",
+            "localDate": "2028-01-04",
+            "startLocalTime": "14:00",
+            "endLocalTime": "15:30",
+            "reason": "Available focusable time remains on Thursday. Two 90-minute sessions would move toward completion while respecting the weekly recovery intent."
+          },
+          {
+            "type": "observation",
+            "title": "Running and essay work are scheduled and tracked; focus on onboarding completion",
+            "evidenceRefs": [
+              "commitment:416dd032-002f-46ff-997c-07acb2e02f4e",
+              "commitment:aa9b9755-1eb1-4c99-be96-bdde097bb3fc",
+              "focus_cycle:7fd09f27-f4f4-42f8-a270-2d7b0c348694"
+            ],
+            "explanation": "The run and essay commitments are fully scheduled (60m each) and the run has been recorded. The onboarding test remains the primary unscheduled work within the current focus cycle's three goals."
+          }
+        ]
+      },
+      "schemaAccepted": true,
+      "referencesGrounded": true,
+      "placementChecks": [
+        {
+          "index": 1,
+          "legal": false,
+          "unavailable": "Choose a future start time. Past schedule history cannot be created or rewritten."
+        }
+      ],
+      "upstreamUnchanged": true,
+      "approximateCostUSD": 0.008634,
+      "costNote": "Estimate at Haiku 4.5 standard first-party rates: $1/input MTok, $5/output MTok, $0.10/cache-read MTok. No cache writes requested. Excludes tax/discounts; not billed dollars."
+    },
+    {
+      "kind": "restrained",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "contextFingerprint": "2ef3169a8e09104d9d1226408fb026c43f4700886150d57910228d264671f18c",
+      "run": {
+        "id": "f211b71b-93f6-42f2-ae93-d3c381057db8",
+        "contextType": "calendar",
+        "week": "2028-01-03",
+        "fingerprint": "2ef3169a8e09104d9d1226408fb026c43f4700886150d57910228d264671f18c",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [
+          {
+            "href": null,
+            "evidence": [
+              {
+                "key": "commitment:beeffeb1-8d4c-4dd7-aae5-d8bbf369437b",
+                "label": "Draft the planning essay: 60m committed, 60m scheduled"
+              },
+              {
+                "key": "execution",
+                "label": "Recorded Focus outcomes; no tracking does not mean no work"
+              }
+            ],
+            "proposal": {
+              "type": "observation",
+              "title": "Draft the planning essay is scheduled but has no recorded progress",
+              "explanation": "The essay commitment shows 60m scheduled with 0m recorded work. The onboarding and running tasks both show completion. With the essay block scheduled for 2028-01-06 14:00\u201315:00, consider whether it needs a focused session or additional time to reach the 'clear first draft with one concrete example' done-when.",
+              "evidenceRefs": [
+                "commitment:beeffeb1-8d4c-4dd7-aae5-d8bbf369437b",
+                "execution"
+              ]
+            },
+            "placement": null,
+            "unavailable": null
+          },
+          {
+            "href": "/planning?week=2028-01-03",
+            "evidence": [
+              {
+                "key": "action:44d14b40-6068-4c22-935c-4f7cb2c2a793",
+                "label": "Action: Test the first-week onboarding flow"
+              },
+              {
+                "key": "commitment:32e3f43a-9420-4f2b-a88a-227b05f1db1c",
+                "label": "Test the first-week onboarding flow: 60m committed, 60m scheduled"
+              },
+              {
+                "key": "source:44d14b40-6068-4c22-935c-4f7cb2c2a793",
+                "label": "Test the first-week onboarding flow: eligible for deliberate planning"
+              }
+            ],
+            "proposal": {
+              "type": "review_plan",
+              "title": "Reconsider the Test the first-week onboarding flow scope",
+              "reason": "Action estimates 240m but only 60m is committed and scheduled. Done-when requires five users to finish onboarding without assistance. Review whether the current budget is realistic or if the scope should adjust to preserve the breathing room your focus cycle intent emphasizes.",
+              "target": {
+                "id": "44d14b40-6068-4c22-935c-4f7cb2c2a793",
+                "kind": "action"
+              },
+              "evidenceRefs": [
+                "action:44d14b40-6068-4c22-935c-4f7cb2c2a793",
+                "commitment:32e3f43a-9420-4f2b-a88a-227b05f1db1c",
+                "source:44d14b40-6068-4c22-935c-4f7cb2c2a793"
+              ]
+            },
+            "placement": null,
+            "unavailable": null
+          }
+        ],
+        "failure": null,
+        "usage": {
+          "inputTokens": 6074,
+          "outputTokens": 353,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 5498,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawApplicationOutput": {
+        "recommendations": [
+          {
+            "type": "observation",
+            "title": "Draft the planning essay is scheduled but has no recorded progress",
+            "evidenceRefs": [
+              "commitment:beeffeb1-8d4c-4dd7-aae5-d8bbf369437b",
+              "execution"
+            ],
+            "explanation": "The essay commitment shows 60m scheduled with 0m recorded work. The onboarding and running tasks both show completion. With the essay block scheduled for 2028-01-06 14:00\u201315:00, consider whether it needs a focused session or additional time to reach the 'clear first draft with one concrete example' done-when."
+          },
+          {
+            "type": "review_plan",
+            "title": "Reconsider the Test the first-week onboarding flow scope",
+            "evidenceRefs": [
+              "action:44d14b40-6068-4c22-935c-4f7cb2c2a793",
+              "commitment:32e3f43a-9420-4f2b-a88a-227b05f1db1c",
+              "source:44d14b40-6068-4c22-935c-4f7cb2c2a793"
+            ],
+            "target": {
+              "kind": "action",
+              "id": "44d14b40-6068-4c22-935c-4f7cb2c2a793"
+            },
+            "reason": "Action estimates 240m but only 60m is committed and scheduled. Done-when requires five users to finish onboarding without assistance. Review whether the current budget is realistic or if the scope should adjust to preserve the breathing room your focus cycle intent emphasizes."
+          }
+        ]
+      },
+      "schemaAccepted": true,
+      "referencesGrounded": true,
+      "placementChecks": [],
+      "upstreamUnchanged": true,
+      "approximateCostUSD": 0.007839,
+      "costNote": "Estimate at Haiku 4.5 standard first-party rates: $1/input MTok, $5/output MTok, $0.10/cache-read MTok. No cache writes requested. Excludes tax/discounts; not billed dollars."
+    },
+    {
+      "kind": "review",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "contextFingerprint": "84b54e27099fa59821106c2e009b25b0e6ebdd4fe3825f063565c08361cab051",
+      "run": {
+        "id": "76873707-78ad-49bd-8b79-46bdfaeeeaab",
+        "contextType": "weekly_review",
+        "week": "2027-12-27",
+        "fingerprint": "84b54e27099fa59821106c2e009b25b0e6ebdd4fe3825f063565c08361cab051",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [
+          {
+            "href": null,
+            "evidence": [
+              {
+                "key": "commitment:ab553953-f5a6-48c7-9470-a95bcd4adccf",
+                "label": "Test the first-week onboarding flow: 120m committed, 60m scheduled"
+              },
+              {
+                "key": "review_summary",
+                "label": "Week 2027-12-27: 60m scheduled, 30m recorded"
+              },
+              {
+                "key": "weekly_reflection",
+                "label": "Finalized weekly reflection"
+              }
+            ],
+            "proposal": {
+              "type": "observation",
+              "title": "Onboarding testing paused after 30m of 120m committed",
+              "explanation": "You recorded 30 minutes against the onboarding test action this week and chose to carry it forward with a reduced 90-minute budget. The action needs 240 minutes total to reach its done-when (five users finishing without assistance). At current pace, clarifying blockers or support gaps would help you plan the remaining work realistically.",
+              "evidenceRefs": [
+                "commitment:ab553953-f5a6-48c7-9470-a95bcd4adccf",
+                "review_summary",
+                "weekly_reflection"
+              ]
+            },
+            "placement": null,
+            "unavailable": null
+          },
+          {
+            "href": "/planning?week=2027-12-27",
+            "evidence": [
+              {
+                "key": "action:fbf95440-47f2-4021-b0fa-babfb3e1f683",
+                "label": "Action: Test the first-week onboarding flow"
+              },
+              {
+                "key": "source:fbf95440-47f2-4021-b0fa-babfb3e1f683",
+                "label": "Test the first-week onboarding flow: eligible for deliberate planning"
+              },
+              {
+                "key": "focus_cycle:7fd09f27-f4f4-42f8-a270-2d7b0c348694",
+                "label": "Current Focus: Make the weekly loop useful and sustainable"
+              }
+            ],
+            "proposal": {
+              "type": "review_plan",
+              "title": "Clarify the onboarding test scope before next week's plan",
+              "reason": "This action feeds directly into your beta goal. Before committing time next week, reviewing whether interruptions this week were one-time or structural, and whether the 240-minute estimate still fits your beta timeline, will help you avoid repeating partial progress.",
+              "target": {
+                "id": "fbf95440-47f2-4021-b0fa-babfb3e1f683",
+                "kind": "action"
+              },
+              "evidenceRefs": [
+                "action:fbf95440-47f2-4021-b0fa-babfb3e1f683",
+                "source:fbf95440-47f2-4021-b0fa-babfb3e1f683",
+                "focus_cycle:7fd09f27-f4f4-42f8-a270-2d7b0c348694"
+              ]
+            },
+            "placement": null,
+            "unavailable": null
+          }
+        ],
+        "failure": null,
+        "usage": {
+          "inputTokens": 3195,
+          "outputTokens": 355,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 5257,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawApplicationOutput": {
+        "recommendations": [
+          {
+            "type": "observation",
+            "title": "Onboarding testing paused after 30m of 120m committed",
+            "evidenceRefs": [
+              "commitment:ab553953-f5a6-48c7-9470-a95bcd4adccf",
+              "review_summary",
+              "weekly_reflection"
+            ],
+            "explanation": "You recorded 30 minutes against the onboarding test action this week and chose to carry it forward with a reduced 90-minute budget. The action needs 240 minutes total to reach its done-when (five users finishing without assistance). At current pace, clarifying blockers or support gaps would help you plan the remaining work realistically."
+          },
+          {
+            "type": "review_plan",
+            "title": "Clarify the onboarding test scope before next week's plan",
+            "evidenceRefs": [
+              "action:fbf95440-47f2-4021-b0fa-babfb3e1f683",
+              "source:fbf95440-47f2-4021-b0fa-babfb3e1f683",
+              "focus_cycle:7fd09f27-f4f4-42f8-a270-2d7b0c348694"
+            ],
+            "target": {
+              "kind": "action",
+              "id": "fbf95440-47f2-4021-b0fa-babfb3e1f683"
+            },
+            "reason": "This action feeds directly into your beta goal. Before committing time next week, reviewing whether interruptions this week were one-time or structural, and whether the 240-minute estimate still fits your beta timeline, will help you avoid repeating partial progress."
+          }
+        ]
+      },
+      "schemaAccepted": true,
+      "referencesGrounded": true,
+      "placementChecks": [],
+      "upstreamUnchanged": true,
+      "approximateCostUSD": 0.00497,
+      "costNote": "Estimate at Haiku 4.5 standard first-party rates: $1/input MTok, $5/output MTok, $0.10/cache-read MTok. No cache writes requested. Excludes tax/discounts; not billed dollars."
+    },
+    {
+      "kind": "failure",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "contextFingerprint": "d2d83a13701715c28f3967aa8564d6e315fd8963c4db56f46c967e860300ce31",
+      "run": {
+        "id": "2d9c3245-aaba-4595-803f-dec414f3114e",
+        "contextType": "calendar",
+        "week": "2028-01-03",
+        "fingerprint": "d2d83a13701715c28f3967aa8564d6e315fd8963c4db56f46c967e860300ce31",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "authentication",
+        "usage": null,
+        "latencyMs": 204,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawApplicationOutput": null,
+      "schemaAccepted": false,
+      "referencesGrounded": null,
+      "placementChecks": [],
+      "upstreamUnchanged": true,
+      "approximateCostUSD": null,
+      "costNote": "Price separately using the exact configured model, returned tokens and official rates; metadata does not contain billed dollars."
+    }
+  ]
+}

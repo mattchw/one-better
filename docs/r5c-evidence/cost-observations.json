@@ -1,0 +1,96 @@
+{
+  "status": "Partial live QA; not a two-provider comparison or quality pass",
+  "actualProviderRequests": 7,
+  "successfulRequests": 6,
+  "estimatedSuccessfulTextCostUSD": 0.046336,
+  "ratesURL": "https://platform.claude.com/docs/en/about-claude/pricing",
+  "rows": [
+    {
+      "scenario": "calendar",
+      "model": "claude-haiku-4-5-20251001",
+      "status": "succeeded",
+      "latencyMs": 5901,
+      "usage": {
+        "inputTokens": 6429,
+        "outputTokens": 441,
+        "cachedInputTokens": 0
+      },
+      "recommendations": 3,
+      "estimatedUSD": 0.008634
+    },
+    {
+      "scenario": "restrained",
+      "model": "claude-haiku-4-5-20251001",
+      "status": "succeeded",
+      "latencyMs": 5498,
+      "usage": {
+        "inputTokens": 6074,
+        "outputTokens": 353,
+        "cachedInputTokens": 0
+      },
+      "recommendations": 2,
+      "estimatedUSD": 0.007839
+    },
+    {
+      "scenario": "review",
+      "model": "claude-haiku-4-5-20251001",
+      "status": "succeeded",
+      "latencyMs": 5257,
+      "usage": {
+        "inputTokens": 3195,
+        "outputTokens": 355,
+        "cachedInputTokens": 0
+      },
+      "recommendations": 2,
+      "estimatedUSD": 0.00497
+    },
+    {
+      "scenario": "failure",
+      "model": "claude-haiku-4-5-20251001",
+      "status": "failed",
+      "latencyMs": 204,
+      "usage": null,
+      "recommendations": 0,
+      "estimatedUSD": null
+    },
+    {
+      "scenario": "preflight",
+      "model": "claude-haiku-4-5-20251001",
+      "status": "succeeded",
+      "latencyMs": 12103,
+      "usage": {
+        "inputTokens": 6470,
+        "outputTokens": 446,
+        "cachedInputTokens": 0
+      },
+      "recommendations": 3,
+      "estimatedUSD": 0.0087
+    },
+    {
+      "scenario": "clean-restraint",
+      "model": "claude-haiku-4-5-20251001",
+      "status": "succeeded",
+      "latencyMs": 5559,
+      "usage": {
+        "inputTokens": 6054,
+        "outputTokens": 343,
+        "cachedInputTokens": 0
+      },
+      "recommendations": 2,
+      "estimatedUSD": 0.007769
+    },
+    {
+      "scenario": "regenerate",
+      "model": "claude-haiku-4-5-20251001",
+      "status": "succeeded",
+      "latencyMs": 5769,
+      "usage": {
+        "inputTokens": 6619,
+        "outputTokens": 361,
+        "cachedInputTokens": 0
+      },
+      "recommendations": 2,
+      "estimatedUSD": 0.008424
+    }
+  ]
+}

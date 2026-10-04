@@ -1,0 +1,251 @@
+{
+  "reason": "Transport-only unsupported maxItems removal; same application schema, same frozen packets and prompt.",
+  "observations": [
+    {
+      "kind": "gap_reflection",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "run": {
+        "id": "e233f6f0-6462-4587-b640-e21d7a1125fc",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "1c43ed8cc14fe980b6df4bfe69e0cc430641c457ecb196fb4793fd05f50259d1",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "invalid_output",
+        "usage": {
+          "inputTokens": 2157,
+          "outputTokens": 115,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 5409,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "insights": [
+          {
+            "candidateId": "review_insight_9b99751853d1f185ed0552a0",
+            "interpretation": "Protected capacity was reduced mid-week following an interruption, and recorded focus fell short of the scheduled time. The reflection notes that support changed the plan, which is distinct from what was executed. A carry intent is recorded for the following week.",
+            "reflectionQuestion": "Does the carry intent represent work that remains unstarted, or does it reflect revised scope after the interruption clarified priorities?"
+          }
+        ]
+      },
+      "schemaAccepted": true,
+      "grounded": false,
+      "identicalFrozenPacket": true,
+      "upstreamUnchanged": true,
+      "latencyMs": 5409,
+      "usage": {
+        "inputTokens": 2157,
+        "outputTokens": 115,
+        "cachedInputTokens": 0
+      }
+    },
+    {
+      "kind": "already_addressed",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "run": {
+        "id": "9a1904a3-fd4d-4394-acb0-393dae1d7eb0",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "8234fede2e960918fd9e41b094bf90da2a664a47779dbe1c5e8e72210b473628",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [],
+        "failure": null,
+        "usage": {
+          "inputTokens": 1179,
+          "outputTokens": 8,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 1536,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "insights": []
+      },
+      "schemaAccepted": true,
+      "grounded": true,
+      "identicalFrozenPacket": true,
+      "upstreamUnchanged": true,
+      "latencyMs": 1536,
+      "usage": {
+        "inputTokens": 1179,
+        "outputTokens": 8,
+        "cachedInputTokens": 0
+      }
+    },
+    {
+      "kind": "repeated_carry",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "run": {
+        "id": "a4a56c62-04e8-4552-ba37-75ccfa60035c",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "f800418f1c7d6380ae72e17f4a7fbe51bea807437fbc99eb9849d97c75cbff7f",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "invalid_output",
+        "usage": {
+          "inputTokens": 1931,
+          "outputTokens": 136,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 4586,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "insights": [
+          {
+            "candidateId": "review_insight_9825f19bda576821a656da90",
+            "interpretation": "This commitment was carried forward across two prior reviews and is now carried again into the following week with intent, though no plan was saved for that week. The finalized reflection expresses a preference for a changed approach rather than unchanged intent, which directly addresses the pattern of repeated carry decisions.",
+            "reflectionQuestion": "What would constitute a meaningfully different approach to this work compared to the previous attempts—and does the absence of a saved plan for the following week signal that you're still determining what that change should be?"
+          }
+        ]
+      },
+      "schemaAccepted": true,
+      "grounded": false,
+      "identicalFrozenPacket": true,
+      "upstreamUnchanged": true,
+      "latencyMs": 4586,
+      "usage": {
+        "inputTokens": 1931,
+        "outputTokens": 136,
+        "cachedInputTokens": 0
+      }
+    },
+    {
+      "kind": "clean",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "run": {
+        "id": "b98e503b-ee36-4d7d-ad5f-87e90d9a048d",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "f2ccf0f7b29e83ef159624a229b2fa639a29e7623dd07ac1b111f591eb76be45",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [],
+        "failure": null,
+        "usage": {
+          "inputTokens": 1074,
+          "outputTokens": 8,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 2903,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "insights": []
+      },
+      "schemaAccepted": true,
+      "grounded": true,
+      "identicalFrozenPacket": true,
+      "upstreamUnchanged": true,
+      "latencyMs": 2903,
+      "usage": {
+        "inputTokens": 1074,
+        "outputTokens": 8,
+        "cachedInputTokens": 0
+      }
+    },
+    {
+      "kind": "completed",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "run": {
+        "id": "052ae1cc-0395-4004-886f-fa12cea3303e",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "2b30bb8be624797e3d797c37594d5a4d0c63f1f599450c60be5e4a27c7e76c0d",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [],
+        "failure": null,
+        "usage": {
+          "inputTokens": 1068,
+          "outputTokens": 8,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 1438,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "insights": []
+      },
+      "schemaAccepted": true,
+      "grounded": true,
+      "identicalFrozenPacket": true,
+      "upstreamUnchanged": true,
+      "latencyMs": 1438,
+      "usage": {
+        "inputTokens": 1068,
+        "outputTokens": 8,
+        "cachedInputTokens": 0
+      }
+    },
+    {
+      "kind": "no_reflection",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "run": {
+        "id": "12797275-0973-446d-814d-98222e468e39",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "ca259412c87ad234c699513043398d910ee49339e83a83c1e7ed7d2c44d6276b",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "invalid_output",
+        "usage": {
+          "inputTokens": 1589,
+          "outputTokens": 113,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 3032,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "insights": [
+          {
+            "candidateId": "review_insight_a5926ab38c7394007be418a4",
+            "interpretation": "Protected time for this commitment was not carried into the following week's plan, and recorded Focus represents a fraction of scheduled time. The gap between what was scheduled and what was recorded during execution is distinct from whether the work itself advanced.",
+            "reflectionQuestion": "Does the absence of a following-week plan reflect a decision that this work is complete, or does it need continuation with a fresh approach?"
+          }
+        ]
+      },
+      "schemaAccepted": true,
+      "grounded": false,
+      "identicalFrozenPacket": true,
+      "upstreamUnchanged": true,
+      "latencyMs": 3032,
+      "usage": {
+        "inputTokens": 1589,
+        "outputTokens": 113,
+        "cachedInputTokens": 0
+      }
+    }
+  ]
+}

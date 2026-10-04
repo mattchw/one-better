@@ -1,0 +1,100 @@
+{
+  "contextType": "weekly_review",
+  "week": "2028-01-03",
+  "schemaVersion": 3,
+  "stateFingerprint": "694bb7bb4983f0a2edffa4e41b0b4de7b0576a56eef15e7390e348e7c5b4b0f0",
+  "requestTime": "2028-01-12T08:00:00Z",
+  "today": "2028-01-12",
+  "timezone": "Europe/London",
+  "planId": "a8e919e4-74a9-4912-8af5-49a06eb8f38e",
+  "facts": [
+    {
+      "key": "following:76356af9-4a10-4192-95e5-7c0190181b53",
+      "label": "Following week 2028-01-10: no saved plan",
+      "data": {
+        "week": "2028-01-10",
+        "state": "absent",
+        "budgetMinutes": 0,
+        "scheduledMinutes": 0,
+        "carryIntentMinutes": null
+      },
+      "reference": null
+    },
+    {
+      "key": "review_commitment:c82881bc-5c2d-4e4a-9cde-5b52f4ee938c",
+      "label": "Ship guided first-week planning: 240m committed; 60m scheduled; 30m recorded Focus in 2028-01-03",
+      "data": {
+        "budgetMinutes": 240,
+        "scheduledMinutes": 60,
+        "recordedMinutes": 30,
+        "actionId": "76356af9-4a10-4192-95e5-7c0190181b53",
+        "goalId": "2a8ea83d-8551-47c3-9fc6-12dfd2c0ad0a"
+      },
+      "reference": {
+        "kind": "commitment",
+        "id": "c82881bc-5c2d-4e4a-9cde-5b52f4ee938c"
+      }
+    },
+    {
+      "key": "review_summary",
+      "label": "Week 2028-01-03: 240m baseline commitments → 240m final commitments; 60m scheduled; 30m recorded Focus",
+      "data": {
+        "original": {
+          "usableMinutes": 540,
+          "totalMinutes": 240,
+          "remainingMinutes": 300
+        },
+        "final": {
+          "usableMinutes": 540,
+          "totalMinutes": 240,
+          "remainingMinutes": 300
+        }
+      },
+      "reference": null
+    }
+  ],
+  "signals": [],
+  "scheduleCandidates": [],
+  "reviewCandidates": [
+    {
+      "id": "review_insight_f4b19ed19fd2ce9967cffc88",
+      "type": "planning_execution_gap",
+      "title": "Ship guided first-week planning",
+      "subjects": [
+        {
+          "kind": "commitment",
+          "id": "c82881bc-5c2d-4e4a-9cde-5b52f4ee938c"
+        },
+        {
+          "kind": "action",
+          "id": "76356af9-4a10-4192-95e5-7c0190181b53"
+        },
+        {
+          "kind": "goal",
+          "id": "2a8ea83d-8551-47c3-9fc6-12dfd2c0ad0a"
+        }
+      ],
+      "evidenceRefs": [
+        "review_commitment:c82881bc-5c2d-4e4a-9cde-5b52f4ee938c",
+        "following:76356af9-4a10-4192-95e5-7c0190181b53"
+      ],
+      "week": "2028-01-03",
+      "followingWeek": "2028-01-10",
+      "reflectionRefs": [],
+      "following": {
+        "state": "absent",
+        "budgetMinutes": 0,
+        "scheduledMinutes": 0,
+        "carryIntentMinutes": null
+      },
+      "allowedInterpretation": [
+        "Interpret the supplied relationship only; factual names, quantities, dates, decisions and history belong in server Evidence.",
+        "Recorded Focus is not completion; missing recorded Focus is not proof of no work.",
+        "Ask a conditional useful question; never choose Carry, Defer or Drop, prescribe scheduling, or invent work.",
+        "No inferred causal explanation, unsupported history, ratings or score.",
+        "Separate how much time was protected from what happened during execution. Do not label the gap failure or assume more time is required.",
+        "No permitted relevant reflection explains this relationship; do not invent an interruption, blocker, motivation or reason."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+import { randomUUID } from "node:crypto";
+import type { HoursSettings, FocusableHoursSchedule } from "../src/modules/availability/domain";
+import type { FocusWorkspace } from "../src/modules/availability/service";
+import { spawn, type ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import assert from "node:assert/strict";
+import { setTimeout as delay } from "node:timers/promises";
+import { chromium } from "@playwright/test";
+import { connectDatabase } from "../src/db/connect";
+import { requireTestDatabaseURL } from "./test-database";
+import { startCalendarFixture, fixtureEnvironment } from "../tests/calendar-fixture-server";
+import type { CalendarWorkspace, Availability, Connection } from "../src/modules/calendar/domain";
+requireTestDatabaseURL(); await import("./prepare-test-db");
+const origin = "http://127.0.0.1:3102"; const fixture = await startCalendarFixture(origin); const { pool } = connectDatabase(process.env.DATABASE_URL!);
+let child: ChildProcess | undefined; let log = "";
+async function start(databaseURL = process.env.DATABASE_URL, health = 200) {
+  child = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", "3102"], { env: { ...process.env, NODE_ENV: "production", BETTER_AUTH_URL: origin, DATABASE_URL: databaseURL, ...fixtureEnvironment(fixture.origin, origin) }, stdio: ["ignore", "pipe", "pipe"] });
+  child.stdout?.on("data", data => { log += data.toString(); }); child.stderr?.on("data", data => { log += data.toString(); });
+  for (let i = 0; i < 120; i++) { if (child.exitCode !== null) throw new Error("Calendar production process exited before readiness."); try { if ((await fetch(`${origin}/api/health`)).status === health) return; } catch { /* Wait for owned process only. */ } await delay(250); }
+  throw new Error("Calendar production process did not become ready.");
+}
+async function stop() { if (child && child.exitCode === null) { const ended = once(child, "exit"); child.kill("SIGTERM"); await ended; } child = undefined; }
+try {
+  await start(); const signin = await fetch(`${origin}/api/auth/sign-in/email`, { method: "POST", headers: { Origin: origin, "Content-Type": "application/json" }, body: JSON.stringify({ email: process.env.TEST_USER_A_EMAIL, password: process.env.TEST_USER_A_PASSWORD }) }); assert.equal(signin.status, 200);
+  const cookie = signin.headers.getSetCookie().map(v => v.split(";")[0]).join("; ");
+  async function read<T>(path: string): Promise<T> { const result = await fetch(`${origin}${path}`, { headers: { cookie } }); assert.equal(result.status, 200); return result.json() as Promise<T>; }
+  async function mutate<T>(path: string, body?: object, method = "POST"): Promise<T> { const result = await fetch(`${origin}${path}`, { method, headers: { cookie, Origin: origin, "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined }); assert.equal(result.status, 200); return result.json() as Promise<T>; }
+  const account = await read<{ user: { id: string } }>("/api/account");
+  const planningSnapshot = async () => { const rows: Record<string, unknown> = {}; for (const table of ["goal", "milestone", "action", "weekly_plan", "weekly_commitment", "weekly_plan_amendment", "amendment_commitment", "mutation_receipt"]) rows[table] = (await pool.query(`SELECT row_to_json(t) AS data FROM ${table} t WHERE owner_id=$1 ${table === "mutation_receipt" ? "AND NOT (result ? 'windows')" : ""} ORDER BY row_to_json(t)::text`, [account.user.id])).rows; return rows; };
+  const previousHours = await read<HoursSettings>("/api/focusable-hours");
+  const windows = [{ weekday: 1, startMinute: 540, endMinute: 720 }, { weekday: 1, startMinute: 840, endMinute: 1020 }, { weekday: 2, startMinute: 540, endMinute: 720 }, { weekday: 2, startMinute: 840, endMinute: 1020 }, { weekday: 3, startMinute: 540, endMinute: 720 }, { weekday: 4, startMinute: 540, endMinute: 720 }, { weekday: 4, startMinute: 840, endMinute: 1020 }, { weekday: 5, startMinute: 540, endMinute: 720 }];
+  const hoursCommand = { mutationId: randomUUID(), scheduleId: previousHours.schedule?.id ?? null, expectedVersion: previousHours.schedule?.version ?? 0, windows };
+  const savedHours = (await mutate<{ schedule: FocusableHoursSchedule }>("/api/focusable-hours", hoursCommand, "PUT")).schedule;
+  const before = await planningSnapshot(); const existing = await read<CalendarWorkspace>("/api/calendar"); if (existing.connection && existing.connection.state !== "disconnected") await mutate(`/api/calendar/${existing.connection.id}/disconnect`);
+  const auth = await mutate<{ url: string }>("/api/calendar/connect"); const consent = await fetch(auth.url); const text = await consent.text(); const approval = await fetch(text.match(/href="([^"]+)"/)![1].replaceAll("&amp;", "&"), { redirect: "manual" });
+  const callback = await fetch(approval.headers.get("location")!, { headers: { cookie }, redirect: "manual" }); assert.equal(callback.status, 303); assert.equal(callback.headers.get("location"), `${origin}/integrations?calendar=success`); assert.equal(callback.headers.get("referrer-policy"), "no-referrer");
+  const connected = (await read<CalendarWorkspace>("/api/calendar")).connection!; const listed = await mutate<{ connection: Connection }>(`/api/calendar/${connected.id}/calendars`); const selected = await mutate<{ connection: Connection }>(`/api/calendar/${connected.id}`, { expectedVersion: listed.connection.version, calendarIds: ["work-calendar", "personal-calendar"] }, "PATCH");
+  const initial = await read<CalendarWorkspace>("/api/calendar"); const weekStartDate = initial.availability!.weekStartDate;
+  const good = await mutate<{ availability: Availability }>(`/api/calendar/${connected.id}/availability`, { weekStartDate }); assert.equal(good.availability.status, "fresh"); assert.equal(good.availability.totalBusyMinutes, 930);
+  const raw = (await pool.query("SELECT encrypted_credentials, granted_scopes, provider_account_id FROM google_calendar_connection WHERE owner_id=$1", [account.user.id])).rows[0]; assert.ok(raw.encrypted_credentials.startsWith("v1.fixture.")); assert.ok(!raw.encrypted_credentials.includes("fixture-access")); assert.ok(!raw.encrypted_credentials.includes("fixture-refresh")); assert.notEqual(raw.provider_account_id, account.user.id);
+  await stop(); await start(); const firstRestart = await read<CalendarWorkspace>("/api/calendar"); assert.deepEqual(firstRestart.connection, selected.connection); assert.deepEqual(firstRestart.availability, good.availability); assert.deepEqual(await read("/api/account"), account);
+  assert.deepEqual((await read<HoursSettings>("/api/focusable-hours")).schedule, savedHours);
+  const firstOpen = (await read<FocusWorkspace>(`/api/focus-availability?week=${weekStartDate}`)).availability;
+  assert.equal(firstOpen.status, "available"); assert.equal(firstOpen.focusableMinutes, 1440); assert.equal(firstOpen.blockedMinutes, 690); assert.equal(firstOpen.openMinutes, 750);
+  const revisedHours = (await mutate<{ schedule: FocusableHoursSchedule }>("/api/focusable-hours", { mutationId: randomUUID(), scheduleId: savedHours.id, expectedVersion: savedHours.version, windows: windows.map((w, i) => i === 1 ? { ...w, endMinute: 960 } : w) }, "PUT")).schedule;
+  fixture.controls({ failure: true }); const failed = await mutate<{ availability: Availability }>(`/api/calendar/${connected.id}/availability`, { weekStartDate }); assert.equal(failed.availability.status, "stale"); assert.equal(failed.availability.fetchedAt, good.availability.fetchedAt); assert.deepEqual(failed.availability.intervals, good.availability.intervals);
+  await stop(); await start(); const secondRestart = await read<CalendarWorkspace>("/api/calendar"); assert.deepEqual(secondRestart.connection, selected.connection); assert.deepEqual(secondRestart.availability, failed.availability);
+  assert.deepEqual((await read<HoursSettings>("/api/focusable-hours")).schedule, revisedHours);
+  assert.deepEqual((await mutate<{ schedule: FocusableHoursSchedule }>("/api/focusable-hours", hoursCommand, "PUT")).schedule, savedHours, "Original receipt must replay after later replacement and actual restart.");
+  assert.deepEqual((await read<HoursSettings>("/api/focusable-hours")).schedule, revisedHours);
+  const staleOpen = (await read<FocusWorkspace>(`/api/focus-availability?week=${weekStartDate}`)).availability;
+  assert.equal(staleOpen.status, "stale"); assert.equal(staleOpen.focusableMinutes, 1380); assert.equal(staleOpen.openMinutes, 690); assert.equal(staleOpen.fetchedAt, good.availability.fetchedAt);
+  const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH });
+  try { const context = await browser.newContext(); await context.addCookies(cookie.split("; ").map(value => { const i = value.indexOf("="); return { name: value.slice(0, i), value: value.slice(i + 1), url: origin, httpOnly: true, sameSite: "Lax" as const }; })); const page = await context.newPage(); await page.goto(`${origin}/planning?week=${weekStartDate}`); await page.locator(".focus-daily summary").click(); await page.getByLabel("Calendar load", { exact: true }).getByText("Stale · previously fetched", { exact: false }).waitFor(); assert.ok((await page.getByLabel("Calendar load", { exact: true }).innerText()).includes("15h 30m")); assert.ok((await page.getByLabel("Focusable availability", { exact: true }).textContent())?.includes("Calendar-open focus time11h 30m")); await page.reload(); await page.locator(".focus-daily summary").click(); await page.getByLabel("Calendar load", { exact: true }).getByText("15h 30m", { exact: true }).waitFor(); } finally { await browser.close(); }
+  assert.deepEqual(await planningSnapshot(), before, "Every planning/source/history/receipt row must stay unchanged after all Calendar operations and restarts.");
+  fixture.controls({ revokeFailure: true }); const disconnected = await mutate<{ connection: Connection; revocationConfirmed: boolean }>(`/api/calendar/${connected.id}/disconnect`); assert.equal(disconnected.connection.state, "disconnected"); assert.equal(disconnected.revocationConfirmed, false);
+  assert.equal((await pool.query("SELECT encrypted_credentials FROM google_calendar_connection WHERE owner_id=$1", [account.user.id])).rows[0].encrypted_credentials, null); assert.equal((await pool.query("SELECT 1 FROM calendar_availability_cache WHERE owner_id=$1", [account.user.id])).rowCount, 0);
+  assert.deepEqual((await read<HoursSettings>("/api/focusable-hours")).schedule, revisedHours);
+  assert.equal((await read<FocusWorkspace>(`/api/focus-availability?week=${weekStartDate}`)).availability.openMinutes, null);
+  assert.deepEqual(await planningSnapshot(), before);
+  assert.ok(!/fixture-code|fixture-access|fixture-refresh/.test(log), "Production logs must not contain OAuth code/token markers.");
+  await stop(); const unavailableURL = new URL(process.env.DATABASE_URL!); unavailableURL.pathname = `/execution_test_unavailable${Date.now()}`; await start(unavailableURL.toString(), 503);
+  for (const [path, method, body] of [["/api/focusable-hours", "GET", undefined], ["/api/focusable-hours", "PUT", hoursCommand], [`/api/focusable-hours/${savedHours.id}`, "GET", undefined], [`/api/focus-availability?week=${weekStartDate}`, "GET", undefined], ["/api/calendar", "GET", undefined], ["/api/calendar/connect", "POST", undefined], [`/api/calendar/${connected.id}`, "GET", undefined], [`/api/calendar/${connected.id}`, "PATCH", { expectedVersion: 1, calendarIds: [] }], [`/api/calendar/${connected.id}/calendars`, "POST", undefined], [`/api/calendar/${connected.id}/availability`, "POST", { weekStartDate }], [`/api/calendar/${connected.id}/disconnect`, "POST", undefined]] as const) assert.equal((await fetch(`${origin}${path}`, { method, headers: { cookie, Origin: origin, "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined })).status, 503);
+  console.log("PASS: Focusable Hours and original save receipts survive two actual process restarts and later replacement; fresh/stale/unknown focus availability remains independent of planning history; real production OAuth-client flow against isolated simulated Google; encrypted credentials/selection/cache survive two actual process restarts; fresh and failed-refresh stale timing retain exact fetchedAt; production browser reload; identity separation; Calendar disconnect removes secrets/cache despite revocation failure; all planning/source/history/receipt rows unchanged; no credential markers in logs; every Calendar HTTP surface returns 503 for an unavailable database.");
+} catch (error) { console.error("Calendar production restart proof failed.", error instanceof assert.AssertionError ? { operator: error.operator, expected: typeof error.expected === "number" || typeof error.expected === "boolean" ? error.expected : "omitted", actual: typeof error.actual === "number" || typeof error.actual === "boolean" ? error.actual : "omitted", location: error.stack?.split("\n").find(line => line.includes("prove-calendar-restart.ts")) } : "Inspect the local test assertions."); process.exitCode = 1; }
+finally { await stop(); await fixture.close(); await pool.end(); }

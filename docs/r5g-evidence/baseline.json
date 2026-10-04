@@ -1,0 +1,15 @@
+{
+  "frozenSource": {
+    "domain": "c3de275ef5728a2ed7a1df04ef44ae0491576e86ae570fb9fb450deabebc0a2f",
+    "context": "e71386aac19a6a82435cdb34e5f969088c5d38782697448cffb44b7a8bb28d15",
+    "reader": "4a0b9990ee7633df229b47f3c0025c84cf45369c7b0dca4d0a7e8f3733e6a224",
+    "provider": "1cebea4837be5d8c13821b09740ad2350ae175e8dbb5c67d2d1271bd5bc58900",
+    "service": "6f84e99ef0bd94f2b4a1083cc017dcf6e9fa4507cbc22db9950e1c28a56e8f7f",
+    "review-candidates": "6d09456e03b3598bd3142d9d7f92511eafc814b21e2a2ab8fff1f1cfbef64f2e",
+    "review-validation": "eddaa92eb243545e5f43c0bab400f44745edc8b3f9373bd8cf8c502a9d028df4",
+    "candidates": "d373df73bdd8baf55fc9a6465be937a1b88b38871fe3eb9c018376a0044dcea6",
+    "signals": "34b44d8270abd5e98743cc2430c6e5d0aae8b10a47a5fa2685a995c0083b70be"
+  },
+  "normalProductChanged": false,
+  "providerCalls": 0
+}

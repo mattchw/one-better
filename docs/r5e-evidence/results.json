@@ -1,0 +1,505 @@
+{
+  "live": true,
+  "calls": 5,
+  "model": "gpt-5.6-sol",
+  "displayName": "GPT-5.6-Sol",
+  "endpoint": "https://api.openai.com/v1/responses",
+  "configuration": {
+    "authentication": "existing owned ChatGPT OAuth registration; no credential copy",
+    "store": false,
+    "stream": true,
+    "sdkTimeoutMs": 25000,
+    "applicationTimeoutMs": 30000,
+    "maxRetries": 0,
+    "structuredOutput": "text.format JSON schema + unchanged application validator",
+    "promptHash": "1daf28247fe73010eb5e3d5d8743f3921d70f12a0c8789c7b27a85976fbab173",
+    "schemaHash": "ba4a0d75c79013fcf568170512d23fa8b4e8a054400e35f9ae46690df08d4d83"
+  },
+  "usageInterpretation": "ChatGPT plan allowance/credits; token counts are not a dollar API bill. Credit conversion not supplied.",
+  "observations": [
+    {
+      "kind": "calendar",
+      "run": {
+        "id": "d5a819fe-2e05-4b6b-acba-5ef8d78204a6",
+        "contextType": "calendar",
+        "week": "2028-01-03",
+        "fingerprint": "9c87eb635dcaccccd8e9a4f628d19c4152041da27939b5874ab8bc64c153daa2",
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [
+          {
+            "href": null,
+            "title": "Test the first-week onboarding flow",
+            "evidence": [
+              {
+                "key": "commitment:ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+                "label": "Test the first-week onboarding flow: 240m committed, 45m scheduled, 195m still unscheduled, 30m recorded Focus"
+              },
+              {
+                "key": "goal:89b60c8f-9a36-4b21-beed-4d36a9a4b8ea",
+                "label": "Current Focus includes Ship a small trustworthy One Better beta"
+              },
+              {
+                "key": "schedule_candidate_41566df9f8080155",
+                "label": "2028-01-05 09:00–10:00 Europe/London: 60m Calendar-open inside Focusable Hours; 195m still unscheduled"
+              }
+            ],
+            "proposal": {
+              "type": "schedule_candidate",
+              "signalId": "signal_unscheduled_ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+              "rationale": "Protecting a manageable block can help turn deliberately chosen work into progress while preserving flexibility.",
+              "candidateId": "schedule_candidate_41566df9f8080155",
+              "evidenceRefs": [
+                "commitment:ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+                "goal:89b60c8f-9a36-4b21-beed-4d36a9a4b8ea"
+              ]
+            },
+            "candidate": {
+              "id": "schedule_candidate_41566df9f8080155",
+              "end": "2028-01-05T10:00:00Z",
+              "start": "2028-01-05T09:00:00Z",
+              "localDate": "2028-01-05",
+              "commitmentId": "ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+              "endLocalTime": "10:00",
+              "calendarStatus": "available",
+              "focusableHours": "inside",
+              "startLocalTime": "09:00",
+              "durationMinutes": 60,
+              "remainingUnscheduledMinutes": 195
+            },
+            "placement": {
+              "interval": {
+                "end": "2028-01-05T10:00:00Z",
+                "start": "2028-01-05T09:00:00Z"
+              },
+              "fetchedAt": "2028-01-05T08:00:00.000Z",
+              "reviewKey": "edf6c3c9c6f0d416285bb262fd500264b9fa80632dee9fab3290d305d4a4d159",
+              "adjustments": [],
+              "planVersion": 3,
+              "busyConflict": false,
+              "outsideHours": false,
+              "budgetMinutes": 240,
+              "calendarStatus": "fresh",
+              "hoursConfigured": true,
+              "resultingMinutes": 105,
+              "scheduledMinutes": 45
+            },
+            "unavailable": null
+          }
+        ],
+        "failure": null,
+        "usage": {
+          "inputTokens": 3069,
+          "outputTokens": 151,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 5503,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "recommendations": [
+          {
+            "type": "schedule_candidate",
+            "signalId": "signal_unscheduled_ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+            "rationale": "Protecting a manageable block can help turn deliberately chosen work into progress while preserving flexibility.",
+            "evidenceRefs": [
+              "commitment:ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+              "goal:89b60c8f-9a36-4b21-beed-4d36a9a4b8ea"
+            ],
+            "candidateId": "schedule_candidate_41566df9f8080155"
+          }
+        ]
+      },
+      "contextFingerprint": "9c87eb635dcaccccd8e9a4f628d19c4152041da27939b5874ab8bc64c153daa2",
+      "schemaAccepted": true,
+      "grounded": true,
+      "rationalesAllowed": true,
+      "placements": [
+        {
+          "index": 0,
+          "review": {
+            "interval": {
+              "start": "2028-01-05T09:00:00Z",
+              "end": "2028-01-05T10:00:00Z"
+            },
+            "adjustments": [],
+            "outsideHours": false,
+            "hoursConfigured": true,
+            "busyConflict": false,
+            "calendarStatus": "fresh",
+            "fetchedAt": "2028-01-05T08:00:00.000Z",
+            "budgetMinutes": 240,
+            "scheduledMinutes": 45,
+            "resultingMinutes": 105,
+            "planVersion": 3,
+            "reviewKey": "edf6c3c9c6f0d416285bb262fd500264b9fa80632dee9fab3290d305d4a4d159"
+          },
+          "editor": {
+            "commitmentId": "ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+            "snapshot": {
+              "goal": {
+                "id": "89b60c8f-9a36-4b21-beed-4d36a9a4b8ea",
+                "title": "Ship a small trustworthy One Better beta",
+                "outcome": "Ten people can independently plan, focus and review a useful week."
+              },
+              "action": {
+                "id": "c7e0d731-6108-41db-bea4-ac6a1bae458b",
+                "title": "Test the first-week onboarding flow",
+                "doneWhen": "Five users finish onboarding without assistance.",
+                "estimateMinutes": 240
+              },
+              "milestone": null
+            },
+            "prefill": {
+              "date": "2028-01-05",
+              "startTime": "09:00",
+              "endTime": "10:00"
+            }
+          },
+          "legal": true
+        }
+      ],
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "terminalResponse": null,
+      "transportFailure": null,
+      "planUsageTokens": {
+        "inputTokens": 3069,
+        "outputTokens": 151,
+        "cachedInputTokens": 0
+      },
+      "apiCostUSD": null
+    },
+    {
+      "kind": "restrained",
+      "run": {
+        "id": "2f8698f4-2899-4b35-b533-ac661c4af9d4",
+        "contextType": "calendar",
+        "week": "2028-01-03",
+        "fingerprint": "f3ffa7ad75a9f296b62bbffc7ae8525a44ec34c5476ad843ae51e607dfca5818",
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [],
+        "failure": null,
+        "usage": {
+          "inputTokens": 2346,
+          "outputTokens": 16,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 2217,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "recommendations": []
+      },
+      "contextFingerprint": "f3ffa7ad75a9f296b62bbffc7ae8525a44ec34c5476ad843ae51e607dfca5818",
+      "schemaAccepted": true,
+      "grounded": true,
+      "rationalesAllowed": true,
+      "placements": [],
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "terminalResponse": null,
+      "transportFailure": null,
+      "planUsageTokens": {
+        "inputTokens": 2346,
+        "outputTokens": 16,
+        "cachedInputTokens": 0
+      },
+      "apiCostUSD": null
+    },
+    {
+      "kind": "restraint_gate",
+      "pass": true
+    },
+    {
+      "kind": "review",
+      "run": {
+        "id": "acd804b3-de38-4c42-837d-86247750e147",
+        "contextType": "weekly_review",
+        "week": "2027-12-27",
+        "fingerprint": "0e00e26161caf2a037a804a887e8333c713092107924d5e8f72887f59003664b",
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [
+          {
+            "href": "/goals/196ca4e3-3a78-431e-bb31-90585001f9ed?week=2027-12-27",
+            "title": "Publish one practical essay each week",
+            "evidence": [
+              {
+                "key": "goal:196ca4e3-3a78-431e-bb31-90585001f9ed",
+                "label": "Current Focus includes Publish one practical essay each week"
+              }
+            ],
+            "proposal": {
+              "type": "review_plan",
+              "signalId": "signal_focus_without_commitment_196ca4e3-3a78-431e-bb31-90585001f9ed",
+              "rationale": "Revisit whether this focus area merits deliberate attention in the next plan while preserving breathing room.",
+              "evidenceRefs": [
+                "goal:196ca4e3-3a78-431e-bb31-90585001f9ed"
+              ]
+            },
+            "candidate": null,
+            "placement": null,
+            "unavailable": null
+          }
+        ],
+        "failure": null,
+        "usage": {
+          "inputTokens": 2223,
+          "outputTokens": 362,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 10794,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "recommendations": [
+          {
+            "type": "review_plan",
+            "signalId": "signal_focus_without_commitment_196ca4e3-3a78-431e-bb31-90585001f9ed",
+            "rationale": "Revisit whether this focus area merits deliberate attention in the next plan while preserving breathing room.",
+            "evidenceRefs": [
+              "goal:196ca4e3-3a78-431e-bb31-90585001f9ed"
+            ]
+          }
+        ]
+      },
+      "contextFingerprint": "0e00e26161caf2a037a804a887e8333c713092107924d5e8f72887f59003664b",
+      "schemaAccepted": true,
+      "grounded": true,
+      "rationalesAllowed": true,
+      "placements": [],
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "terminalResponse": null,
+      "transportFailure": null,
+      "planUsageTokens": {
+        "inputTokens": 2223,
+        "outputTokens": 362,
+        "cachedInputTokens": 0
+      },
+      "apiCostUSD": null
+    },
+    {
+      "kind": "review_gate",
+      "safetyPassed": true,
+      "qualityNeedsHumanReview": true
+    },
+    {
+      "kind": "staleness",
+      "oldRunId": "d5a819fe-2e05-4b6b-acba-5ef8d78204a6",
+      "staleAfterOrdinaryBlockCreation": true,
+      "oldPreviewRejected": true,
+      "newUnscheduledMinutes": 135
+    },
+    {
+      "kind": "regenerate",
+      "run": {
+        "id": "3f356016-d1bd-4c30-98da-c229da618e63",
+        "contextType": "calendar",
+        "week": "2028-01-03",
+        "fingerprint": "dc6adc8b94be21b3394c281b141c9e559df3f15149c1201fcb5676acd95b10cb",
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [
+          {
+            "href": null,
+            "title": "Test the first-week onboarding flow",
+            "evidence": [
+              {
+                "key": "commitment:ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+                "label": "Test the first-week onboarding flow: 240m committed, 105m scheduled, 135m still unscheduled, 30m recorded Focus"
+              },
+              {
+                "key": "goal:89b60c8f-9a36-4b21-beed-4d36a9a4b8ea",
+                "label": "Current Focus includes Ship a small trustworthy One Better beta"
+              },
+              {
+                "key": "schedule_candidate_41566df9f8080155",
+                "label": "2028-01-05 09:00–10:00 Europe/London: 60m Calendar-open inside Focusable Hours; 135m still unscheduled"
+              }
+            ],
+            "proposal": {
+              "type": "schedule_candidate",
+              "signalId": "signal_unscheduled_ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+              "rationale": "Protecting a manageable block can help turn deliberately chosen work into progress while preserving flexibility.",
+              "candidateId": "schedule_candidate_41566df9f8080155",
+              "evidenceRefs": [
+                "commitment:ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+                "goal:89b60c8f-9a36-4b21-beed-4d36a9a4b8ea"
+              ]
+            },
+            "candidate": {
+              "id": "schedule_candidate_41566df9f8080155",
+              "end": "2028-01-05T10:00:00Z",
+              "start": "2028-01-05T09:00:00Z",
+              "localDate": "2028-01-05",
+              "commitmentId": "ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+              "endLocalTime": "10:00",
+              "calendarStatus": "available",
+              "focusableHours": "inside",
+              "startLocalTime": "09:00",
+              "durationMinutes": 60,
+              "remainingUnscheduledMinutes": 135
+            },
+            "placement": {
+              "interval": {
+                "end": "2028-01-05T10:00:00Z",
+                "start": "2028-01-05T09:00:00Z"
+              },
+              "fetchedAt": "2028-01-05T08:00:00.000Z",
+              "reviewKey": "155807a92a4e9830219f42078c7be944da1dbda15ee583f03bc42280d58460f3",
+              "adjustments": [],
+              "planVersion": 3,
+              "busyConflict": false,
+              "outsideHours": false,
+              "budgetMinutes": 240,
+              "calendarStatus": "fresh",
+              "hoursConfigured": true,
+              "resultingMinutes": 165,
+              "scheduledMinutes": 105
+            },
+            "unavailable": null
+          }
+        ],
+        "failure": null,
+        "usage": {
+          "inputTokens": 3071,
+          "outputTokens": 151,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 5736,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "recommendations": [
+          {
+            "type": "schedule_candidate",
+            "signalId": "signal_unscheduled_ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+            "rationale": "Protecting a manageable block can help turn deliberately chosen work into progress while preserving flexibility.",
+            "evidenceRefs": [
+              "commitment:ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+              "goal:89b60c8f-9a36-4b21-beed-4d36a9a4b8ea"
+            ],
+            "candidateId": "schedule_candidate_41566df9f8080155"
+          }
+        ]
+      },
+      "contextFingerprint": "dc6adc8b94be21b3394c281b141c9e559df3f15149c1201fcb5676acd95b10cb",
+      "schemaAccepted": true,
+      "grounded": true,
+      "rationalesAllowed": true,
+      "placements": [
+        {
+          "index": 0,
+          "review": {
+            "interval": {
+              "start": "2028-01-05T09:00:00Z",
+              "end": "2028-01-05T10:00:00Z"
+            },
+            "adjustments": [],
+            "outsideHours": false,
+            "hoursConfigured": true,
+            "busyConflict": false,
+            "calendarStatus": "fresh",
+            "fetchedAt": "2028-01-05T08:00:00.000Z",
+            "budgetMinutes": 240,
+            "scheduledMinutes": 105,
+            "resultingMinutes": 165,
+            "planVersion": 3,
+            "reviewKey": "155807a92a4e9830219f42078c7be944da1dbda15ee583f03bc42280d58460f3"
+          },
+          "editor": {
+            "commitmentId": "ec5ec4e6-7067-4eca-9c08-4210db8fb1db",
+            "snapshot": {
+              "goal": {
+                "id": "89b60c8f-9a36-4b21-beed-4d36a9a4b8ea",
+                "title": "Ship a small trustworthy One Better beta",
+                "outcome": "Ten people can independently plan, focus and review a useful week."
+              },
+              "action": {
+                "id": "c7e0d731-6108-41db-bea4-ac6a1bae458b",
+                "title": "Test the first-week onboarding flow",
+                "doneWhen": "Five users finish onboarding without assistance.",
+                "estimateMinutes": 240
+              },
+              "milestone": null
+            },
+            "prefill": {
+              "date": "2028-01-05",
+              "startTime": "09:00",
+              "endTime": "10:00"
+            }
+          },
+          "legal": true
+        }
+      ],
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "terminalResponse": null,
+      "transportFailure": null,
+      "planUsageTokens": {
+        "inputTokens": 3071,
+        "outputTokens": 151,
+        "cachedInputTokens": 0
+      },
+      "apiCostUSD": null
+    },
+    {
+      "kind": "acceptance",
+      "source": "explicit UI Preview → ordinary Schedule block",
+      "runId": "3f356016-d1bd-4c30-98da-c229da618e63",
+      "onlyDisposableTimeBlockChanged": true,
+      "staleAfterAcceptance": true
+    },
+    {
+      "kind": "failure",
+      "run": {
+        "id": "7253f5d9-dc2c-4e81-a83d-2f4026eb5dbe",
+        "contextType": "calendar",
+        "week": "2028-01-03",
+        "fingerprint": "810a71cbb67f4355df8d24df3d9beebe0aa2dad095b41364d56a7bf3bb4b951a",
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "authentication",
+        "usage": null,
+        "latencyMs": 441,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": null,
+      "contextFingerprint": "810a71cbb67f4355df8d24df3d9beebe0aa2dad095b41364d56a7bf3bb4b951a",
+      "schemaAccepted": false,
+      "grounded": null,
+      "rationalesAllowed": null,
+      "placements": [],
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "terminalResponse": null,
+      "transportFailure": "admission",
+      "planUsageTokens": null,
+      "apiCostUSD": null
+    },
+    {
+      "kind": "failure_isolation",
+      "corePlanningReadable": true,
+      "manualPreviewUsable": true
+    }
+  ]
+}

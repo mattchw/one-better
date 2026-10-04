@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-04",
+  "fullBrowserRun": {
+    "passed": 152,
+    "total": 159,
+    "duration": "11.8m"
+  },
+  "affectedRerun": {
+    "passed": 45,
+    "total": 46,
+    "duration": "2.8m"
+  },
+  "finalAccountRun": {
+    "passed": 5,
+    "total": 5,
+    "duration": "9.6s"
+  },
+  "distinctPassingBrowserCases": 159,
+  "build": "pass",
+  "lint": "pass",
+  "typecheck": "pass",
+  "aiContractFilesUnchanged": 9,
+  "liveProviderCalls": 0,
+  "schemaMigrations": 0,
+  "manualQA": "desktop production synthetic walkthrough",
+  "nativeMobileQA": "interrupted by browser debugger synchronization failure; automated coverage passed",
+  "normalAppOrigin": "http://127.0.0.1:3100",
+  "qaCookieHost": "localhost",
+  "disposableQA": "stopped and isolated database removed",
+  "health": 200,
+  "signIn": 200
+}

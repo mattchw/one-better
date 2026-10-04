@@ -1,0 +1,714 @@
+{
+  "kind": "clean-restraint",
+  "provider": "anthropic",
+  "model": "claude-haiku-4-5-20251001",
+  "context": {
+    "contextType": "calendar",
+    "week": "2028-01-03",
+    "schemaVersion": 1,
+    "today": "2028-01-05",
+    "timezone": "Europe/London",
+    "planId": "d2779685-b2dc-4e42-b34b-0e260678e752",
+    "facts": [
+      {
+        "key": "action:305c22b3-97f4-414d-b7e3-55111bfb6850",
+        "label": "Action: Test the first-week onboarding flow",
+        "data": {
+          "title": "Test the first-week onboarding flow",
+          "doneWhen": "Five users finish onboarding without assistance.",
+          "estimateMinutes": 60,
+          "goalId": "e91cbb16-57a8-4b55-ad40-ae253700d31c"
+        },
+        "reference": {
+          "kind": "action",
+          "id": "305c22b3-97f4-414d-b7e3-55111bfb6850"
+        }
+      },
+      {
+        "key": "action:74d423a6-8d24-4c6f-bd80-92548a2b2df5",
+        "label": "Action: Complete one steady run",
+        "data": {
+          "title": "Complete one steady run",
+          "doneWhen": "Finish an easy run with time for recovery.",
+          "estimateMinutes": 60,
+          "goalId": "6f18105e-ac08-462c-bf8e-476433037f0f"
+        },
+        "reference": {
+          "kind": "action",
+          "id": "74d423a6-8d24-4c6f-bd80-92548a2b2df5"
+        }
+      },
+      {
+        "key": "action:9668f3aa-40a6-493b-a968-331725d50026",
+        "label": "Action: Draft the planning essay",
+        "data": {
+          "title": "Draft the planning essay",
+          "doneWhen": "A clear first draft with one concrete example exists.",
+          "estimateMinutes": 60,
+          "goalId": "096db106-2709-450f-a360-db1f84534da8"
+        },
+        "reference": {
+          "kind": "action",
+          "id": "9668f3aa-40a6-493b-a968-331725d50026"
+        }
+      },
+      {
+        "key": "availability",
+        "label": "Current availability is advisory",
+        "data": {
+          "status": "available",
+          "timezone": "Europe/London",
+          "hoursVersion": 1,
+          "windows": [
+            {
+              "weekday": 1,
+              "endMinute": 720,
+              "startMinute": 540
+            },
+            {
+              "weekday": 1,
+              "endMinute": 960,
+              "startMinute": 840
+            },
+            {
+              "weekday": 2,
+              "endMinute": 720,
+              "startMinute": 540
+            },
+            {
+              "weekday": 2,
+              "endMinute": 960,
+              "startMinute": 840
+            },
+            {
+              "weekday": 3,
+              "endMinute": 720,
+              "startMinute": 540
+            },
+            {
+              "weekday": 3,
+              "endMinute": 960,
+              "startMinute": 840
+            },
+            {
+              "weekday": 4,
+              "endMinute": 720,
+              "startMinute": 540
+            },
+            {
+              "weekday": 4,
+              "endMinute": 960,
+              "startMinute": 840
+            },
+            {
+              "weekday": 5,
+              "endMinute": 720,
+              "startMinute": 540
+            },
+            {
+              "weekday": 5,
+              "endMinute": 960,
+              "startMinute": 840
+            }
+          ],
+          "focusableMinutes": 1500,
+          "openMinutes": 1320,
+          "focusable": [
+            {
+              "start": "2028-01-03T09:00:00Z",
+              "end": "2028-01-03T12:00:00Z"
+            },
+            {
+              "start": "2028-01-03T14:00:00Z",
+              "end": "2028-01-03T16:00:00Z"
+            },
+            {
+              "start": "2028-01-04T09:00:00Z",
+              "end": "2028-01-04T12:00:00Z"
+            },
+            {
+              "start": "2028-01-04T14:00:00Z",
+              "end": "2028-01-04T16:00:00Z"
+            },
+            {
+              "start": "2028-01-05T09:00:00Z",
+              "end": "2028-01-05T12:00:00Z"
+            },
+            {
+              "start": "2028-01-05T14:00:00Z",
+              "end": "2028-01-05T16:00:00Z"
+            },
+            {
+              "start": "2028-01-06T09:00:00Z",
+              "end": "2028-01-06T12:00:00Z"
+            },
+            {
+              "start": "2028-01-06T14:00:00Z",
+              "end": "2028-01-06T16:00:00Z"
+            },
+            {
+              "start": "2028-01-07T09:00:00Z",
+              "end": "2028-01-07T12:00:00Z"
+            },
+            {
+              "start": "2028-01-07T14:00:00Z",
+              "end": "2028-01-07T16:00:00Z"
+            }
+          ],
+          "open": [
+            {
+              "start": "2028-01-03T09:00:00Z",
+              "end": "2028-01-03T12:00:00Z"
+            },
+            {
+              "start": "2028-01-03T14:00:00Z",
+              "end": "2028-01-03T16:00:00Z"
+            },
+            {
+              "start": "2028-01-04T09:00:00Z",
+              "end": "2028-01-04T12:00:00Z"
+            },
+            {
+              "start": "2028-01-04T14:00:00Z",
+              "end": "2028-01-04T16:00:00Z"
+            },
+            {
+              "start": "2028-01-05T09:00:00Z",
+              "end": "2028-01-05T10:00:00Z"
+            },
+            {
+              "start": "2028-01-05T11:00:00Z",
+              "end": "2028-01-05T12:00:00Z"
+            },
+            {
+              "start": "2028-01-05T14:00:00Z",
+              "end": "2028-01-05T16:00:00Z"
+            },
+            {
+              "start": "2028-01-06T10:00:00Z",
+              "end": "2028-01-06T12:00:00Z"
+            },
+            {
+              "start": "2028-01-06T14:00:00Z",
+              "end": "2028-01-06T16:00:00Z"
+            },
+            {
+              "start": "2028-01-07T09:00:00Z",
+              "end": "2028-01-07T12:00:00Z"
+            },
+            {
+              "start": "2028-01-07T15:00:00Z",
+              "end": "2028-01-07T16:00:00Z"
+            }
+          ],
+          "blocked": [
+            {
+              "start": "2028-01-05T10:00:00Z",
+              "end": "2028-01-05T11:00:00Z"
+            },
+            {
+              "start": "2028-01-06T09:00:00Z",
+              "end": "2028-01-06T10:00:00Z"
+            },
+            {
+              "start": "2028-01-07T14:00:00Z",
+              "end": "2028-01-07T15:00:00Z"
+            }
+          ],
+          "adjustments": []
+        },
+        "reference": null
+      },
+      {
+        "key": "commitment:38c1092b-ee17-46fe-831b-6c6e4382ec60",
+        "label": "Draft the planning essay: 60m committed, 60m scheduled",
+        "data": {
+          "actionId": "9668f3aa-40a6-493b-a968-331725d50026",
+          "goalId": "096db106-2709-450f-a360-db1f84534da8",
+          "title": "Draft the planning essay",
+          "budgetMinutes": 60,
+          "scheduledMinutes": 60,
+          "unscheduledMinutes": 0,
+          "recordedMilliseconds": 0,
+          "inEffectivePlan": true
+        },
+        "reference": {
+          "kind": "commitment",
+          "id": "38c1092b-ee17-46fe-831b-6c6e4382ec60"
+        }
+      },
+      {
+        "key": "commitment:d0c4e7c4-9813-445a-b29b-c7ffbeaf2c44",
+        "label": "Test the first-week onboarding flow: 60m committed, 60m scheduled",
+        "data": {
+          "actionId": "305c22b3-97f4-414d-b7e3-55111bfb6850",
+          "goalId": "e91cbb16-57a8-4b55-ad40-ae253700d31c",
+          "title": "Test the first-week onboarding flow",
+          "budgetMinutes": 60,
+          "scheduledMinutes": 60,
+          "unscheduledMinutes": 0,
+          "recordedMilliseconds": 3600000,
+          "inEffectivePlan": true
+        },
+        "reference": {
+          "kind": "commitment",
+          "id": "d0c4e7c4-9813-445a-b29b-c7ffbeaf2c44"
+        }
+      },
+      {
+        "key": "commitment:e2e44600-9a39-4e64-a704-846491a27be1",
+        "label": "Complete one steady run: 60m committed, 60m scheduled",
+        "data": {
+          "actionId": "74d423a6-8d24-4c6f-bd80-92548a2b2df5",
+          "goalId": "6f18105e-ac08-462c-bf8e-476433037f0f",
+          "title": "Complete one steady run",
+          "budgetMinutes": 60,
+          "scheduledMinutes": 60,
+          "unscheduledMinutes": 0,
+          "recordedMilliseconds": 3600000,
+          "inEffectivePlan": true
+        },
+        "reference": {
+          "kind": "commitment",
+          "id": "e2e44600-9a39-4e64-a704-846491a27be1"
+        }
+      },
+      {
+        "key": "execution",
+        "label": "Recorded Focus outcomes; no tracking does not mean no work",
+        "data": {
+          "outcomes": [
+            {
+              "outcome": "completed",
+              "count": 2
+            }
+          ],
+          "recordedMilliseconds": 7200000
+        },
+        "reference": null
+      },
+      {
+        "key": "focus_cycle:de3f3429-8ec4-462a-b81d-283698b12b3b",
+        "label": "Current Focus: Make the weekly loop useful and sustainable",
+        "data": {
+          "title": "Make the weekly loop useful and sustainable",
+          "intent": "Ship a small useful beta, maintain recovery, and share one concrete lesson. Preserve breathing room rather than filling every open hour.",
+          "startDate": "2027-12-20",
+          "endDate": "2028-01-31",
+          "version": 2,
+          "goalIds": [
+            "096db106-2709-450f-a360-db1f84534da8",
+            "6f18105e-ac08-462c-bf8e-476433037f0f",
+            "e91cbb16-57a8-4b55-ad40-ae253700d31c"
+          ]
+        },
+        "reference": {
+          "kind": "focus_cycle",
+          "id": "de3f3429-8ec4-462a-b81d-283698b12b3b"
+        }
+      },
+      {
+        "key": "goal:096db106-2709-450f-a360-db1f84534da8",
+        "label": "Current Focus includes Publish one practical essay each week",
+        "data": {
+          "title": "Publish one practical essay each week",
+          "outcome": "Share one useful lesson from building the planning loop.",
+          "version": 1,
+          "archived": false,
+          "currentFocus": true
+        },
+        "reference": {
+          "kind": "goal",
+          "id": "096db106-2709-450f-a360-db1f84534da8"
+        }
+      },
+      {
+        "key": "goal:6f18105e-ac08-462c-bf8e-476433037f0f",
+        "label": "Current Focus includes Maintain a sustainable running rhythm",
+        "data": {
+          "title": "Maintain a sustainable running rhythm",
+          "outcome": "Run consistently while protecting recovery.",
+          "version": 1,
+          "archived": false,
+          "currentFocus": true
+        },
+        "reference": {
+          "kind": "goal",
+          "id": "6f18105e-ac08-462c-bf8e-476433037f0f"
+        }
+      },
+      {
+        "key": "goal:e91cbb16-57a8-4b55-ad40-ae253700d31c",
+        "label": "Current Focus includes Ship a small trustworthy One Better beta",
+        "data": {
+          "title": "Ship a small trustworthy One Better beta",
+          "outcome": "Ten people can independently plan, focus and review a useful week.",
+          "version": 1,
+          "archived": false,
+          "currentFocus": true
+        },
+        "reference": {
+          "kind": "goal",
+          "id": "e91cbb16-57a8-4b55-ad40-ae253700d31c"
+        }
+      },
+      {
+        "key": "open:2028-01-03:0",
+        "label": "2028-01-03 09:00–12:00 Europe/London: Calendar-open inside Focusable Hours",
+        "data": {
+          "start": "2028-01-03T09:00:00Z",
+          "end": "2028-01-03T12:00:00Z",
+          "status": "available"
+        },
+        "reference": null
+      },
+      {
+        "key": "open:2028-01-03:1",
+        "label": "2028-01-03 14:00–16:00 Europe/London: Calendar-open inside Focusable Hours",
+        "data": {
+          "start": "2028-01-03T14:00:00Z",
+          "end": "2028-01-03T16:00:00Z",
+          "status": "available"
+        },
+        "reference": null
+      },
+      {
+        "key": "open:2028-01-04:0",
+        "label": "2028-01-04 09:00–12:00 Europe/London: Calendar-open inside Focusable Hours",
+        "data": {
+          "start": "2028-01-04T09:00:00Z",
+          "end": "2028-01-04T12:00:00Z",
+          "status": "available"
+        },
+        "reference": null
+      },
+      {
+        "key": "open:2028-01-04:1",
+        "label": "2028-01-04 14:00–16:00 Europe/London: Calendar-open inside Focusable Hours",
+        "data": {
+          "start": "2028-01-04T14:00:00Z",
+          "end": "2028-01-04T16:00:00Z",
+          "status": "available"
+        },
+        "reference": null
+      },
+      {
+        "key": "open:2028-01-05:0",
+        "label": "2028-01-05 09:00–10:00 Europe/London: Calendar-open inside Focusable Hours",
+        "data": {
+          "start": "2028-01-05T09:00:00Z",
+          "end": "2028-01-05T10:00:00Z",
+          "status": "available"
+        },
+        "reference": null
+      },
+      {
+        "key": "open:2028-01-05:1",
+        "label": "2028-01-05 11:00–12:00 Europe/London: Calendar-open inside Focusable Hours",
+        "data": {
+          "start": "2028-01-05T11:00:00Z",
+          "end": "2028-01-05T12:00:00Z",
+          "status": "available"
+        },
+        "reference": null
+      },
+      {
+        "key": "open:2028-01-05:2",
+        "label": "2028-01-05 14:00–16:00 Europe/London: Calendar-open inside Focusable Hours",
+        "data": {
+          "start": "2028-01-05T14:00:00Z",
+          "end": "2028-01-05T16:00:00Z",
+          "status": "available"
+        },
+        "reference": null
+      },
+      {
+        "key": "open:2028-01-06:0",
+        "label": "2028-01-06 10:00–12:00 Europe/London: Calendar-open inside Focusable Hours",
+        "data": {
+          "start": "2028-01-06T10:00:00Z",
+          "end": "2028-01-06T12:00:00Z",
+          "status": "available"
+        },
+        "reference": null
+      },
+      {
+        "key": "open:2028-01-06:1",
+        "label": "2028-01-06 14:00–16:00 Europe/London: Calendar-open inside Focusable Hours",
+        "data": {
+          "start": "2028-01-06T14:00:00Z",
+          "end": "2028-01-06T16:00:00Z",
+          "status": "available"
+        },
+        "reference": null
+      },
+      {
+        "key": "open:2028-01-07:0",
+        "label": "2028-01-07 09:00–12:00 Europe/London: Calendar-open inside Focusable Hours",
+        "data": {
+          "start": "2028-01-07T09:00:00Z",
+          "end": "2028-01-07T12:00:00Z",
+          "status": "available"
+        },
+        "reference": null
+      },
+      {
+        "key": "open:2028-01-07:1",
+        "label": "2028-01-07 15:00–16:00 Europe/London: Calendar-open inside Focusable Hours",
+        "data": {
+          "start": "2028-01-07T15:00:00Z",
+          "end": "2028-01-07T16:00:00Z",
+          "status": "available"
+        },
+        "reference": null
+      },
+      {
+        "key": "plan:d2779685-b2dc-4e42-b34b-0e260678e752",
+        "label": "Week 2028-01-03: committed plan",
+        "data": {
+          "state": "committed",
+          "version": 3,
+          "timezone": "Europe/London",
+          "original": {
+            "usableMinutes": 540,
+            "totalMinutes": 180,
+            "remainingMinutes": 360
+          },
+          "current": {
+            "usableMinutes": 540,
+            "totalMinutes": 180,
+            "remainingMinutes": 360
+          }
+        },
+        "reference": {
+          "kind": "plan",
+          "id": "d2779685-b2dc-4e42-b34b-0e260678e752"
+        }
+      },
+      {
+        "key": "source:305c22b3-97f4-414d-b7e3-55111bfb6850",
+        "label": "Test the first-week onboarding flow: eligible for deliberate planning",
+        "data": {
+          "source": {
+            "actionVersion": 1,
+            "goalId": "e91cbb16-57a8-4b55-ad40-ae253700d31c",
+            "goalVersion": 1,
+            "milestoneId": null,
+            "milestoneVersion": null
+          },
+          "eligible": true,
+          "title": "Test the first-week onboarding flow",
+          "doneWhen": "Five users finish onboarding without assistance.",
+          "estimateMinutes": 60
+        },
+        "reference": null
+      },
+      {
+        "key": "source:74d423a6-8d24-4c6f-bd80-92548a2b2df5",
+        "label": "Complete one steady run: eligible for deliberate planning",
+        "data": {
+          "source": {
+            "actionVersion": 1,
+            "goalId": "6f18105e-ac08-462c-bf8e-476433037f0f",
+            "goalVersion": 1,
+            "milestoneId": null,
+            "milestoneVersion": null
+          },
+          "eligible": true,
+          "title": "Complete one steady run",
+          "doneWhen": "Finish an easy run with time for recovery.",
+          "estimateMinutes": 60
+        },
+        "reference": null
+      },
+      {
+        "key": "source:9668f3aa-40a6-493b-a968-331725d50026",
+        "label": "Draft the planning essay: eligible for deliberate planning",
+        "data": {
+          "source": {
+            "actionVersion": 1,
+            "goalId": "096db106-2709-450f-a360-db1f84534da8",
+            "goalVersion": 1,
+            "milestoneId": null,
+            "milestoneVersion": null
+          },
+          "eligible": true,
+          "title": "Draft the planning essay",
+          "doneWhen": "A clear first draft with one concrete example exists.",
+          "estimateMinutes": 60
+        },
+        "reference": null
+      },
+      {
+        "key": "time_block:131f67b9-4dde-4ad4-8b42-d42aa9a9bd9c",
+        "label": "Complete one steady run: planned block 2028-01-04T09:00:00.000Z–2028-01-04T10:00:00.000Z",
+        "data": {
+          "commitmentId": "e2e44600-9a39-4e64-a704-846491a27be1",
+          "state": "planned",
+          "start": "2028-01-04T09:00:00.000Z",
+          "end": "2028-01-04T10:00:00.000Z",
+          "version": 1
+        },
+        "reference": {
+          "kind": "time_block",
+          "id": "131f67b9-4dde-4ad4-8b42-d42aa9a9bd9c"
+        }
+      },
+      {
+        "key": "time_block:6d0d15ff-05a2-44a5-a678-a47b96b3b29f",
+        "label": "Test the first-week onboarding flow: planned block 2028-01-03T09:00:00.000Z–2028-01-03T10:00:00.000Z",
+        "data": {
+          "commitmentId": "d0c4e7c4-9813-445a-b29b-c7ffbeaf2c44",
+          "state": "planned",
+          "start": "2028-01-03T09:00:00.000Z",
+          "end": "2028-01-03T10:00:00.000Z",
+          "version": 1
+        },
+        "reference": {
+          "kind": "time_block",
+          "id": "6d0d15ff-05a2-44a5-a678-a47b96b3b29f"
+        }
+      },
+      {
+        "key": "time_block:77d59e0b-690b-4edd-b91b-dede8a31aa8f",
+        "label": "Draft the planning essay: planned block 2028-01-06T14:00:00.000Z–2028-01-06T15:00:00.000Z",
+        "data": {
+          "commitmentId": "38c1092b-ee17-46fe-831b-6c6e4382ec60",
+          "state": "planned",
+          "start": "2028-01-06T14:00:00.000Z",
+          "end": "2028-01-06T15:00:00.000Z",
+          "version": 1
+        },
+        "reference": {
+          "kind": "time_block",
+          "id": "77d59e0b-690b-4edd-b91b-dede8a31aa8f"
+        }
+      }
+    ]
+  },
+  "contextFingerprint": "34b919cbc32df6f0201ed80bd0e121612671d879c57726724d8d3ef1bccd4ecf",
+  "promptHash": "6fdda7fa5f038861c29696de40a60e4cb3acb01a7fd3aad0e0beb47f1a2b02ef",
+  "schemaHash": "9b297a8bc080591b30f8ed2afadd71f88e544278b96e769815affc196da88421",
+  "run": {
+    "id": "8a8ede67-4631-4b4a-9d6f-b550ef8160a8",
+    "contextType": "calendar",
+    "week": "2028-01-03",
+    "fingerprint": "34b919cbc32df6f0201ed80bd0e121612671d879c57726724d8d3ef1bccd4ecf",
+    "provider": "anthropic",
+    "model": "claude-haiku-4-5-20251001",
+    "generatedAt": "2028-01-05T08:00:00.000Z",
+    "status": "succeeded",
+    "recommendations": [
+      {
+        "href": null,
+        "evidence": [
+          {
+            "key": "commitment:d0c4e7c4-9813-445a-b29b-c7ffbeaf2c44",
+            "label": "Test the first-week onboarding flow: 60m committed, 60m scheduled"
+          },
+          {
+            "key": "commitment:e2e44600-9a39-4e64-a704-846491a27be1",
+            "label": "Complete one steady run: 60m committed, 60m scheduled"
+          },
+          {
+            "key": "execution",
+            "label": "Recorded Focus outcomes; no tracking does not mean no work"
+          }
+        ],
+        "proposal": {
+          "type": "observation",
+          "title": "Two commitments already show recorded completion this week",
+          "explanation": "Test the first-week onboarding flow and Complete one steady run both have 60 minutes of recorded focus time each. The onboarding test and run are complete; only the planning essay draft remains unscheduled work toward your current focus cycle.",
+          "evidenceRefs": [
+            "commitment:d0c4e7c4-9813-445a-b29b-c7ffbeaf2c44",
+            "commitment:e2e44600-9a39-4e64-a704-846491a27be1",
+            "execution"
+          ]
+        },
+        "placement": null,
+        "unavailable": null
+      },
+      {
+        "href": null,
+        "evidence": [
+          {
+            "key": "commitment:38c1092b-ee17-46fe-831b-6c6e4382ec60",
+            "label": "Draft the planning essay: 60m committed, 60m scheduled"
+          },
+          {
+            "key": "action:9668f3aa-40a6-493b-a968-331725d50026",
+            "label": "Action: Draft the planning essay"
+          },
+          {
+            "key": "open:2028-01-03:0",
+            "label": "2028-01-03 09:00–12:00 Europe/London: Calendar-open inside Focusable Hours"
+          }
+        ],
+        "proposal": {
+          "type": "schedule_time",
+          "title": "Schedule Draft the planning essay to preserve momentum",
+          "reason": "One clear block on Monday morning completes your three-goal week. The essay draft (your publication goal) is currently scheduled only for Saturday; an earlier slot reduces end-of-week pressure and aligns with your cycle intent to ship and share weekly.",
+          "localDate": "2028-01-03",
+          "commitmentId": "38c1092b-ee17-46fe-831b-6c6e4382ec60",
+          "endLocalTime": "11:00",
+          "evidenceRefs": [
+            "commitment:38c1092b-ee17-46fe-831b-6c6e4382ec60",
+            "action:9668f3aa-40a6-493b-a968-331725d50026",
+            "open:2028-01-03:0"
+          ],
+          "startLocalTime": "10:00"
+        },
+        "placement": null,
+        "unavailable": "Choose a future start time. Past schedule history cannot be created or rewritten."
+      }
+    ],
+    "failure": null,
+    "usage": {
+      "inputTokens": 6054,
+      "outputTokens": 343,
+      "cachedInputTokens": 0
+    },
+    "latencyMs": 5559,
+    "stale": false,
+    "interrupted": false
+  },
+  "rawApplicationOutput": {
+    "recommendations": [
+      {
+        "type": "observation",
+        "title": "Two commitments already show recorded completion this week",
+        "evidenceRefs": [
+          "commitment:d0c4e7c4-9813-445a-b29b-c7ffbeaf2c44",
+          "commitment:e2e44600-9a39-4e64-a704-846491a27be1",
+          "execution"
+        ],
+        "explanation": "Test the first-week onboarding flow and Complete one steady run both have 60 minutes of recorded focus time each. The onboarding test and run are complete; only the planning essay draft remains unscheduled work toward your current focus cycle."
+      },
+      {
+        "type": "schedule_time",
+        "title": "Schedule Draft the planning essay to preserve momentum",
+        "evidenceRefs": [
+          "commitment:38c1092b-ee17-46fe-831b-6c6e4382ec60",
+          "action:9668f3aa-40a6-493b-a968-331725d50026",
+          "open:2028-01-03:0"
+        ],
+        "commitmentId": "38c1092b-ee17-46fe-831b-6c6e4382ec60",
+        "localDate": "2028-01-03",
+        "startLocalTime": "10:00",
+        "endLocalTime": "11:00",
+        "reason": "One clear block on Monday morning completes your three-goal week. The essay draft (your publication goal) is currently scheduled only for Saturday; an earlier slot reduces end-of-week pressure and aligns with your cycle intent to ship and share weekly."
+      }
+    ]
+  },
+  "schemaAccepted": true,
+  "referencesGrounded": true,
+  "placementChecks": [
+    {
+      "index": 1,
+      "legal": false,
+      "unavailable": "Choose a future start time. Past schedule history cannot be created or rewritten."
+    }
+  ],
+  "upstreamUnchanged": true,
+  "explicitLiveRequests": 1
+}

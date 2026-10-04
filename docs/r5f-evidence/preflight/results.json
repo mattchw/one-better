@@ -1,0 +1,10 @@
+{
+  "live": false,
+  "calls": 0,
+  "requestTime": "2028-01-12T08:00:00Z",
+  "promptHash": "f544d1e8b98bf49939a788db841a67122d4d4d236b7c341c509f93a85a21aaa5",
+  "schemaHash": "d235f29c146b1e72388c2218b6f48306751205dea99a4080a28ee0d34cdd2987",
+  "providers": [],
+  "usageInterpretation": "OpenAI OAuth tokens represent ChatGPT plan usage, not a dollar API bill. Anthropic token counts represent API-key usage; no local billing assertion.",
+  "observations": []
+}

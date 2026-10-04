@@ -1,0 +1,338 @@
+{
+  "live": true,
+  "calls": 5,
+  "model": "claude-haiku-4-5-20251001",
+  "endpoint": "https://api.anthropic.com/v1/messages",
+  "configuration": {
+    "authentication": "server-side development API key",
+    "maxOutputTokens": 4096,
+    "sdkTimeoutMs": 25000,
+    "applicationTimeoutMs": 30000,
+    "maxRetries": 0,
+    "structuredOutput": "output_config.format JSON schema",
+    "promptHash": "1daf28247fe73010eb5e3d5d8743f3921d70f12a0c8789c7b27a85976fbab173",
+    "schemaHash": "ba4a0d75c79013fcf568170512d23fa8b4e8a054400e35f9ae46690df08d4d83"
+  },
+  "observations": [
+    {
+      "kind": "calendar",
+      "run": {
+        "id": "0c9204dd-2213-4b77-8bf6-5ba43ac7c753",
+        "contextType": "calendar",
+        "week": "2028-01-03",
+        "fingerprint": "280b7b4365649a718da0f57a130012206392c2024a86ef778dcbdb9b427b7c28",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [
+          {
+            "href": null,
+            "title": "Test the first-week onboarding flow",
+            "evidence": [
+              {
+                "key": "commitment:e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+                "label": "Test the first-week onboarding flow: 240m committed, 45m scheduled, 195m still unscheduled, 30m recorded Focus"
+              },
+              {
+                "key": "goal:76155cc6-97ef-43a7-8faf-e8536d3c9c31",
+                "label": "Current Focus includes Ship a small trustworthy One Better beta"
+              },
+              {
+                "key": "schedule_candidate_85b601d1de0b48ab",
+                "label": "2028-01-05 09:00–10:00 Europe/London: 60m Calendar-open inside Focusable Hours; 195m still unscheduled"
+              }
+            ],
+            "proposal": {
+              "type": "schedule_candidate",
+              "signalId": "signal_unscheduled_e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+              "rationale": "Scheduling a block of deliberately chosen work on onboarding testing can move this toward progress while preserving room for the essay and recovery. This addresses the current focus intent to ship a beta with substance.",
+              "candidateId": "schedule_candidate_85b601d1de0b48ab",
+              "evidenceRefs": [
+                "commitment:e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+                "goal:76155cc6-97ef-43a7-8faf-e8536d3c9c31"
+              ]
+            },
+            "candidate": {
+              "id": "schedule_candidate_85b601d1de0b48ab",
+              "end": "2028-01-05T10:00:00Z",
+              "start": "2028-01-05T09:00:00Z",
+              "localDate": "2028-01-05",
+              "commitmentId": "e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+              "endLocalTime": "10:00",
+              "calendarStatus": "available",
+              "focusableHours": "inside",
+              "startLocalTime": "09:00",
+              "durationMinutes": 60,
+              "remainingUnscheduledMinutes": 195
+            },
+            "placement": {
+              "interval": {
+                "end": "2028-01-05T10:00:00Z",
+                "start": "2028-01-05T09:00:00Z"
+              },
+              "fetchedAt": "2028-01-05T08:00:00.000Z",
+              "reviewKey": "3d56ed8f88349305deb5838679e5bcd3ad91a8f5b252baf322c0c157199dff16",
+              "adjustments": [],
+              "planVersion": 3,
+              "busyConflict": false,
+              "outsideHours": false,
+              "budgetMinutes": 240,
+              "calendarStatus": "fresh",
+              "hoursConfigured": true,
+              "resultingMinutes": 105,
+              "scheduledMinutes": 45
+            },
+            "unavailable": null
+          }
+        ],
+        "failure": null,
+        "usage": {
+          "inputTokens": 3893,
+          "outputTokens": 181,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 6472,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "recommendations": [
+          {
+            "type": "schedule_candidate",
+            "signalId": "signal_unscheduled_e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+            "rationale": "Scheduling a block of deliberately chosen work on onboarding testing can move this toward progress while preserving room for the essay and recovery. This addresses the current focus intent to ship a beta with substance.",
+            "evidenceRefs": [
+              "commitment:e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+              "goal:76155cc6-97ef-43a7-8faf-e8536d3c9c31"
+            ],
+            "candidateId": "schedule_candidate_85b601d1de0b48ab"
+          }
+        ]
+      },
+      "contextFingerprint": "280b7b4365649a718da0f57a130012206392c2024a86ef778dcbdb9b427b7c28",
+      "schemaAccepted": true,
+      "grounded": true,
+      "rationalesAllowed": true,
+      "placements": [
+        {
+          "index": 0,
+          "review": {
+            "interval": {
+              "start": "2028-01-05T09:00:00Z",
+              "end": "2028-01-05T10:00:00Z"
+            },
+            "adjustments": [],
+            "outsideHours": false,
+            "hoursConfigured": true,
+            "busyConflict": false,
+            "calendarStatus": "fresh",
+            "fetchedAt": "2028-01-05T08:00:00.000Z",
+            "budgetMinutes": 240,
+            "scheduledMinutes": 45,
+            "resultingMinutes": 105,
+            "planVersion": 3,
+            "reviewKey": "3d56ed8f88349305deb5838679e5bcd3ad91a8f5b252baf322c0c157199dff16"
+          },
+          "editor": {
+            "commitmentId": "e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+            "snapshot": {
+              "goal": {
+                "id": "76155cc6-97ef-43a7-8faf-e8536d3c9c31",
+                "title": "Ship a small trustworthy One Better beta",
+                "outcome": "Ten people can independently plan, focus and review a useful week."
+              },
+              "action": {
+                "id": "03125ca8-8327-45a0-8af7-b0b0d24df30c",
+                "title": "Test the first-week onboarding flow",
+                "doneWhen": "Five users finish onboarding without assistance.",
+                "estimateMinutes": 240
+              },
+              "milestone": null
+            },
+            "prefill": {
+              "date": "2028-01-05",
+              "startTime": "09:00",
+              "endTime": "10:00"
+            }
+          },
+          "legal": true
+        }
+      ],
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "approximateTextCostUSD": 0.004798
+    },
+    {
+      "kind": "restrained",
+      "run": {
+        "id": "c150af8d-3058-461e-88b7-197789f9e4e2",
+        "contextType": "calendar",
+        "week": "2028-01-03",
+        "fingerprint": "010de67b6cf1ba5528b97c2f85837a3624533f7521fe4d6b25e55a78a77ad8e4",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [],
+        "failure": null,
+        "usage": {
+          "inputTokens": 3145,
+          "outputTokens": 8,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 1463,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "recommendations": []
+      },
+      "contextFingerprint": "010de67b6cf1ba5528b97c2f85837a3624533f7521fe4d6b25e55a78a77ad8e4",
+      "schemaAccepted": true,
+      "grounded": true,
+      "rationalesAllowed": true,
+      "placements": [],
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "approximateTextCostUSD": 0.003185
+    },
+    {
+      "kind": "review",
+      "run": {
+        "id": "2c55dca2-1992-4877-a282-ccdd41d7da95",
+        "contextType": "weekly_review",
+        "week": "2027-12-27",
+        "fingerprint": "0cf2af0dda5f84f5b6763f53826f7245eaaaf0ce817c509c20161c079149a50d",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "invalid_output",
+        "usage": {
+          "inputTokens": 3002,
+          "outputTokens": 269,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 4559,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "recommendations": [
+          {
+            "type": "observation",
+            "signalId": "signal_execution_difference_7f3851b8-d724-40d5-b683-710626c516d6",
+            "rationale": "Half the committed time remains unscheduled. The finalized reflection noted support interruptions and chose to carry the work forward with a reduced budget, signaling intent to continue. Scheduling the remaining half deliberately can convert carry momentum into concrete progress.",
+            "evidenceRefs": [
+              "commitment:7f3851b8-d724-40d5-b683-710626c516d6",
+              "review_summary"
+            ]
+          },
+          {
+            "type": "observation",
+            "signalId": "signal_focus_without_commitment_09b0f2d9-63bf-4c36-892e-da19df06a522",
+            "rationale": "The essay goal is active but carries no committed time. The focus intent emphasizes sharing one concrete lesson from building the planning loop. Confirming whether this week includes dedicated time for that work—or deferring it—clarifies the weekly rhythm.",
+            "evidenceRefs": [
+              "goal:09b0f2d9-63bf-4c36-892e-da19df06a522"
+            ]
+          }
+        ]
+      },
+      "contextFingerprint": "0cf2af0dda5f84f5b6763f53826f7245eaaaf0ce817c509c20161c079149a50d",
+      "schemaAccepted": true,
+      "grounded": false,
+      "rationalesAllowed": false,
+      "placements": [],
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "approximateTextCostUSD": 0.004347
+    },
+    {
+      "kind": "staleness",
+      "oldRunId": "0c9204dd-2213-4b77-8bf6-5ba43ac7c753",
+      "staleAfterOrdinaryBlockCreation": true,
+      "oldPreviewRejected": true,
+      "newUnscheduledMinutes": 135
+    },
+    {
+      "kind": "regenerate",
+      "run": {
+        "id": "90453d66-5efd-443d-a7ba-2a2036b650ad",
+        "contextType": "calendar",
+        "week": "2028-01-03",
+        "fingerprint": "9244cb032b6e2f49e0b1becad7fba3681ea85ef61fd631d38222a3a5f74e908b",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "invalid_output",
+        "usage": {
+          "inputTokens": 3892,
+          "outputTokens": 175,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 2227,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "recommendations": [
+          {
+            "type": "schedule_candidate",
+            "signalId": "signal_unscheduled_e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+            "rationale": "Deliberately scheduling unfinished work protects a focused block within available hours and moves toward progress on a committed beta goal while preserving flexibility for the remainder of the week.",
+            "evidenceRefs": [
+              "commitment:e1ca6a91-8ffb-4112-bbc7-73136e7cae7a",
+              "goal:76155cc6-97ef-43a7-8faf-e8536d3c9c31"
+            ],
+            "candidateId": "schedule_candidate_85b601d1de0b48ab"
+          }
+        ]
+      },
+      "contextFingerprint": "9244cb032b6e2f49e0b1becad7fba3681ea85ef61fd631d38222a3a5f74e908b",
+      "schemaAccepted": true,
+      "grounded": false,
+      "rationalesAllowed": false,
+      "placements": [],
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "approximateTextCostUSD": 0.004767
+    },
+    {
+      "kind": "failure",
+      "run": {
+        "id": "7382de3e-f490-4f39-8d2c-326afa9a0f76",
+        "contextType": "calendar",
+        "week": "2028-01-03",
+        "fingerprint": "9244cb032b6e2f49e0b1becad7fba3681ea85ef61fd631d38222a3a5f74e908b",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "authentication",
+        "usage": null,
+        "latencyMs": 219,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": null,
+      "contextFingerprint": "9244cb032b6e2f49e0b1becad7fba3681ea85ef61fd631d38222a3a5f74e908b",
+      "schemaAccepted": false,
+      "grounded": null,
+      "rationalesAllowed": null,
+      "placements": [],
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "approximateTextCostUSD": null
+    },
+    {
+      "kind": "failure_isolation",
+      "corePlanningReadable": true,
+      "manualPreviewUsable": true
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "name": "one-better",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.14.0 <25"
+  },
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1 --port 3100",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1 --port 3100",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:db": "tsx --env-file=.env.test scripts/test-db.ts",
+    "test:e2e": "tsx --env-file=.env.test scripts/test-e2e.ts",
+    "test:restart": "tsx --env-file=.env.test scripts/prove-restart.ts && tsx --env-file=.env.test scripts/prove-calendar-restart.ts && tsx --env-file=.env.test scripts/prove-scheduling-restart.ts && tsx --env-file=.env.test scripts/prove-focus-restart.ts && tsx --env-file=.env.test scripts/prove-review-restart.ts && tsx --env-file=.env.test scripts/prove-weekly-review-restart.ts && tsx --env-file=.env.test scripts/prove-coaching-restart.ts && tsx --env-file=.env.test scripts/prove-chatgpt-restart.ts && tsx --env-file=.env.test scripts/prove-google-auth-restart.ts",
+    "docs:check": "node scripts/check-docs.mjs",
+    "db:up": "docker compose up -d --wait",
+    "db:down": "docker compose down",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx --env-file=.env.local scripts/migrate.ts",
+    "db:provision": "tsx --env-file=.env.local scripts/provision-user.ts",
+    "check": "npm run docs:check && npm run lint && npm run typecheck && npm test && npm run test:db && npm run test:e2e && npm run build && npm run test:restart",
+    "qa:r5g": "node --import tsx scripts/r5g-review-experiment.ts --serve",
+    "test:r5g": "node --import tsx scripts/test-r5g.ts"
+  },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "0.25.12"
+    }
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.131.0",
+    "@fullcalendar/react": "7.1.0",
+    "@js-temporal/polyfill": "0.5.1",
+    "better-auth": "1.7.7",
+    "drizzle-orm": "0.45.3",
+    "google-auth-library": "11.1.0",
+    "jose": "6.2.12",
+    "next": "16.3.8",
+    "openai": "7.27.0",
+    "pg": "8.23.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1",
+    "temporal-polyfill": "1.0.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "26.6.4",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "dotenv": "18.0.5",
+    "drizzle-kit": "0.31.11",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.8",
+    "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "5.0.3"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "contextType": "weekly_review",
+  "week": "2028-01-03",
+  "schemaVersion": 3,
+  "stateFingerprint": "284aea6155e7495d3fc910c130e9b6715d9294dfb95953610c5a6696abb0baa6",
+  "requestTime": "2028-01-12T08:00:00Z",
+  "today": "2028-01-12",
+  "timezone": "Europe/London",
+  "planId": "ebe2438f-90ed-4cc4-8976-2e3a5b3b99f8",
+  "facts": [
+    {
+      "key": "daily_reflection:2028-01-05",
+      "label": "Finalized daily reflection: 2028-01-05",
+      "data": {
+        "date": "2028-01-05",
+        "note": "An ordinary record of deliberately selected work.",
+        "finalizedAt": "2028-01-06T08:00:00.000Z"
+      },
+      "reference": null
+    },
+    {
+      "key": "following:fcf1fdc9-f660-441e-a40f-773e6f66bbce",
+      "label": "Following week 2028-01-10: committed plan; 60m selected and 60m scheduled for Write a practical essay",
+      "data": {
+        "week": "2028-01-10",
+        "state": "committed",
+        "budgetMinutes": 60,
+        "scheduledMinutes": 60,
+        "carryIntentMinutes": null
+      },
+      "reference": null
+    },
+    {
+      "key": "review_summary",
+      "label": "Week 2028-01-03: 60m baseline commitments → 60m final commitments; 60m scheduled; 60m recorded Focus",
+      "data": {
+        "original": {
+          "usableMinutes": 540,
+          "totalMinutes": 60,
+          "remainingMinutes": 480
+        },
+        "final": {
+          "usableMinutes": 540,
+          "totalMinutes": 60,
+          "remainingMinutes": 480
+        }
+      },
+      "reference": null
+    },
+    {
+      "key": "weekly_reflection",
+      "label": "Finalized weekly reflection",
+      "data": {
+        "note": "Reflect on the recorded week and preserve breathing room.",
+        "finalizedAt": "2028-01-10T09:00:00.000Z"
+      },
+      "reference": null
+    }
+  ],
+  "signals": [],
+  "scheduleCandidates": [],
+  "reviewCandidates": []
+}

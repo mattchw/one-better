@@ -1,0 +1,12 @@
+import { randomUUID } from "node:crypto";
+import type { Action } from "../src/modules/actions/domain";
+import type { Goal } from "../src/modules/goals/domain";
+import type { Milestone } from "../src/modules/milestones/domain";
+import { planningSource, type OwnedPlan } from "../src/modules/planning/domain";
+export const now = "2026-10-02T12:00:00.000Z";
+export const parent: Goal = { id: randomUUID(), title: "One Better", outcome: "A useful weekly loop", version: 1, createdAt: now, updatedAt: now, archivedAt: null };
+export const checkpoint: Milestone = { id: randomUUID(), goalId: parent.id, title: "Planning loop usable", successCondition: "One real week planned", state: "active", version: 1, createdAt: now, updatedAt: now, completedAt: null, archivedAt: null, evidence: null };
+export const action: Action = { id: randomUUID(), goalId: parent.id, milestoneId: checkpoint.id, title: "Build capacity editor", doneWhen: "Whole-minute budgets save", estimateMinutes: 120, state: "open", version: 1, createdAt: now, updatedAt: now, completedAt: null, archivedAt: null };
+export const source = planningSource(action, parent, checkpoint);
+export const plan: OwnedPlan = { id: randomUUID(), ownerId: "owner", weekStartDate: "2026-09-28", timezone: "Europe/London", state: "draft", provisionalCapacityMinutes: 720, reserveMinutes: 180, version: 2, createdAt: now, updatedAt: now, committedAt: null, commitments: [{ id: randomUUID(), planId: "", actionId: action.id, budgetMinutes: 180, source: source.source, snapshot: null, createdAt: now, updatedAt: now }] };
+plan.commitments[0].planId = plan.id;

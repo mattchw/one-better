@@ -1,0 +1,153 @@
+{
+  "contextType": "weekly_review",
+  "week": "2028-01-03",
+  "schemaVersion": 3,
+  "stateFingerprint": "58f206217ccd6814402a76386760b30e274579a18d0d51fdeff9b39b8ffe84fd",
+  "requestTime": "2028-01-12T08:00:00Z",
+  "today": "2028-01-12",
+  "timezone": "Europe/London",
+  "planId": "a99774f3-91fc-4f0e-b50b-539fa26fac97",
+  "facts": [
+    {
+      "key": "daily_reflection:2028-01-05",
+      "label": "Finalized daily reflection: 2028-01-05",
+      "data": {
+        "date": "2028-01-05",
+        "note": "Production issue interrupted the planned work.",
+        "finalizedAt": "2028-01-06T08:00:00.000Z"
+      },
+      "reference": null
+    },
+    {
+      "key": "following:99579d8f-4a00-401d-9b3a-487cc1677d90",
+      "label": "Following week 2028-01-10: no saved plan\nHuman Carry intent: 90m; selection in the next plan is recorded separately.",
+      "data": {
+        "week": "2028-01-10",
+        "state": "absent",
+        "budgetMinutes": 0,
+        "scheduledMinutes": 0,
+        "carryIntentMinutes": 90
+      },
+      "reference": null
+    },
+    {
+      "key": "reflection_context:daily_reflection:2028-01-05",
+      "label": "Finalized daily reflection: 2028-01-05: Production issue interrupted the planned work.",
+      "data": {
+        "reflectionKey": "daily_reflection:2028-01-05",
+        "note": "Production issue interrupted the planned work."
+      },
+      "reference": null
+    },
+    {
+      "key": "reflection_context:weekly_reflection",
+      "label": "Finalized weekly reflection: Support changed the plan; distinguish protected time from recorded focus.",
+      "data": {
+        "reflectionKey": "weekly_reflection",
+        "note": "Support changed the plan; distinguish protected time from recorded focus."
+      },
+      "reference": null
+    },
+    {
+      "key": "review_amendment:4cf7e85d-7e80-48d4-8b87-0f67593e4317:3dcfdce2-c77e-4be9-94d8-1ff1d35b086f",
+      "label": "Plan amended 2028-01-05T08:00:00.000Z: capacity 720m → 540m; this Action budget 240m → 240m",
+      "data": {
+        "date": "2028-01-05T08:00:00.000Z",
+        "capacityBefore": 720,
+        "capacityAfter": 540
+      },
+      "reference": null
+    },
+    {
+      "key": "review_commitment:3dcfdce2-c77e-4be9-94d8-1ff1d35b086f",
+      "label": "Ship guided first-week planning: 240m committed; 60m scheduled; 30m recorded Focus in 2028-01-03",
+      "data": {
+        "budgetMinutes": 240,
+        "scheduledMinutes": 60,
+        "recordedMinutes": 30,
+        "actionId": "99579d8f-4a00-401d-9b3a-487cc1677d90",
+        "goalId": "3ba8bd2c-152b-4578-acc6-140eeb2fa8e1"
+      },
+      "reference": {
+        "kind": "commitment",
+        "id": "3dcfdce2-c77e-4be9-94d8-1ff1d35b086f"
+      }
+    },
+    {
+      "key": "review_summary",
+      "label": "Week 2028-01-03: 240m baseline commitments → 240m final commitments; 60m scheduled; 30m recorded Focus",
+      "data": {
+        "original": {
+          "usableMinutes": 540,
+          "totalMinutes": 240,
+          "remainingMinutes": 300
+        },
+        "final": {
+          "usableMinutes": 420,
+          "totalMinutes": 240,
+          "remainingMinutes": 180
+        }
+      },
+      "reference": null
+    },
+    {
+      "key": "weekly_reflection",
+      "label": "Finalized weekly reflection",
+      "data": {
+        "note": "Support changed the plan; distinguish protected time from recorded focus.",
+        "finalizedAt": "2028-01-10T09:00:00.000Z"
+      },
+      "reference": null
+    }
+  ],
+  "signals": [],
+  "scheduleCandidates": [],
+  "reviewCandidates": [
+    {
+      "id": "review_insight_fec51dd64c28a10bdd104b8f",
+      "type": "planning_execution_gap",
+      "title": "Ship guided first-week planning",
+      "subjects": [
+        {
+          "kind": "commitment",
+          "id": "3dcfdce2-c77e-4be9-94d8-1ff1d35b086f"
+        },
+        {
+          "kind": "action",
+          "id": "99579d8f-4a00-401d-9b3a-487cc1677d90"
+        },
+        {
+          "kind": "goal",
+          "id": "3ba8bd2c-152b-4578-acc6-140eeb2fa8e1"
+        }
+      ],
+      "evidenceRefs": [
+        "review_commitment:3dcfdce2-c77e-4be9-94d8-1ff1d35b086f",
+        "following:99579d8f-4a00-401d-9b3a-487cc1677d90",
+        "reflection_context:weekly_reflection",
+        "reflection_context:daily_reflection:2028-01-05",
+        "review_amendment:4cf7e85d-7e80-48d4-8b87-0f67593e4317:3dcfdce2-c77e-4be9-94d8-1ff1d35b086f"
+      ],
+      "week": "2028-01-03",
+      "followingWeek": "2028-01-10",
+      "reflectionRefs": [
+        "reflection_context:weekly_reflection",
+        "reflection_context:daily_reflection:2028-01-05"
+      ],
+      "following": {
+        "state": "absent",
+        "budgetMinutes": 0,
+        "scheduledMinutes": 0,
+        "carryIntentMinutes": 90
+      },
+      "allowedInterpretation": [
+        "Interpret the supplied relationship only; factual names, quantities, dates, decisions and history belong in server Evidence.",
+        "Recorded Focus is not completion; missing recorded Focus is not proof of no work.",
+        "Ask a conditional useful question; never choose Carry, Defer or Drop, prescribe scheduling, or invent work.",
+        "No inferred causal explanation, unsupported history, ratings or score.",
+        "Separate how much time was protected from what happened during execution. Do not label the gap failure or assume more time is required.",
+        "Reflection text is supporting user-reported context beside the recorded relationship, not an established cause."
+      ]
+    }
+  ]
+}

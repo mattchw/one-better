@@ -1,0 +1,236 @@
+{
+  "contextType": "weekly_review",
+  "week": "2027-12-27",
+  "schemaVersion": 1,
+  "today": "2028-01-05",
+  "timezone": "Europe/London",
+  "planId": "4f70ffbc-38fd-486f-abdf-91ebed35f407",
+  "facts": [
+    {
+      "key": "action:fbf95440-47f2-4021-b0fa-babfb3e1f683",
+      "label": "Action: Test the first-week onboarding flow",
+      "data": {
+        "title": "Test the first-week onboarding flow",
+        "doneWhen": "Five users finish onboarding without assistance.",
+        "estimateMinutes": 240,
+        "goalId": "5513c382-c0af-46f2-8cf0-75e723e61913"
+      },
+      "reference": {
+        "kind": "action",
+        "id": "fbf95440-47f2-4021-b0fa-babfb3e1f683"
+      }
+    },
+    {
+      "key": "commitment:ab553953-f5a6-48c7-9470-a95bcd4adccf",
+      "label": "Test the first-week onboarding flow: 120m committed, 60m scheduled",
+      "data": {
+        "actionId": "fbf95440-47f2-4021-b0fa-babfb3e1f683",
+        "goalId": "5513c382-c0af-46f2-8cf0-75e723e61913",
+        "title": "Test the first-week onboarding flow",
+        "budgetMinutes": 120,
+        "scheduledMinutes": 60,
+        "unscheduledMinutes": 60,
+        "recordedMilliseconds": 1800000,
+        "inEffectivePlan": true
+      },
+      "reference": {
+        "kind": "commitment",
+        "id": "ab553953-f5a6-48c7-9470-a95bcd4adccf"
+      }
+    },
+    {
+      "key": "daily_reflection:2027-12-28",
+      "label": "Finalized daily reflection: 2027-12-28",
+      "data": {
+        "date": "2027-12-28",
+        "note": "FINAL_DAILY_ALLOWED: Short morning sessions helped; protect room for interruptions.",
+        "finalizedAt": "2027-12-28T18:00:00.000Z"
+      },
+      "reference": null
+    },
+    {
+      "key": "focus_cycle:7fd09f27-f4f4-42f8-a270-2d7b0c348694",
+      "label": "Current Focus: Make the weekly loop useful and sustainable",
+      "data": {
+        "title": "Make the weekly loop useful and sustainable",
+        "intent": "Ship a small useful beta, maintain recovery, and share one concrete lesson. Preserve breathing room rather than filling every open hour.",
+        "startDate": "2027-12-20",
+        "endDate": "2028-01-31",
+        "version": 2,
+        "goalIds": [
+          "40ef9009-b22b-40b2-b045-3fee53b0c2a7",
+          "5513c382-c0af-46f2-8cf0-75e723e61913",
+          "ecb87959-692d-4fb0-bb6c-fd887c1918f0"
+        ]
+      },
+      "reference": {
+        "kind": "focus_cycle",
+        "id": "7fd09f27-f4f4-42f8-a270-2d7b0c348694"
+      }
+    },
+    {
+      "key": "goal:40ef9009-b22b-40b2-b045-3fee53b0c2a7",
+      "label": "Current Focus includes Maintain a sustainable running rhythm",
+      "data": {
+        "title": "Maintain a sustainable running rhythm",
+        "outcome": "Run consistently while protecting recovery.",
+        "version": 1,
+        "archived": false,
+        "currentFocus": true
+      },
+      "reference": {
+        "kind": "goal",
+        "id": "40ef9009-b22b-40b2-b045-3fee53b0c2a7"
+      }
+    },
+    {
+      "key": "goal:5513c382-c0af-46f2-8cf0-75e723e61913",
+      "label": "Current Focus includes Ship a small trustworthy One Better beta",
+      "data": {
+        "title": "Ship a small trustworthy One Better beta",
+        "outcome": "Ten people can independently plan, focus and review a useful week.",
+        "version": 1,
+        "archived": false,
+        "currentFocus": true
+      },
+      "reference": {
+        "kind": "goal",
+        "id": "5513c382-c0af-46f2-8cf0-75e723e61913"
+      }
+    },
+    {
+      "key": "goal:ecb87959-692d-4fb0-bb6c-fd887c1918f0",
+      "label": "Current Focus includes Publish one practical essay each week",
+      "data": {
+        "title": "Publish one practical essay each week",
+        "outcome": "Share one useful lesson from building the planning loop.",
+        "version": 1,
+        "archived": false,
+        "currentFocus": true
+      },
+      "reference": {
+        "kind": "goal",
+        "id": "ecb87959-692d-4fb0-bb6c-fd887c1918f0"
+      }
+    },
+    {
+      "key": "history:2027-12-20",
+      "label": "Recent week 2027-12-20: 0m recorded",
+      "data": {
+        "week": "2027-12-20",
+        "originalBudgetMinutes": 120,
+        "finalBudgetMinutes": 120,
+        "scheduledMilliseconds": 0,
+        "recordedMilliseconds": 0,
+        "goals": [
+          {
+            "goalId": "5513c382-c0af-46f2-8cf0-75e723e61913",
+            "actionId": "fbf95440-47f2-4021-b0fa-babfb3e1f683",
+            "title": "Test the first-week onboarding flow",
+            "recordedMilliseconds": 0,
+            "decision": null
+          }
+        ]
+      },
+      "reference": null
+    },
+    {
+      "key": "plan:4f70ffbc-38fd-486f-abdf-91ebed35f407",
+      "label": "Week 2027-12-27: committed plan",
+      "data": {
+        "state": "committed",
+        "version": 3,
+        "timezone": "Europe/London",
+        "original": {
+          "usableMinutes": 540,
+          "totalMinutes": 120,
+          "remainingMinutes": 420
+        },
+        "current": {
+          "usableMinutes": 540,
+          "totalMinutes": 120,
+          "remainingMinutes": 420
+        }
+      },
+      "reference": {
+        "kind": "plan",
+        "id": "4f70ffbc-38fd-486f-abdf-91ebed35f407"
+      }
+    },
+    {
+      "key": "review_summary",
+      "label": "Week 2027-12-27: 60m scheduled, 30m recorded",
+      "data": {
+        "original": {
+          "usableMinutes": 540,
+          "totalMinutes": 120,
+          "remainingMinutes": 420
+        },
+        "final": {
+          "usableMinutes": 540,
+          "totalMinutes": 120,
+          "remainingMinutes": 420
+        },
+        "scheduledMilliseconds": 3600000,
+        "recordedMilliseconds": 1800000,
+        "outcomes": [
+          {
+            "outcome": "partial",
+            "recordedMilliseconds": 1800000
+          }
+        ],
+        "amendments": []
+      },
+      "reference": null
+    },
+    {
+      "key": "source:fbf95440-47f2-4021-b0fa-babfb3e1f683",
+      "label": "Test the first-week onboarding flow: eligible for deliberate planning",
+      "data": {
+        "source": {
+          "actionVersion": 1,
+          "goalId": "5513c382-c0af-46f2-8cf0-75e723e61913",
+          "goalVersion": 1,
+          "milestoneId": null,
+          "milestoneVersion": null
+        },
+        "eligible": true,
+        "title": "Test the first-week onboarding flow",
+        "doneWhen": "Five users finish onboarding without assistance.",
+        "estimateMinutes": 240
+      },
+      "reference": null
+    },
+    {
+      "key": "time_block:67f8fdc8-5b93-465f-8635-bed8ae94e5af",
+      "label": "Test the first-week onboarding flow: planned block 2027-12-28T09:00:00.000Z–2027-12-28T10:00:00.000Z",
+      "data": {
+        "commitmentId": "ab553953-f5a6-48c7-9470-a95bcd4adccf",
+        "state": "planned",
+        "start": "2027-12-28T09:00:00.000Z",
+        "end": "2027-12-28T10:00:00.000Z",
+        "version": 1
+      },
+      "reference": {
+        "kind": "time_block",
+        "id": "67f8fdc8-5b93-465f-8635-bed8ae94e5af"
+      }
+    },
+    {
+      "key": "weekly_reflection",
+      "label": "Finalized weekly reflection",
+      "data": {
+        "note": "FINAL_WEEKLY_ALLOWED: Onboarding testing carried forward after support interrupted two mornings. I deliberately chose Carry with a smaller next-week budget; keep recovery protected.",
+        "finalizedAt": "2028-01-03T08:00:00.000Z",
+        "decisions": [
+          {
+            "commitmentId": "ab553953-f5a6-48c7-9470-a95bcd4adccf",
+            "kind": "carry",
+            "proposedBudgetMinutes": 90
+          }
+        ]
+      },
+      "reference": null
+    }
+  ]
+}

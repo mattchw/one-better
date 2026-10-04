@@ -1,0 +1,526 @@
+{
+  "live": true,
+  "calls": 13,
+  "requestTime": "2028-01-12T08:00:00Z",
+  "promptHash": "f544d1e8b98bf49939a788db841a67122d4d4d236b7c341c509f93a85a21aaa5",
+  "schemaHash": "d235f29c146b1e72388c2218b6f48306751205dea99a4080a28ee0d34cdd2987",
+  "providers": [
+    {
+      "name": "openai",
+      "model": "gpt-5.6-sol"
+    },
+    {
+      "name": "anthropic",
+      "model": "claude-haiku-4-5-20251001"
+    }
+  ],
+  "usageInterpretation": "OpenAI OAuth tokens represent ChatGPT plan usage, not a dollar API bill. Anthropic token counts represent API-key usage; no local billing assertion.",
+  "observations": [
+    {
+      "kind": "gap_reflection",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "run": {
+        "id": "691a2634-1784-436b-b0bf-b8a2a8053a09",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "1c43ed8cc14fe980b6df4bfe69e0cc430641c457ecb196fb4793fd05f50259d1",
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [
+          {
+            "href": null,
+            "title": "Ship guided first-week planning",
+            "evidence": [
+              {
+                "key": "review_commitment:681a4cac-18bd-4bd9-b86f-1ef58cf1b07c",
+                "label": "Ship guided first-week planning: 240m committed; 60m scheduled; 30m recorded Focus in 2028-01-03"
+              },
+              {
+                "key": "following:d8be6804-db16-409b-934b-7184372984f6",
+                "label": "Following week 2028-01-10: no saved plan\nHuman Carry intent: 90m; selection in the next plan is recorded separately."
+              },
+              {
+                "key": "reflection_context:weekly_reflection",
+                "label": "Finalized weekly reflection: Support changed the plan; distinguish protected time from recorded focus."
+              },
+              {
+                "key": "reflection_context:daily_reflection:2028-01-05",
+                "label": "Finalized daily reflection: 2028-01-05: Production issue interrupted the planned work."
+              },
+              {
+                "key": "review_amendment:f0aaef68-767f-4139-bb9e-9730d97a60bc:681a4cac-18bd-4bd9-b86f-1ef58cf1b07c",
+                "label": "Amendment saved 2028-01-05T08:00:00.000Z: capacity 540m (baseline 720m); Action budget 240m (first committed 240m); 30m recorded Focus after this save within the reviewed week"
+              }
+            ],
+            "proposal": {
+              "candidateId": "review_insight_9b99751853d1f185ed0552a0",
+              "interpretation": "Protected time and recorded execution are different signals, and renewed intent alone does not show whether the current approach still fits.",
+              "reflectionQuestion": "If the current approach still fits, is any further change needed; if it does not, what would need reconsideration?"
+            },
+            "candidate": null,
+            "placement": null,
+            "unavailable": null
+          }
+        ],
+        "failure": null,
+        "usage": {
+          "inputTokens": 1764,
+          "outputTokens": 855,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 21482,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "insights": [
+          {
+            "candidateId": "review_insight_9b99751853d1f185ed0552a0",
+            "interpretation": "Protected time and recorded execution are different signals, and renewed intent alone does not show whether the current approach still fits.",
+            "reflectionQuestion": "If the current approach still fits, is any further change needed; if it does not, what would need reconsideration?"
+          }
+        ]
+      },
+      "schemaAccepted": true,
+      "grounded": true,
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "contextHash": "68ae8c999f547727f3be2ea94b95d823d6ac135188226a7a9920cd95db657bdf",
+      "latencyMs": 21482,
+      "usage": {
+        "inputTokens": 1764,
+        "outputTokens": 855,
+        "cachedInputTokens": 0
+      }
+    },
+    {
+      "kind": "already_addressed",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "run": {
+        "id": "fc6a6812-0d16-4c50-b55e-dda1ce87a0ed",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "8234fede2e960918fd9e41b094bf90da2a664a47779dbe1c5e8e72210b473628",
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [],
+        "failure": null,
+        "usage": {
+          "inputTokens": 882,
+          "outputTokens": 16,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 2296,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "insights": []
+      },
+      "schemaAccepted": true,
+      "grounded": true,
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "contextHash": "69f1d72a68a27bf9e5876c985d414c364bdc50fd02c7ba7f887f7cba0484c984",
+      "latencyMs": 2296,
+      "usage": {
+        "inputTokens": 882,
+        "outputTokens": 16,
+        "cachedInputTokens": 0
+      }
+    },
+    {
+      "kind": "repeated_carry",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "run": {
+        "id": "ae4f0a15-ec06-4e5c-9748-9dd1aa3e94f3",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "f800418f1c7d6380ae72e17f4a7fbe51bea807437fbc99eb9849d97c75cbff7f",
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "invalid_output",
+        "usage": {
+          "inputTokens": 1561,
+          "outputTokens": 407,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 9432,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "insights": [
+          {
+            "candidateId": "review_insight_9825f19bda576821a656da90",
+            "interpretation": "The renewed intent is separate from recorded execution and does not yet identify a changed approach.",
+            "reflectionQuestion": "If the intent remains the same, what would need to differ in the approach for the next attempt to be genuinely fresh?"
+          }
+        ]
+      },
+      "schemaAccepted": true,
+      "grounded": false,
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "contextHash": "42d0857e5eb8e0d8242997cb36c635a4bb2b82e0f9d003760eabab9969ea5282",
+      "latencyMs": 9432,
+      "usage": {
+        "inputTokens": 1561,
+        "outputTokens": 407,
+        "cachedInputTokens": 0
+      }
+    },
+    {
+      "kind": "clean",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "run": {
+        "id": "314202cd-5959-4936-a4cc-bf8d25802b08",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "f2ccf0f7b29e83ef159624a229b2fa639a29e7623dd07ac1b111f591eb76be45",
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [],
+        "failure": null,
+        "usage": {
+          "inputTokens": 791,
+          "outputTokens": 16,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 3303,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "insights": []
+      },
+      "schemaAccepted": true,
+      "grounded": true,
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "contextHash": "c4a66ec2e0d8714ccd180ad51c3e501d492dcef7821819c7dc3fedede60095dd",
+      "latencyMs": 3303,
+      "usage": {
+        "inputTokens": 791,
+        "outputTokens": 16,
+        "cachedInputTokens": 0
+      }
+    },
+    {
+      "kind": "completed",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "run": {
+        "id": "a9bfdbfc-9e23-446f-8a45-26f35dded2a2",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "2b30bb8be624797e3d797c37594d5a4d0c63f1f599450c60be5e4a27c7e76c0d",
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [],
+        "failure": null,
+        "usage": {
+          "inputTokens": 786,
+          "outputTokens": 16,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 2253,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "insights": []
+      },
+      "schemaAccepted": true,
+      "grounded": true,
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "contextHash": "07d6cd5d0f1954eddc5d376dfbed354fbc151b4d5eeeec601b5fa86d5928bd96",
+      "latencyMs": 2253,
+      "usage": {
+        "inputTokens": 786,
+        "outputTokens": 16,
+        "cachedInputTokens": 0
+      }
+    },
+    {
+      "kind": "no_reflection",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "run": {
+        "id": "4fcf9daa-5dc4-4595-8437-6e4262bb5093",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "ca259412c87ad234c699513043398d910ee49339e83a83c1e7ed7d2c44d6276b",
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [
+          {
+            "href": null,
+            "title": "Ship guided first-week planning",
+            "evidence": [
+              {
+                "key": "review_commitment:186f0847-dcdb-4e6d-b4ca-59999693a7af",
+                "label": "Ship guided first-week planning: 240m committed; 60m scheduled; 30m recorded Focus in 2028-01-03"
+              },
+              {
+                "key": "following:54fb6115-1622-4ae7-a7fd-387856119da7",
+                "label": "Following week 2028-01-10: no saved plan"
+              }
+            ],
+            "proposal": {
+              "candidateId": "review_insight_a5926ab38c7394007be418a4",
+              "interpretation": "Protected time and recorded execution are different boundaries, so the records do not establish whether the intended outcome was reached or whether the approach needs changing.",
+              "reflectionQuestion": "If the outcome still matters, would you renew the same approach or revise how it is pursued?"
+            },
+            "candidate": null,
+            "placement": null,
+            "unavailable": null
+          }
+        ],
+        "failure": null,
+        "usage": {
+          "inputTokens": 1243,
+          "outputTokens": 375,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 9223,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": {
+        "insights": [
+          {
+            "candidateId": "review_insight_a5926ab38c7394007be418a4",
+            "interpretation": "Protected time and recorded execution are different boundaries, so the records do not establish whether the intended outcome was reached or whether the approach needs changing.",
+            "reflectionQuestion": "If the outcome still matters, would you renew the same approach or revise how it is pursued?"
+          }
+        ]
+      },
+      "schemaAccepted": true,
+      "grounded": true,
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "contextHash": "281d46842d726c35b3c5b3371a6faa4251d0933dea303b7472bb6b7d9d3ec4b4",
+      "latencyMs": 9223,
+      "usage": {
+        "inputTokens": 1243,
+        "outputTokens": 375,
+        "cachedInputTokens": 0
+      }
+    },
+    {
+      "kind": "gap_reflection",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "run": {
+        "id": "3896f9da-6dc6-439c-a014-c08779f97e3b",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "1c43ed8cc14fe980b6df4bfe69e0cc430641c457ecb196fb4793fd05f50259d1",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "unavailable",
+        "usage": null,
+        "latencyMs": 562,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": null,
+      "schemaAccepted": false,
+      "grounded": null,
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "contextHash": "68ae8c999f547727f3be2ea94b95d823d6ac135188226a7a9920cd95db657bdf",
+      "latencyMs": 562,
+      "usage": null
+    },
+    {
+      "kind": "already_addressed",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "run": {
+        "id": "3e972633-42a8-40ac-9ff6-01929d3e4704",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "8234fede2e960918fd9e41b094bf90da2a664a47779dbe1c5e8e72210b473628",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "unavailable",
+        "usage": null,
+        "latencyMs": 316,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": null,
+      "schemaAccepted": false,
+      "grounded": null,
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "contextHash": "69f1d72a68a27bf9e5876c985d414c364bdc50fd02c7ba7f887f7cba0484c984",
+      "latencyMs": 316,
+      "usage": null
+    },
+    {
+      "kind": "repeated_carry",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "run": {
+        "id": "168fb2be-2480-4e93-bd02-0a497ffe15d6",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "f800418f1c7d6380ae72e17f4a7fbe51bea807437fbc99eb9849d97c75cbff7f",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "unavailable",
+        "usage": null,
+        "latencyMs": 302,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": null,
+      "schemaAccepted": false,
+      "grounded": null,
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "contextHash": "42d0857e5eb8e0d8242997cb36c635a4bb2b82e0f9d003760eabab9969ea5282",
+      "latencyMs": 302,
+      "usage": null
+    },
+    {
+      "kind": "clean",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "run": {
+        "id": "c8a605bd-d4e6-4396-805f-34ef131bd132",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "f2ccf0f7b29e83ef159624a229b2fa639a29e7623dd07ac1b111f591eb76be45",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "unavailable",
+        "usage": null,
+        "latencyMs": 309,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": null,
+      "schemaAccepted": false,
+      "grounded": null,
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "contextHash": "c4a66ec2e0d8714ccd180ad51c3e501d492dcef7821819c7dc3fedede60095dd",
+      "latencyMs": 309,
+      "usage": null
+    },
+    {
+      "kind": "completed",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "run": {
+        "id": "1d6f5115-b82e-45a0-9a6d-c42e7e2d0bdc",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "2b30bb8be624797e3d797c37594d5a4d0c63f1f599450c60be5e4a27c7e76c0d",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "unavailable",
+        "usage": null,
+        "latencyMs": 437,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": null,
+      "schemaAccepted": false,
+      "grounded": null,
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "contextHash": "07d6cd5d0f1954eddc5d376dfbed354fbc151b4d5eeeec601b5fa86d5928bd96",
+      "latencyMs": 437,
+      "usage": null
+    },
+    {
+      "kind": "no_reflection",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "run": {
+        "id": "cdc55f24-b608-43b5-955c-d97e34605f51",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "ca259412c87ad234c699513043398d910ee49339e83a83c1e7ed7d2c44d6276b",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "unavailable",
+        "usage": null,
+        "latencyMs": 283,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawOutput": null,
+      "schemaAccepted": false,
+      "grounded": null,
+      "upstreamUnchanged": true,
+      "privacyVerified": true,
+      "contextHash": "281d46842d726c35b3c5b3371a6faa4251d0933dea303b7472bb6b7d9d3ec4b4",
+      "latencyMs": 283,
+      "usage": null
+    },
+    {
+      "kind": "provider_failure",
+      "provider": "openai",
+      "run": {
+        "id": "6d8f8ad7-c68e-44b7-bc07-1c72bbebb352",
+        "contextType": "weekly_review",
+        "week": "2028-01-03",
+        "fingerprint": "1c43ed8cc14fe980b6df4bfe69e0cc430641c457ecb196fb4793fd05f50259d1",
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "generatedAt": "2028-01-12T08:00:00.000Z",
+        "status": "failed",
+        "recommendations": [],
+        "failure": "authentication",
+        "usage": null,
+        "latencyMs": 2702,
+        "stale": false,
+        "interrupted": false
+      },
+      "upstreamUnchanged": true,
+      "coreReviewReadable": true
+    }
+  ]
+}

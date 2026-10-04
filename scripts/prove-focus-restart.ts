@@ -1,0 +1,35 @@
+import {randomBytes,randomUUID} from "node:crypto";
+import {spawn,type ChildProcess} from "node:child_process";
+import {once} from "node:events";
+import {setTimeout as delay} from "node:timers/promises";
+import {mkdtemp,writeFile,rm} from "node:fs/promises";
+import {tmpdir} from "node:os";
+import {join} from "node:path";
+import assert from "node:assert/strict";
+import {Pool} from "pg";
+import {migrate} from "drizzle-orm/node-postgres/migrator";
+import {chromium} from "@playwright/test";
+import {connectDatabase} from "../src/db/connect";
+import {requireTestDatabaseURL,dropIsolatedTestDatabase} from "./test-database";
+import {provisionLocalUser} from "./local-user";
+import {executionFixture} from "../tests/focus-database";
+import {focusNow} from "../tests/focus-fixtures";
+import type {FocusSession,FocusWorkspace} from "../src/modules/focus/domain";
+const origin="http://127.0.0.1:3102",{url}=requireTestDatabaseURL(),target=new URL(url),adminURL=new URL(url),name=`execution_test_${randomBytes(6).toString("hex")}`;
+target.pathname=`/${name}`;adminURL.pathname="/postgres";const admin=new Pool({connectionString:adminURL.toString()}),database=connectDatabase(target.toString()),directory=await mkdtemp(join(tmpdir(),"focus-restart-")),clockFile=join(directory,"now");let created=false,child:ChildProcess|undefined;
+const browser=await chromium.launch(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH}:{});
+async function start(databaseURL=target.toString(),health=200){child=spawn(process.execPath,["node_modules/next/dist/bin/next","start","--hostname","127.0.0.1","--port","3102"],{env:{...process.env,NODE_ENV:"production",BETTER_AUTH_URL:origin,DATABASE_URL:databaseURL,EXECUTION_TEST_CLOCK_FILE:clockFile},stdio:"ignore"});for(let i=0;i<120;i++){if(child.exitCode!==null)throw new Error("Production process exited");try{if((await fetch(`${origin}/api/health`)).status===health)return;}catch{}await delay(250);}throw new Error("Production process not ready");}
+async function stop(){if(child&&child.exitCode===null){const ended=once(child,"exit");child.kill("SIGTERM");await ended;}child=undefined;}
+try{
+ await admin.query(`CREATE DATABASE "${name}"`);created=true;await migrate(database.db,{migrationsFolder:"src/db/migrations"});const actor=await provisionLocalUser(database.db,{email:process.env.TEST_USER_A_EMAIL,password:process.env.TEST_USER_A_PASSWORD,name:"Focus restart proof",timezone:"Europe/London"}),f=await executionFixture(database.db,{userId:actor.id});await writeFile(clockFile,focusNow);await start();
+ const signin=await fetch(`${origin}/api/auth/sign-in/email`,{method:"POST",headers:{Origin:origin,"Content-Type":"application/json"},body:JSON.stringify({email:process.env.TEST_USER_A_EMAIL,password:process.env.TEST_USER_A_PASSWORD})});assert.equal(signin.status,200);const cookies=signin.headers.getSetCookie().map(v=>v.split(";")[0]),cookie=cookies.join("; ");
+ const page=await browser.newPage();await page.context().addCookies(cookies.map(v=>{const i=v.indexOf("=");return {name:v.slice(0,i),value:v.slice(i+1),url:origin,httpOnly:true,sameSite:"Lax" as const};}));
+ async function read<T>(path:string):Promise<T>{const r=await fetch(`${origin}${path}`,{headers:{cookie}});assert.equal(r.status,200);return r.json() as Promise<T>;}
+ async function mutate(path:string,data:object):Promise<FocusSession>{const r=await fetch(`${origin}${path}`,{method:"POST",headers:{cookie,Origin:origin,"Content-Type":"application/json"},body:JSON.stringify(data)});assert.equal(r.status,200);return (await r.json()).session;}
+ const snapshot=async()=>{const result:Record<string,unknown>={};for(const table of ["goal","milestone","action","weekly_plan","weekly_commitment","weekly_plan_amendment","amendment_commitment","time_block"])result[table]=(await database.pool.query(`SELECT row_to_json(t) FROM ${table} t WHERE owner_id=$1 ORDER BY row_to_json(t)::text`,[actor.id])).rows;return result;},before=await snapshot();
+ const startPath=`/api/time-blocks/${f.block.id}/focus-sessions`,startCommand={mutationId:randomUUID(),expectedBlockVersion:1,acknowledgeRemoved:false},session=await mutate(startPath,startCommand);
+ assert.equal(session.startedAt,focusNow);await writeFile(clockFile,"2026-10-06T09:22:00.123Z");await stop();await start();assert.deepEqual((await read<FocusWorkspace>("/api/focus")).active?.session,session);assert.deepEqual(await mutate(startPath,startCommand),session);await page.goto(`${origin}/focus`);await page.locator(`[data-active-session="${session.id}"]`).waitFor();assert.match(await page.getByLabel("Elapsed session time").innerText(),/^00:37:0\d$/);await page.reload();assert.match(await page.getByLabel("Elapsed session time").innerText(),/^00:37:0\d$/);
+ await writeFile(clockFile,"2026-10-06T09:45:00.123Z");const endPath=`/api/focus-sessions/${session.id}/end`,endCommand={mutationId:randomUUID(),expectedVersion:1,outcome:"partial",endNote:"Recovered after an actual process restart."},ended=await mutate(endPath,endCommand);await stop();await start();assert.deepEqual(await mutate(startPath,startCommand),session);assert.deepEqual(await mutate(endPath,endCommand),ended);assert.deepEqual((await read<{session:FocusSession}>(`/api/focus-sessions/${session.id}`)).session,ended);const current=await read<FocusWorkspace>("/api/focus");assert.equal(current.active,null);assert.equal(current.todayBlocks[0].recordedMilliseconds,3600000);await page.reload();await page.locator(".focus-earlier > summary").click();await page.locator(".focus-history summary").click();assert.ok((await page.locator(".focus-history").innerText()).includes(endCommand.endNote));assert.deepEqual(await snapshot(),before);assert.equal((await database.pool.query("SELECT 1 FROM focus_session WHERE owner_id=$1",[actor.id])).rowCount,1);assert.equal((await database.pool.query("SELECT 1 FROM mutation_receipt WHERE owner_id=$1 AND result ? 'timeBlockId'",[actor.id])).rowCount,2);
+ await stop();const unavailable=new URL(target);unavailable.pathname=`/execution_test_unavailable${Date.now()}`;await start(unavailable.toString(),503);for(const [path,method,data] of [["/api/focus","GET",undefined],[`/api/focus?block=${f.block.id}`,"GET",undefined],[`/api/focus-sessions/${session.id}`,"GET",undefined],[startPath,"POST",startCommand],[endPath,"POST",endCommand]] as const)assert.equal((await fetch(`${origin}${path}`,{method,headers:{cookie,Origin:origin,"Content-Type":"application/json"},body:data?JSON.stringify(data):undefined})).status,503);
+ console.log("PASS: persisted active Focus Session recovered after a real production restart and browser reload at 37m; exact start/end original-result receipts replay after a second restart; one immutable ended session/two receipts, precise independent actual totals, byte-unchanged sources/planning/TimeBlock; all Focus HTTP surfaces return 503 with unavailable PostgreSQL.");
+}finally{await browser.close();await stop();await database.pool.end();if(created)await dropIsolatedTestDatabase(admin,name);await admin.end();await rm(directory,{recursive:true,force:true});}

@@ -1,0 +1,185 @@
+{
+  "status": "Live observations recorded; human review and completion report still required",
+  "live": true,
+  "calls": 1,
+  "promptHash": "6fdda7fa5f038861c29696de40a60e4cb3acb01a7fd3aad0e0beb47f1a2b02ef",
+  "schemaHash": "9b297a8bc080591b30f8ed2afadd71f88e544278b96e769815affc196da88421",
+  "providers": [
+    {
+      "provider": "openai",
+      "model": null,
+      "endpoint": "https://api.openai.com/v1/responses"
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "endpoint": "https://api.anthropic.com/v1/messages"
+    }
+  ],
+  "observations": [
+    {
+      "kind": "calendar",
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "contextFingerprint": "00b8a8f04af3d257ddf20b3d7026bd41a27767ace8bbe59adf1d3b845abee026",
+      "run": {
+        "id": "f50f329f-76d4-493c-9148-b59a41f57e40",
+        "contextType": "calendar",
+        "week": "2028-01-03",
+        "fingerprint": "00b8a8f04af3d257ddf20b3d7026bd41a27767ace8bbe59adf1d3b845abee026",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+        "generatedAt": "2028-01-05T08:00:00.000Z",
+        "status": "succeeded",
+        "recommendations": [
+          {
+            "href": null,
+            "evidence": [
+              {
+                "key": "commitment:bfe54df2-db6b-4c66-991d-0e649b0e3636",
+                "label": "Test the first-week onboarding flow: 240m committed, 45m scheduled"
+              },
+              {
+                "key": "history:2027-12-27",
+                "label": "Recent week 2027-12-27: 30m recorded"
+              }
+            ],
+            "proposal": {
+              "type": "observation",
+              "title": "Test the first-week onboarding flow carries 195m unscheduled work this week",
+              "explanation": "This action has a 240m budget but only 45m scheduled. It was carried from last week with 30m recorded progress. The remaining 195m of deliberate work needs either scheduling or a conscious decision to defer.",
+              "evidenceRefs": [
+                "commitment:bfe54df2-db6b-4c66-991d-0e649b0e3636",
+                "history:2027-12-27"
+              ]
+            },
+            "placement": null,
+            "unavailable": null
+          },
+          {
+            "href": null,
+            "evidence": [
+              {
+                "key": "commitment:bfe54df2-db6b-4c66-991d-0e649b0e3636",
+                "label": "Test the first-week onboarding flow: 240m committed, 45m scheduled"
+              },
+              {
+                "key": "open:2028-01-04:1",
+                "label": "2028-01-04 14:00–16:00 Europe/London: Calendar-open inside Focusable Hours"
+              },
+              {
+                "key": "open:2028-01-05:2",
+                "label": "2028-01-05 14:00–16:00 Europe/London: Calendar-open inside Focusable Hours"
+              }
+            ],
+            "proposal": {
+              "type": "schedule_time",
+              "title": "Schedule unscheduled work on Test the first-week onboarding flow",
+              "reason": "Dedicate focused time to advance this goal within the current week's open capacity before end of focus cycle week.",
+              "localDate": "2028-01-04",
+              "commitmentId": "bfe54df2-db6b-4c66-991d-0e649b0e3636",
+              "endLocalTime": "16:00",
+              "evidenceRefs": [
+                "commitment:bfe54df2-db6b-4c66-991d-0e649b0e3636",
+                "open:2028-01-04:1",
+                "open:2028-01-05:2"
+              ],
+              "startLocalTime": "14:00"
+            },
+            "placement": null,
+            "unavailable": "Choose a future start time. Past schedule history cannot be created or rewritten."
+          },
+          {
+            "href": "/planning?week=2028-01-03",
+            "evidence": [
+              {
+                "key": "plan:4305cc98-8d45-4e02-93df-54cbae6c9656",
+                "label": "Week 2028-01-03: committed plan"
+              },
+              {
+                "key": "focus_cycle:87cbbfe9-dbad-4496-b0da-e11b8ff603fa",
+                "label": "Current Focus: Make the weekly loop useful and sustainable"
+              }
+            ],
+            "proposal": {
+              "type": "review_plan",
+              "title": "Review plan state and intent for this week",
+              "reason": "Current plan is committed with 180m remaining. Focus Cycle intent emphasizes preservation of breathing room; confirm scheduling choices align with sustainable pace rather than filling all available hours.",
+              "target": {
+                "id": "4305cc98-8d45-4e02-93df-54cbae6c9656",
+                "kind": "plan"
+              },
+              "evidenceRefs": [
+                "plan:4305cc98-8d45-4e02-93df-54cbae6c9656",
+                "focus_cycle:87cbbfe9-dbad-4496-b0da-e11b8ff603fa"
+              ]
+            },
+            "placement": null,
+            "unavailable": null
+          }
+        ],
+        "failure": null,
+        "usage": {
+          "inputTokens": 6470,
+          "outputTokens": 446,
+          "cachedInputTokens": 0
+        },
+        "latencyMs": 12103,
+        "stale": false,
+        "interrupted": false
+      },
+      "rawApplicationOutput": {
+        "recommendations": [
+          {
+            "type": "observation",
+            "title": "Test the first-week onboarding flow carries 195m unscheduled work this week",
+            "evidenceRefs": [
+              "commitment:bfe54df2-db6b-4c66-991d-0e649b0e3636",
+              "history:2027-12-27"
+            ],
+            "explanation": "This action has a 240m budget but only 45m scheduled. It was carried from last week with 30m recorded progress. The remaining 195m of deliberate work needs either scheduling or a conscious decision to defer."
+          },
+          {
+            "type": "schedule_time",
+            "title": "Schedule unscheduled work on Test the first-week onboarding flow",
+            "evidenceRefs": [
+              "commitment:bfe54df2-db6b-4c66-991d-0e649b0e3636",
+              "open:2028-01-04:1",
+              "open:2028-01-05:2"
+            ],
+            "commitmentId": "bfe54df2-db6b-4c66-991d-0e649b0e3636",
+            "localDate": "2028-01-04",
+            "startLocalTime": "14:00",
+            "endLocalTime": "16:00",
+            "reason": "Dedicate focused time to advance this goal within the current week's open capacity before end of focus cycle week."
+          },
+          {
+            "type": "review_plan",
+            "title": "Review plan state and intent for this week",
+            "evidenceRefs": [
+              "plan:4305cc98-8d45-4e02-93df-54cbae6c9656",
+              "focus_cycle:87cbbfe9-dbad-4496-b0da-e11b8ff603fa"
+            ],
+            "target": {
+              "kind": "plan",
+              "id": "4305cc98-8d45-4e02-93df-54cbae6c9656"
+            },
+            "reason": "Current plan is committed with 180m remaining. Focus Cycle intent emphasizes preservation of breathing room; confirm scheduling choices align with sustainable pace rather than filling all available hours."
+          }
+        ]
+      },
+      "schemaAccepted": true,
+      "referencesGrounded": true,
+      "placementChecks": [
+        {
+          "index": 1,
+          "legal": false,
+          "unavailable": "Choose a future start time. Past schedule history cannot be created or rewritten."
+        }
+      ],
+      "upstreamUnchanged": true,
+      "approximateCostUSD": null,
+      "costNote": "Price separately using the exact configured model, returned tokens and official rates; metadata does not contain billed dollars."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "live": false,
+  "calls": 0,
+  "model": null,
+  "displayName": null,
+  "endpoint": "https://api.openai.com/v1/responses",
+  "configuration": {
+    "authentication": "existing owned ChatGPT OAuth registration; no credential copy",
+    "store": false,
+    "stream": true,
+    "sdkTimeoutMs": 25000,
+    "applicationTimeoutMs": 30000,
+    "maxRetries": 0,
+    "structuredOutput": "text.format JSON schema + unchanged application validator",
+    "promptHash": "1daf28247fe73010eb5e3d5d8743f3921d70f12a0c8789c7b27a85976fbab173",
+    "schemaHash": "ba4a0d75c79013fcf568170512d23fa8b4e8a054400e35f9ae46690df08d4d83"
+  },
+  "usageInterpretation": "ChatGPT plan allowance/credits; token counts are not a dollar API bill. Credit conversion not supplied.",
+  "observations": []
+}

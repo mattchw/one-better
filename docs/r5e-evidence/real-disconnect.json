@@ -1,0 +1,9 @@
+{
+  "realProvider": true,
+  "localStatus": "disconnected",
+  "protectedCredentialsRemoved": true,
+  "modelRetained": "gpt-5.6-sol",
+  "remoteRevocationConfirmed": true,
+  "corePlanningAndBetterAuthRowsByteUnchanged": true,
+  "source": "same owned disconnect service as the UI endpoint"
+}

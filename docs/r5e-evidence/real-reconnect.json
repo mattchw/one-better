@@ -1,0 +1,13 @@
+{
+  "realProvider": true,
+  "status": "connected",
+  "sameOwnedRegistration": true,
+  "sameIssuedClientId": true,
+  "sameValidatedSubject": true,
+  "sameHostId": true,
+  "modelRetained": "gpt-5.6-sol",
+  "planUsageGranted": true,
+  "catalogRefreshed": true,
+  "protectedCredentialsPresent": true,
+  "explicitUsageEnabled": true
+}

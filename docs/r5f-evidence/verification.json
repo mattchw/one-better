@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-04",
+  "scope": "R5F only",
+  "checks": {
+    "unitTests": 467,
+    "databaseTests": 302,
+    "browserTests": 152,
+    "restartProofs": 8,
+    "typecheck": "pass",
+    "lint": "pass",
+    "productionBuild": "pass",
+    "documentation": "pass"
+  },
+  "evidenceSecretScan": {
+    "files": 40,
+    "configuredSecretMatches": 0
+  },
+  "privacyPackets": 6,
+  "identicalComparisonPackets": true,
+  "upstreamUnchanged": true,
+  "promptHash": "f544d1e8b98bf49939a788db841a67122d4d4d236b7c341c509f93a85a21aaa5",
+  "applicationSchemaHash": "d235f29c146b1e72388c2218b6f48306751205dea99a4080a28ee0d34cdd2987",
+  "anthropicWireSchemaHash": "405688b9553e8216a5aead129046e560afda37213219987afdee1e690d78f271",
+  "networkAttempts": 20,
+  "liveQaDatabaseRemoved": true,
+  "normalApp": {
+    "origin": "http://127.0.0.1:3100",
+    "signinStatus": 200,
+    "healthStatus": 200
+  },
+  "weeklyReviewSafety": "PASS",
+  "weeklyReviewUsefulness": "FAIL"
+}

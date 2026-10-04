@@ -1,0 +1,55 @@
+{
+  "kind": "stale",
+  "provider": "anthropic",
+  "oldRunId": "7864d7a5-1eb0-4514-a0f3-a7442fdc1c0d",
+  "oldFingerprint": "2524f36edb0f3d935aad0ed2b885c8de310144a3245e65cff04c96f93340e7b6",
+  "newFingerprint": "d2d83a13701715c28f3967aa8564d6e315fd8963c4db56f46c967e860300ce31",
+  "stale": true,
+  "oldPreviewRejected": true,
+  "oldSchedulingProposalWasAlreadyUnavailable": true,
+  "manualBlock": {
+    "id": "43ff36cd-afb0-4774-a514-4371301afce3",
+    "planId": "5c261386-9c88-4fc1-8475-d8c03f57f0d2",
+    "commitmentId": "00f35a11-abb1-4b5f-a097-e5efc7a56e40",
+    "start": "2028-01-06T10:00:00.000Z",
+    "end": "2028-01-06T11:00:00.000Z",
+    "state": "planned",
+    "version": 1,
+    "snapshot": {
+      "goal": {
+        "id": "5513c382-c0af-46f2-8cf0-75e723e61913",
+        "title": "Ship a small trustworthy One Better beta",
+        "outcome": "Ten people can independently plan, focus and review a useful week."
+      },
+      "action": {
+        "id": "fbf95440-47f2-4021-b0fa-babfb3e1f683",
+        "title": "Test the first-week onboarding flow",
+        "doneWhen": "Five users finish onboarding without assistance.",
+        "estimateMinutes": 240
+      },
+      "milestone": null
+    },
+    "createdAt": "2028-01-05T08:00:00.000Z",
+    "updatedAt": "2028-01-05T08:00:00.000Z",
+    "cancelledAt": null
+  },
+  "manualPreview": {
+    "interval": {
+      "start": "2028-01-06T10:00:00Z",
+      "end": "2028-01-06T11:00:00Z"
+    },
+    "adjustments": [],
+    "outsideHours": false,
+    "hoursConfigured": true,
+    "busyConflict": false,
+    "calendarStatus": "fresh",
+    "fetchedAt": "2028-01-05T08:00:00.000Z",
+    "budgetMinutes": 240,
+    "scheduledMinutes": 45,
+    "resultingMinutes": 105,
+    "planVersion": 3,
+    "reviewKey": "479e120faf598c2b57de98cdefc750db9e778598780b2db0c28bcbb0702c77b6"
+  },
+  "upstreamChangedOnlyByExplicitPlacement": true,
+  "noProviderCall": true
+}

@@ -1,0 +1,7 @@
+{
+  "status": 400,
+  "creditBalance": false,
+  "schemaIssue": true,
+  "maxItemsIssue": true,
+  "modelIssue": false
+}

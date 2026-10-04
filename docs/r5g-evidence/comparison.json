@@ -1,0 +1,360 @@
+{
+  "purpose": "R5G development/QA comparison; frozen synthetic R5F data only",
+  "strategies": {
+    "A": "Evidence only",
+    "B": "Evidence + reviewed deterministic question",
+    "C": "Evidence + existing validated AI Coach/Question"
+  },
+  "scenarios": [
+    {
+      "id": "gap_reflection",
+      "title": "Execution gap + approved reflection",
+      "brief": "Onboarding: 240m committed, 60m scheduled, 30m recorded. Capacity reduced from 720m to 540m. Finalized reflections report production/support disruption. Human Carry intent is 90m; no following plan.",
+      "week": "2028-01-03",
+      "contextHash": "68ae8c999f547727f3be2ea94b95d823d6ac135188226a7a9920cd95db657bdf",
+      "topics": [
+        {
+          "id": "review_insight_9b99751853d1f185ed0552a0",
+          "title": "Ship guided first-week planning",
+          "type": "planning_execution_gap",
+          "evidence": [
+            {
+              "key": "review_commitment:681a4cac-18bd-4bd9-b86f-1ef58cf1b07c",
+              "label": "Ship guided first-week planning: 240m committed; 60m scheduled; 30m recorded Focus in 2028-01-03"
+            },
+            {
+              "key": "following:d8be6804-db16-409b-934b-7184372984f6",
+              "label": "Following week 2028-01-10: no saved plan\nHuman Carry intent: 90m; selection in the next plan is recorded separately."
+            },
+            {
+              "key": "reflection_context:weekly_reflection",
+              "label": "Finalized weekly reflection: Support changed the plan; distinguish protected time from recorded focus."
+            },
+            {
+              "key": "reflection_context:daily_reflection:2028-01-05",
+              "label": "Finalized daily reflection: 2028-01-05: Production issue interrupted the planned work."
+            },
+            {
+              "key": "review_amendment:f0aaef68-767f-4139-bb9e-9730d97a60bc:681a4cac-18bd-4bd9-b86f-1ef58cf1b07c",
+              "label": "Amendment saved 2028-01-05T08:00:00.000Z: capacity 540m (baseline 720m); Action budget 240m (first committed 240m); 30m recorded Focus after this save within the reviewed week"
+            }
+          ],
+          "question": {
+            "key": "reflection_supported_context",
+            "text": "Does the reflection point to displaced protected time, or to a change the plan itself needs?"
+          }
+        }
+      ],
+      "overview": [
+        {
+          "key": "following:d8be6804-db16-409b-934b-7184372984f6",
+          "label": "Following week 2028-01-10: no saved plan\nHuman Carry intent: 90m; selection in the next plan is recorded separately."
+        },
+        {
+          "key": "review_summary",
+          "label": "Week 2028-01-03: 240m baseline commitments → 240m final commitments; 60m scheduled; 30m recorded Focus"
+        }
+      ],
+      "reflections": [
+        {
+          "label": "Finalized daily reflection: 2028-01-05",
+          "note": "Production issue interrupted the planned work."
+        },
+        {
+          "label": "Finalized weekly reflection",
+          "note": "Support changed the plan; distinguish protected time from recorded focus."
+        }
+      ],
+      "samples": {
+        "openai": {
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "status": "accepted",
+          "insights": [
+            {
+              "candidateId": "review_insight_9b99751853d1f185ed0552a0",
+              "interpretation": "Protected time and recorded execution are different signals, and renewed intent alone does not show whether the current approach still fits.",
+              "reflectionQuestion": "If the current approach still fits, is any further change needed; if it does not, what would need reconsideration?"
+            }
+          ]
+        },
+        "anthropic": {
+          "provider": "anthropic",
+          "model": "claude-haiku-4-5-20251001",
+          "status": "withheld",
+          "insights": []
+        }
+      }
+    },
+    {
+      "id": "already_addressed",
+      "title": "Following week already addressed",
+      "brief": "Onboarding is 60/60/60m. The essay Goal had no reviewed-week commitment. The following week already commits and schedules 60m for the essay. R5F suppresses the historical attention topic.",
+      "week": "2028-01-03",
+      "contextHash": "69f1d72a68a27bf9e5876c985d414c364bdc50fd02c7ba7f887f7cba0484c984",
+      "topics": [],
+      "overview": [
+        {
+          "key": "following:fcf1fdc9-f660-441e-a40f-773e6f66bbce",
+          "label": "Following week 2028-01-10: committed plan; 60m selected and 60m scheduled for Write a practical essay"
+        },
+        {
+          "key": "review_summary",
+          "label": "Week 2028-01-03: 60m baseline commitments → 60m final commitments; 60m scheduled; 60m recorded Focus"
+        }
+      ],
+      "reflections": [
+        {
+          "label": "Finalized daily reflection: 2028-01-05",
+          "note": "An ordinary record of deliberately selected work."
+        },
+        {
+          "label": "Finalized weekly reflection",
+          "note": "Reflect on the recorded week and preserve breathing room."
+        }
+      ],
+      "samples": {
+        "openai": {
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "status": "accepted",
+          "insights": []
+        },
+        "anthropic": {
+          "provider": "anthropic",
+          "model": "claude-haiku-4-5-20251001",
+          "status": "accepted",
+          "insights": []
+        }
+      }
+    },
+    {
+      "id": "repeated_carry",
+      "title": "Repeated finalized Carry",
+      "brief": "Onboarding is 120/60/30m. The same Action has two finalized Carry decisions total: one prior Review and this Review. No following plan. A finalized reflection asks for a changed approach.",
+      "week": "2028-01-03",
+      "contextHash": "42d0857e5eb8e0d8242997cb36c635a4bb2b82e0f9d003760eabab9969ea5282",
+      "topics": [
+        {
+          "id": "review_insight_9825f19bda576821a656da90",
+          "title": "Ship guided first-week planning",
+          "type": "repeated_carry",
+          "evidence": [
+            {
+              "key": "review_commitment:c6ad10ad-ddf9-453c-b9f3-662fd9a8a1cf",
+              "label": "Ship guided first-week planning: 120m committed; 60m scheduled; 30m recorded Focus in 2028-01-03"
+            },
+            {
+              "key": "following:c5bcaefc-e9b4-43bf-9809-5bcff8847798",
+              "label": "Following week 2028-01-10: no saved plan\nHuman Carry intent: 90m; selection in the next plan is recorded separately."
+            },
+            {
+              "key": "review_carry:c5bcaefc-e9b4-43bf-9809-5bcff8847798",
+              "label": "Ship guided first-week planning: human Carry decisions in 2028-01-03, 2027-12-27 (2 distinct finalized Reviews)"
+            }
+          ],
+          "question": {
+            "key": "repeated_carry",
+            "text": "What keeps this work worth another Carry decision, and what would make a new attempt different from renewing the same intent?"
+          }
+        }
+      ],
+      "overview": [
+        {
+          "key": "following:c5bcaefc-e9b4-43bf-9809-5bcff8847798",
+          "label": "Following week 2028-01-10: no saved plan\nHuman Carry intent: 90m; selection in the next plan is recorded separately."
+        },
+        {
+          "key": "review_summary",
+          "label": "Week 2028-01-03: 120m baseline commitments → 120m final commitments; 60m scheduled; 30m recorded Focus"
+        }
+      ],
+      "reflections": [
+        {
+          "label": "Finalized daily reflection: 2028-01-05",
+          "note": "An ordinary record of deliberately selected work."
+        },
+        {
+          "label": "Finalized weekly reflection",
+          "note": "I want a fresh attempt to involve a changed approach rather than unchanged intent."
+        }
+      ],
+      "samples": {
+        "openai": {
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "status": "withheld",
+          "insights": []
+        },
+        "anthropic": {
+          "provider": "anthropic",
+          "model": "claude-haiku-4-5-20251001",
+          "status": "withheld",
+          "insights": []
+        }
+      }
+    },
+    {
+      "id": "clean",
+      "title": "Clean week",
+      "brief": "Onboarding is 60m committed, 60m scheduled and 60m recorded. No eligible unresolved Review relationship.",
+      "week": "2028-01-03",
+      "contextHash": "c4a66ec2e0d8714ccd180ad51c3e501d492dcef7821819c7dc3fedede60095dd",
+      "topics": [],
+      "overview": [
+        {
+          "key": "review_summary",
+          "label": "Week 2028-01-03: 60m baseline commitments → 60m final commitments; 60m scheduled; 60m recorded Focus"
+        }
+      ],
+      "reflections": [
+        {
+          "label": "Finalized daily reflection: 2028-01-05",
+          "note": "An ordinary record of deliberately selected work."
+        },
+        {
+          "label": "Finalized weekly reflection",
+          "note": "Reflect on the recorded week and preserve breathing room."
+        }
+      ],
+      "samples": {
+        "openai": {
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "status": "accepted",
+          "insights": []
+        },
+        "anthropic": {
+          "provider": "anthropic",
+          "model": "claude-haiku-4-5-20251001",
+          "status": "accepted",
+          "insights": []
+        }
+      }
+    },
+    {
+      "id": "completed",
+      "title": "Tracking gap but Action completed",
+      "brief": "Onboarding is 240/60/30m, but the authoritative Action state is Completed. R5F suppresses needs-attention coaching; recorded Focus is not completion.",
+      "week": "2028-01-03",
+      "contextHash": "07d6cd5d0f1954eddc5d376dfbed354fbc151b4d5eeeec601b5fa86d5928bd96",
+      "topics": [],
+      "overview": [
+        {
+          "key": "review_summary",
+          "label": "Week 2028-01-03: 240m baseline commitments → 240m final commitments; 60m scheduled; 30m recorded Focus"
+        }
+      ],
+      "reflections": [
+        {
+          "label": "Finalized daily reflection: 2028-01-05",
+          "note": "An ordinary record of deliberately selected work."
+        },
+        {
+          "label": "Finalized weekly reflection",
+          "note": "Reflect on the recorded week and preserve breathing room."
+        }
+      ],
+      "samples": {
+        "openai": {
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "status": "accepted",
+          "insights": []
+        },
+        "anthropic": {
+          "provider": "anthropic",
+          "model": "claude-haiku-4-5-20251001",
+          "status": "accepted",
+          "insights": []
+        }
+      }
+    },
+    {
+      "id": "no_reflection",
+      "title": "Gap without permitted reflection",
+      "brief": "Onboarding is 240/60/30m. Weekly/Daily reflections are Draft and excluded. No permitted explanatory reflection and no following plan.",
+      "week": "2028-01-03",
+      "contextHash": "281d46842d726c35b3c5b3371a6faa4251d0933dea303b7472bb6b7d9d3ec4b4",
+      "topics": [
+        {
+          "id": "review_insight_a5926ab38c7394007be418a4",
+          "title": "Ship guided first-week planning",
+          "type": "planning_execution_gap",
+          "evidence": [
+            {
+              "key": "review_commitment:186f0847-dcdb-4e6d-b4ca-59999693a7af",
+              "label": "Ship guided first-week planning: 240m committed; 60m scheduled; 30m recorded Focus in 2028-01-03"
+            },
+            {
+              "key": "following:54fb6115-1622-4ae7-a7fd-387856119da7",
+              "label": "Following week 2028-01-10: no saved plan"
+            }
+          ],
+          "question": {
+            "key": "planning_execution_gap",
+            "text": "Did this work lack protected time, or is there work or displacement that the Focus record does not capture?"
+          }
+        }
+      ],
+      "overview": [
+        {
+          "key": "following:54fb6115-1622-4ae7-a7fd-387856119da7",
+          "label": "Following week 2028-01-10: no saved plan"
+        },
+        {
+          "key": "review_summary",
+          "label": "Week 2028-01-03: 240m baseline commitments → 240m final commitments; 60m scheduled; 30m recorded Focus"
+        }
+      ],
+      "reflections": [],
+      "samples": {
+        "openai": {
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "status": "accepted",
+          "insights": [
+            {
+              "candidateId": "review_insight_a5926ab38c7394007be418a4",
+              "interpretation": "Protected time and recorded execution are different boundaries, so the records do not establish whether the intended outcome was reached or whether the approach needs changing.",
+              "reflectionQuestion": "If the outcome still matters, would you renew the same approach or revise how it is pursued?"
+            }
+          ]
+        },
+        "anthropic": {
+          "provider": "anthropic",
+          "model": "claude-haiku-4-5-20251001",
+          "status": "withheld",
+          "insights": []
+        }
+      }
+    }
+  ],
+  "questions": [
+    {
+      "key": "betterDecision",
+      "text": "Which version helped me make a better Carry/Defer/Drop decision?"
+    },
+    {
+      "key": "aiAddedValue",
+      "text": "Did the AI version add anything beyond the deterministic question?"
+    },
+    {
+      "key": "aiNuance",
+      "text": "Did the AI introduce nuance that the template missed?"
+    },
+    {
+      "key": "aiVerbosity",
+      "text": "Did it become more verbose without becoming more useful?"
+    },
+    {
+      "key": "coachDisappeared",
+      "text": "Would I notice if the Coach section disappeared?"
+    },
+    {
+      "key": "weeklyReading",
+      "text": "Would I voluntarily read this every week?"
+    }
+  ],
+  "experimentId": "9d4de6564aeabdba534e668ba423ad7d1b2f5098b33099cab58d272eb93096ae"
+}

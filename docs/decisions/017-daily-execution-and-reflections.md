@@ -1,0 +1,11 @@
+# ADR 017 — Derived local-day facts and terminal reflection text
+
+Status: implemented for the authorized Phase 6B slice, 3 October 2026.
+
+Use the User's current IANA timezone to derive exact local-day boundaries with Temporal. A session's daily contribution is half-open interval overlap, summed in milliseconds before display rounding; no execution is clipped to a planned block. Preserve pinned Plan/block instants, whole-session commitment lineage and frozen context. A timezone change can redistribute a pinned interval across current User dates. Current-day active totals are live; past active contributions stop at the closed day boundary. Read-only repeatable-read transactions provide one coherent daily projection without receipts or source writes.
+
+Persist one small owned DailyReflection per calendar date, Draft → Finalized only. Explicit Draft saves use expected versions and existing atomic owner-scoped receipts. Finalization acts on a saved non-empty note, increments version and records server finalizedAt. A focused database trigger prevents identity/date/creation changes, missing version increments and finalized updates. No product DELETE or correction surface exists; maintenance SQL is outside the application lifecycle.
+
+Receipt → User NO KEY UPDATE → reflection lock ordering matches Focus/scheduling owner serialization. Finalization checks the current authoritative User timezone/clock and active session under that lock. Reject current-day changing facts, including just-started zero elapsed sessions; permit closed past-day reflection during a cross-midnight active session. A new Focus session can deliberately start after a reflection was finalized; summaries remain derived and the text stays immutable. Do not create another execution snapshot subsystem.
+
+Stale tabs retain attempted text and require explicit review of the latest saved note before saving against its new version. An uncertain response retains the exact command for replay, then rereads current saved state. Passive polling never replaces an unsaved note or silently adopts a new reflection version. Finalizing remains a short explicit summary-and-note confirmation. No scores, AI, scheduling automation, planning mutations or weekly review are introduced.

@@ -1,0 +1,33 @@
+import {randomBytes,randomUUID} from 'node:crypto';
+import {spawn,type ChildProcess} from 'node:child_process';
+import {once} from 'node:events';
+import {setTimeout as delay} from 'node:timers/promises';
+import {mkdtemp,writeFile,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import assert from 'node:assert/strict';
+import {Pool} from 'pg';
+import {migrate} from 'drizzle-orm/node-postgres/migrator';
+import {connectDatabase} from '../src/db/connect';
+import {requireTestDatabaseURL,dropIsolatedTestDatabase} from './test-database';
+import {provisionLocalUser} from './local-user';
+import {databaseCoaching,coachingCalendarFixture} from '../tests/coaching-database';
+import {executionFixture} from '../tests/focus-database';
+import {startCoachingFixture,coachingFixtureEnvironment} from '../tests/coaching-provider-fixture';
+import type {CoachingView,CoachingRun} from '../src/modules/coaching/domain';
+const origin='http://127.0.0.1:3102',week='2028-01-03',now='2026-10-03T09:00:00.000Z',{url}=requireTestDatabaseURL(),target=new URL(url),adminURL=new URL(url),name=`execution_test_${randomBytes(6).toString('hex')}`;
+target.pathname=`/${name}`;adminURL.pathname='/postgres';const admin=new Pool({connectionString:adminURL.toString()}),database=connectDatabase(target.toString()),directory=await mkdtemp(join(tmpdir(),'coaching-restart-')),clockFile=join(directory,'now'),fixture=await startCoachingFixture();let created=false,child:ChildProcess|undefined;
+async function start(provider:'openai'|'anthropic'|''='openai'){child=spawn(process.execPath,['node_modules/next/dist/bin/next','start','--hostname','127.0.0.1','--port','3102'],{env:{...process.env,...coachingFixtureEnvironment(fixture.origin),AI_PROVIDER:provider,NODE_ENV:'production',BETTER_AUTH_URL:origin,DATABASE_URL:target.toString(),EXECUTION_TEST_CLOCK_FILE:clockFile,GOOGLE_CALENDAR_CLIENT_ID:'',GOOGLE_CALENDAR_CLIENT_SECRET:'',GOOGLE_CALENDAR_REDIRECT_URI:'',CALENDAR_ENCRYPTION_KEYS:'',CALENDAR_ENCRYPTION_KEY_ID:'',CALENDAR_TEST_ORIGIN:''},stdio:'ignore'});for(let i=0;i<120;i++){if(child.exitCode!==null)throw new Error('Production process exited');try{if((await fetch(`${origin}/api/health`)).status===200)return;}catch{}await delay(250);}throw new Error('Production process not ready');}
+async function stop(){if(child&&child.exitCode===null){const ended=once(child,'exit');child.kill('SIGTERM');await ended;}child=undefined;}
+try{
+ await admin.query(`CREATE DATABASE "${name}"`);created=true;await migrate(database.db,{migrationsFolder:'src/db/migrations'});const user=await provisionLocalUser(database.db,{email:process.env.TEST_USER_A_EMAIL,password:process.env.TEST_USER_A_PASSWORD,name:'Coaching restart proof',timezone:'Europe/London'}),actor={userId:user.id},f=await executionFixture(database.db,actor,week,()=>now);const d=databaseCoaching(database.db,database.pool,()=>now);await d.hours.save(actor,{mutationId:randomUUID(),scheduleId:null,expectedVersion:0,windows:[{weekday:1,startMinute:540,endMinute:1020}]});await coachingCalendarFixture(database.db,database.pool,actor,week,now);await writeFile(clockFile,now);await start();
+ const login=await fetch(`${origin}/api/auth/sign-in/email`,{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({email:process.env.TEST_USER_A_EMAIL,password:process.env.TEST_USER_A_PASSWORD})});assert.equal(login.status,200);const cookie=login.headers.getSetCookie().map(v=>v.split(';')[0]).join('; '),headers={cookie,Origin:origin,'Content-Type':'application/json'};
+ const path=`/api/coaching?contextType=calendar&week=${week}`;
+ async function get():Promise<CoachingView>{const r=await fetch(`${origin}${path}`,{headers});assert.equal(r.status,200,r.status===200?'':JSON.stringify(await r.clone().json()));return r.json();}
+ async function post<T>(path:string,data:unknown):Promise<T>{const r=await fetch(`${origin}${path}`,{method:'POST',headers,body:JSON.stringify(data)});assert.equal(r.status,200);return r.json();}
+ const calls=async()=>(await (await fetch(`${fixture.origin}/control`)).json()).calls;
+ const snapshot=async()=>{const rows:Record<string,unknown>={};for(const t of ['goal','milestone','action','weekly_plan','weekly_commitment','weekly_plan_amendment','amendment_commitment','time_block','focus_session','daily_reflection','weekly_review','weekly_review_decision'])rows[t]=(await database.pool.query(`SELECT row_to_json(t) FROM ${t} t WHERE owner_id=$1 ORDER BY row_to_json(t)::text`,[user.id])).rows;return rows;},before=await snapshot();
+ const view=await get(),command={contextType:'calendar',week,mutationId:randomUUID(),fingerprint:view.fingerprint};assert.equal(await calls(),0);const run=(await post<{run:CoachingRun}>('/api/coaching',command)).run;assert.equal(run.status,'succeeded');assert.equal(run.provider,'openai');assert.equal(run.recommendations[0].proposal.type,'schedule_candidate');assert.ok(run.recommendations[0].candidate);assert.equal(await calls(),1);await stop();await start();assert.deepEqual((await get()).run,{...run,stale:false,interrupted:false});assert.deepEqual((await post<{run:CoachingRun}>('/api/coaching',command)).run,run);assert.equal(await calls(),1);await stop();await start('anthropic');assert.equal((await get()).run?.id,run.id);const claude=(await post<{run:CoachingRun}>('/api/coaching',{...command,mutationId:randomUUID()})).run;assert.equal(claude.status,'succeeded');assert.equal(claude.provider,'anthropic');assert.equal(claude.model,'fixture-claude');assert.equal(await calls(),2);assert.deepEqual(await snapshot(),before);
+ await stop();await start('anthropic');assert.equal((await get()).run?.id,claude.id);assert.equal(await calls(),2);await f.actions.completeAction(actor,f.action.id,{mutationId:randomUUID(),expectedVersion:1});assert.equal((await get()).run?.stale,true);const stale=await fetch(`${origin}/api/coaching/${claude.id}/preview`,{method:'POST',headers,body:JSON.stringify({index:0})});assert.equal(stale.status,409);await stop();await start('');assert.equal((await get()).enabled,false);assert.equal((await fetch(`${origin}/calendar?week=${week}`,{headers})).status,200);assert.equal(await calls(),2);
+ console.log('PASS: actual production stop/start preserves OpenAI and Anthropic fixture runs and exact retries without repeat provider calls; generation preserves upstream bytes; changed Action rejects stale preview; disabling AI keeps Calendar healthy. Exact synthetic models: fixture-openai, fixture-claude.');
+}finally{await stop();await fixture.close();await database.pool.end();if(created)await dropIsolatedTestDatabase(admin,name);await admin.end();await rm(directory,{recursive:true,force:true});}

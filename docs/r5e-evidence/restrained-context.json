@@ -1,0 +1,225 @@
+{
+  "contextType": "calendar",
+  "week": "2028-01-03",
+  "schemaVersion": 2,
+  "stateFingerprint": "73a68c092db036707a85a1264a06d685f543891a0bef4c0a1f1ebe22a695da66",
+  "requestTime": "2028-01-05T08:00:00.000Z",
+  "today": "2028-01-05",
+  "timezone": "Europe/London",
+  "planId": "ec437034-1216-422f-9975-d40dbb28e14a",
+  "facts": [
+    {
+      "key": "availability",
+      "label": "Current availability is advisory",
+      "data": {
+        "status": "available",
+        "timezone": "Europe/London",
+        "hoursVersion": 1,
+        "focusableMinutes": 1500,
+        "openMinutes": 1320
+      },
+      "reference": null
+    },
+    {
+      "key": "commitment:c99af379-5d26-4422-86d1-b02ffbf888a7",
+      "label": "Test the first-week onboarding flow: 60m committed, 60m scheduled, 0m still unscheduled, 60m recorded Focus",
+      "data": {
+        "actionId": "fd2bda6c-2c85-4ce2-95de-f212f0c625cb",
+        "goalId": "39d2261e-092f-4302-ada1-3b9f5928c1fa",
+        "title": "Test the first-week onboarding flow",
+        "budgetMinutes": 60,
+        "scheduledMinutes": 60,
+        "unscheduledMinutes": 0,
+        "recordedMilliseconds": 3600000,
+        "inEffectivePlan": true
+      },
+      "reference": {
+        "kind": "commitment",
+        "id": "c99af379-5d26-4422-86d1-b02ffbf888a7"
+      }
+    },
+    {
+      "key": "commitment:e6ed6b88-9ff6-4504-9be0-20cc040cd673",
+      "label": "Draft the planning essay: 60m committed, 60m scheduled, 0m still unscheduled, 0m recorded Focus",
+      "data": {
+        "actionId": "868fb99a-6840-4287-ad52-a304b552634b",
+        "goalId": "13b868a4-1622-4a3a-8787-e6d8a72fa4d0",
+        "title": "Draft the planning essay",
+        "budgetMinutes": 60,
+        "scheduledMinutes": 60,
+        "unscheduledMinutes": 0,
+        "recordedMilliseconds": 0,
+        "inEffectivePlan": true
+      },
+      "reference": {
+        "kind": "commitment",
+        "id": "e6ed6b88-9ff6-4504-9be0-20cc040cd673"
+      }
+    },
+    {
+      "key": "commitment:ec4bf793-b985-4784-be4c-6b098f7bb95f",
+      "label": "Complete one steady run: 60m committed, 60m scheduled, 0m still unscheduled, 60m recorded Focus",
+      "data": {
+        "actionId": "20e40544-b9ed-4b3e-8de7-5f77e16c6c33",
+        "goalId": "66213dd6-3918-4eb8-9909-418c609a712b",
+        "title": "Complete one steady run",
+        "budgetMinutes": 60,
+        "scheduledMinutes": 60,
+        "unscheduledMinutes": 0,
+        "recordedMilliseconds": 3600000,
+        "inEffectivePlan": true
+      },
+      "reference": {
+        "kind": "commitment",
+        "id": "ec4bf793-b985-4784-be4c-6b098f7bb95f"
+      }
+    },
+    {
+      "key": "execution",
+      "label": "Recorded Focus outcomes; no tracking does not mean no work",
+      "data": {
+        "outcomes": [
+          {
+            "outcome": "completed",
+            "count": 2
+          }
+        ],
+        "recordedMilliseconds": 7200000
+      },
+      "reference": null
+    },
+    {
+      "key": "focus_cycle:85855126-0c29-4b5c-a372-0c3012155c20",
+      "label": "Current Focus: Make the weekly loop useful and sustainable",
+      "data": {
+        "title": "Make the weekly loop useful and sustainable",
+        "intent": "Ship a small useful beta, maintain recovery, and share one concrete lesson. Preserve breathing room rather than filling every open hour.",
+        "startDate": "2027-12-20",
+        "endDate": "2028-01-31",
+        "version": 2,
+        "goalIds": [
+          "13b868a4-1622-4a3a-8787-e6d8a72fa4d0",
+          "39d2261e-092f-4302-ada1-3b9f5928c1fa",
+          "66213dd6-3918-4eb8-9909-418c609a712b"
+        ]
+      },
+      "reference": {
+        "kind": "focus_cycle",
+        "id": "85855126-0c29-4b5c-a372-0c3012155c20"
+      }
+    },
+    {
+      "key": "goal:13b868a4-1622-4a3a-8787-e6d8a72fa4d0",
+      "label": "Current Focus includes Publish one practical essay each week",
+      "data": {
+        "title": "Publish one practical essay each week",
+        "outcome": "Share one useful lesson from building the planning loop.",
+        "version": 1,
+        "archived": false,
+        "currentFocus": true
+      },
+      "reference": {
+        "kind": "goal",
+        "id": "13b868a4-1622-4a3a-8787-e6d8a72fa4d0"
+      }
+    },
+    {
+      "key": "goal:39d2261e-092f-4302-ada1-3b9f5928c1fa",
+      "label": "Current Focus includes Ship a small trustworthy One Better beta",
+      "data": {
+        "title": "Ship a small trustworthy One Better beta",
+        "outcome": "Ten people can independently plan, focus and review a useful week.",
+        "version": 1,
+        "archived": false,
+        "currentFocus": true
+      },
+      "reference": {
+        "kind": "goal",
+        "id": "39d2261e-092f-4302-ada1-3b9f5928c1fa"
+      }
+    },
+    {
+      "key": "goal:66213dd6-3918-4eb8-9909-418c609a712b",
+      "label": "Current Focus includes Maintain a sustainable running rhythm",
+      "data": {
+        "title": "Maintain a sustainable running rhythm",
+        "outcome": "Run consistently while protecting recovery.",
+        "version": 1,
+        "archived": false,
+        "currentFocus": true
+      },
+      "reference": {
+        "kind": "goal",
+        "id": "66213dd6-3918-4eb8-9909-418c609a712b"
+      }
+    },
+    {
+      "key": "plan:ec437034-1216-422f-9975-d40dbb28e14a",
+      "label": "Week 2028-01-03: committed plan",
+      "data": {
+        "state": "committed",
+        "version": 3,
+        "timezone": "Europe/London",
+        "original": {
+          "usableMinutes": 540,
+          "totalMinutes": 180,
+          "remainingMinutes": 360
+        },
+        "current": {
+          "usableMinutes": 540,
+          "totalMinutes": 180,
+          "remainingMinutes": 360
+        }
+      },
+      "reference": {
+        "kind": "plan",
+        "id": "ec437034-1216-422f-9975-d40dbb28e14a"
+      }
+    }
+  ],
+  "signals": [
+    {
+      "id": "signal_fully_scheduled_c99af379-5d26-4422-86d1-b02ffbf888a7",
+      "kind": "fully_scheduled",
+      "title": "Test the first-week onboarding flow",
+      "evidenceRefs": [
+        "commitment:c99af379-5d26-4422-86d1-b02ffbf888a7"
+      ],
+      "target": {
+        "kind": "commitment",
+        "id": "c99af379-5d26-4422-86d1-b02ffbf888a7"
+      },
+      "worthConsidering": false,
+      "candidateIds": []
+    },
+    {
+      "id": "signal_fully_scheduled_e6ed6b88-9ff6-4504-9be0-20cc040cd673",
+      "kind": "fully_scheduled",
+      "title": "Draft the planning essay",
+      "evidenceRefs": [
+        "commitment:e6ed6b88-9ff6-4504-9be0-20cc040cd673"
+      ],
+      "target": {
+        "kind": "commitment",
+        "id": "e6ed6b88-9ff6-4504-9be0-20cc040cd673"
+      },
+      "worthConsidering": false,
+      "candidateIds": []
+    },
+    {
+      "id": "signal_fully_scheduled_ec4bf793-b985-4784-be4c-6b098f7bb95f",
+      "kind": "fully_scheduled",
+      "title": "Complete one steady run",
+      "evidenceRefs": [
+        "commitment:ec4bf793-b985-4784-be4c-6b098f7bb95f"
+      ],
+      "target": {
+        "kind": "commitment",
+        "id": "ec4bf793-b985-4784-be4c-6b098f7bb95f"
+      },
+      "worthConsidering": false,
+      "candidateIds": []
+    }
+  ],
+  "scheduleCandidates": []
+}
