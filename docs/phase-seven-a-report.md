@@ -87,7 +87,7 @@ Use existing authentication, Origin checking, strict payloads, safe errors and p
 
 ## Exact verification
 
-The complete npm run check exited **0**, including every previous test. Evidence log: [.cache/phase7a-check.log](../.cache/phase7a-check.log). A final presentation-only adjustment adds the terminal-source explanation to finalized rows; all seven affected browser tests, lint/typecheck, a fresh production build and the Weekly Review restart proof passed again afterward. No domain/database mutation changed. Follow-up evidence: [.cache/phase7a-final-ui.log](../.cache/phase7a-final-ui.log).
+The complete npm run check exited **0**, including every previous test. Evidence log: `.cache/phase7a-check.log` (ignored local artifact). A final presentation-only adjustment adds the terminal-source explanation to finalized rows; all seven affected browser tests, lint/typecheck, a fresh production build and the Weekly Review restart proof passed again afterward. No domain/database mutation changed. Follow-up evidence: `.cache/phase7a-final-ui.log` (ignored local artifact). These logs are unavailable in clean checkouts.
 
 | Gate | Final result |
 | --- | --- |
@@ -106,7 +106,7 @@ The complete npm run check exited **0**, including every previous test. Evidence
 
 Test runners emit their existing NO_COLOR/FORCE_COLOR environment warning; lint itself has no warnings. No dependencies or lockfile were changed for Phase 7A.
 
-Dependency audit: allowed **npm audit --offline --json** reports zero vulnerabilities at all severities across 646 dependency entries in the cached advisory result. Evidence: [offline audit JSON](../.cache/phase7a-audit-offline.json). This is a cached/offline result, not a fresh registry advisory lookup. The earlier online attempt was rejected by automatic approval review; no fresh lookup or network bypass was attempted for this phase.
+Dependency audit: allowed **npm audit --offline --json** reports zero vulnerabilities at all severities across 646 dependency entries in the cached advisory result. Evidence: `.cache/phase7a-audit-offline.json` (ignored local artifact, unavailable in clean checkouts). This is a cached/offline result, not a fresh registry advisory lookup. The earlier online attempt was rejected by automatic approval review; no fresh lookup or network bypass was attempted for this phase.
 
 ## Acceptance evidence — all 65 cases
 
@@ -154,7 +154,7 @@ The desktop interaction sequence took 31 seconds after opening the review: inspe
 
 The standalone test Planning page showed unavailable calendar advisory alongside a successful deliberate handoff. It did not block manual capacity or Carry. No live Google request was part of this walkthrough; this observation cannot verify real Calendar integration. Current-week shortcuts in the pre-existing Planning UI use wall-clock time while this disposable fixture advances only the guarded execution clock; the following-week link itself selects the correct explicit test week.
 
-Visual evidence: [finalized desktop review](../.cache/visual/phase-seven-a-review.png), [explicit next-week handoff](../.cache/visual/phase-seven-a-handoff.png), [390 px review](../.cache/visual/phase-seven-a-narrow.png). The manual script asserts underlying rows before cleaning its own disposable database and server. The normal app now runs the verified build with the additive migration.
+Visual evidence was saved locally at `.cache/visual/phase-seven-a-review.png` (finalized desktop review), `.cache/visual/phase-seven-a-handoff.png` (explicit next-week handoff), and `.cache/visual/phase-seven-a-narrow.png` (390px review). These ignored artifacts are unavailable in clean checkouts. The manual script asserts underlying rows before cleaning its own disposable database and server. The normal app now runs the verified build with the additive migration.
 
 ## Limitations and deferred features
 

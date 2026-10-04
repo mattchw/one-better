@@ -110,7 +110,7 @@ Earlier migration SQL was not edited: all 0000–0009 SHA-256 hashes exactly mat
 
 `npm audit --offline --json` exits 0 with **0 vulnerabilities** (info/low/moderate/high/critical all zero; 646 dependency entries). This is **cached/offline advisory evidence**, not a fresh registry audit. No fresh registry audit was run: prior automatic approval review rejected transmission of audit dependency metadata, and this phase uses the brief's permitted offline policy without bypassing that restriction. No new online audit result is claimed.
 
-After the final manual script/report changes, lint/typecheck/docs were checked again successfully. Final visual evidence: [daily view](../.cache/visual/phase-six-b-day.jpg), [centered confirmation](../.cache/visual/phase-six-b-confirmation.jpg), and the browser suite's [390px view](../.cache/visual/phase-six-b-day-narrow.png).
+After the final manual script/report changes, lint/typecheck/docs were checked again successfully. Final visual evidence was saved locally at `.cache/visual/phase-six-b-day.jpg` (daily view), `.cache/visual/phase-six-b-confirmation.jpg` (centered confirmation), and `.cache/visual/phase-six-b-day-narrow.png` (the browser suite's 390px view). These ignored artifacts are unavailable in clean checkouts.
 
 ## Manual product quality gate
 
