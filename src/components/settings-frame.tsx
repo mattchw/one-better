@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
 import { AppHeader } from "./app-header";
 
-type SettingsSection = "availability" | "integrations" | "account";
+type SettingsSection = "availability" | "integrations" | "appearance" | "account";
 const sections = [
   { key: "availability", title: "Availability", detail: "Focusable hours, breathing room", href: "/availability" },
   { key: "integrations", title: "Integrations", detail: "Calendar and AI connections", href: "/integrations" },
+  { key: "appearance", title: "Appearance", detail: "Light, dark, or system", href: "/settings/appearance" },
   { key: "account", title: "Account", detail: "Profile, time zone", href: "/settings/account" },
 ] as const;
 

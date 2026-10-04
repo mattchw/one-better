@@ -18,6 +18,23 @@ test.beforeEach(async({page})=>{await clean();await fetch(`${process.env.CALENDA
 async function mutate(page:Page,path:string,data:object,method="POST"){const r=await page.request.fetch(path,{method,headers:{Origin:origin},data});expect(r.status(),await r.text()).toBe(200);return r.json();}
 async function fixture(page:Page,commit=true,title="Build weekly planning UI",planWeek=week,withHours=true){const g=(await mutate(page,"/api/goals",{mutationId:randomUUID(),title:"Make meaningful progress",outcome:"A calmer week with protected time"})).goal;const act=(await mutate(page,`/api/goals/${g.id}/actions`,{mutationId:randomUUID(),title,estimateMinutes:240,doneWhen:"The planning loop is usable"})).action;const candidate=(await (await page.request.get("/api/weekly-plans/candidates")).json()).candidates.find((c:{actionId:string})=>c.actionId===act.id);let plan:WeeklyPlan=(await mutate(page,"/api/weekly-plans",{mutationId:randomUUID(),weekStartDate:planWeek,provisionalCapacityMinutes:720,reserveMinutes:180})).plan;plan=(await mutate(page,`/api/weekly-plans/${plan.id}`,{mutationId:randomUUID(),expectedVersion:1,provisionalCapacityMinutes:720,reserveMinutes:180,commitments:[{actionId:act.id,budgetMinutes:180,source:candidate.source}]},"PATCH")).plan;if(commit)plan=(await mutate(page,`/api/weekly-plans/${plan.id}/commit`,{mutationId:randomUUID(),expectedVersion:2})).plan;if(withHours)await mutate(page,"/api/focusable-hours",{mutationId:randomUUID(),scheduleId:null,expectedVersion:0,windows:Array.from({length:5},(_,i)=>({weekday:i+1,startMinute:540,endMinute:1020}))},"PUT");return {g,act,plan,url:`/api/weekly-plans/${plan.id}/time-blocks`};}
 const read=async(page:Page,url:string):Promise<SchedulingView>=>(await page.request.get(url)).json();
+test('dark theme keeps the calendar grid, blocks and hover details readable',async({page})=>{
+ await page.addInitScript(()=>localStorage.setItem('one-better-theme','dark'));
+ const f=await fixture(page),{block}=await apiCreate(page,f);
+ const before=await read(page,f.url);
+ await page.goto(`/calendar?week=${week}`);
+ await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+ const card=page.locator(`[data-calendar-block="${block.id}"]`);
+ await expect(card).toBeVisible();
+ const background=await card.evaluate(el=>getComputedStyle(el).backgroundColor);
+ expect(Math.max(...background.match(/\d+/g)!.slice(0,3).map(Number))).toBeLessThan(90);
+ await card.hover();
+ await expect(page.getByRole('tooltip')).toContainText('Build weekly planning UI');
+ await page.screenshot({path:'.cache/theme-calendar-dark.png',fullPage:true});
+ await card.click();
+ await expect(blockRegion(page)).toContainText('The planning loop is usable');
+ expect(await read(page,f.url)).toEqual(before);
+});
 async function apiCreate(page:Page,f:Awaited<ReturnType<typeof fixture>>,date="2028-01-04",startTime="10:00",endTime="11:30"){const input={commitmentId:(await read(page,f.url)).commitments[0].id,date,startTime,endTime},r:PlacementReview=await mutate(page,`${f.url}/preview`,input);const command={...input,mutationId:randomUUID(),expectedPlanVersion:r.planVersion,reviewKey:r.reviewKey,acknowledgeOutsideHours:r.outsideHours,acknowledgeBusy:!!r.busyConflict};return {block:(await mutate(page,f.url,command)).block as TimeBlock,command};}
 async function choose(page:Page,date='2028-01-04',start='10:00',end='11:30') {await page.getByLabel('Day',{exact:true}).fill(date);await page.getByLabel('Start time',{exact:true}).fill(start);await page.getByLabel('End time',{exact:true}).fill(end);await page.getByRole('button',{name:'Review placement',exact:true}).click();}
 async function connect(page:Page){await page.goto('/integrations');await page.getByRole('button',{name:'Connect Google Calendar',exact:true}).click();await page.getByRole('link',{name:'Approve test Calendar access'}).click();await page.getByRole('checkbox',{name:/^Work/}).check();await page.getByRole('button',{name:'Save calendar selection'}).click();await expect(page.getByText('Calendar selection saved. Weekly planning stays unchanged.')).toBeVisible();return (await (await page.request.get('/api/calendar')).json()).connection.id as string;}
