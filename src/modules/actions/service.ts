@@ -29,7 +29,7 @@ export function actionService(repository: ActionRepository, clock = () => new Da
   async function catalog(actor: Actor, parentId: string): Promise<ActionCatalog> {
     const context = await repository.readOwned(actor, parentId);
     const parent = ownedGoal(context.goal, actor.userId);
-    const milestones = context.milestones.map((m) => checkpoint(m, actor, parent.id));
+    const milestones = context.milestones.map((m) => checkpoint(m, actor, parent!.id));
     return { goal: parent, canCreate: !parent.archivedAt, assignableMilestones: parent.archivedAt ? [] : milestones.filter((m) => m.state === "active"), actions: context.actions.map((row) => {
       const value = ownedAction(row, actor.userId);
       if (value.goalId !== parent.id) throw new ApplicationError("NOT_FOUND", "This action is unavailable.");
@@ -37,17 +37,18 @@ export function actionService(repository: ActionRepository, clock = () => new Da
       return { action: value, milestone: linked, mutability: actionMutability(value, parent, linked) };
     }) };
   }
-  async function existing(actor: Actor, id: string, mutationId: string, requestHash: string, destinationId: string | null | undefined, change: (value: Action, parent: Goal, current: Milestone | null, destination: Milestone | null) => Action) {
+  async function existing(actor: Actor, id: string, mutationId: string, requestHash: string, destinationId: string | null | undefined, change: (value: Action, parent: Goal | null, current: Milestone | null, destination: Milestone | null) => Action) {
     return repository.executeOwned(actor, mutationId, requestHash, async (tx) => {
       const discovered = ownedAction(await tx.findOwned(id), actor.userId);
-      const parent = ownedGoal(await tx.findGoalForUpdate(discovered.goalId), actor.userId);
+      const parent = discovered.goalId ? ownedGoal(await tx.findGoalForUpdate(discovered.goalId), actor.userId) : null;
       // All Action/Milestone writers hold this Goal lock. Re-read the current association after acquiring it.
       const peek = ownedAction(await tx.findOwned(id), actor.userId);
-      if (peek.goalId !== parent.id) throw new ApplicationError("NOT_FOUND", "This action is unavailable.");
+      if (peek.goalId !== (parent?.id ?? null)) throw new ApplicationError("NOT_FOUND", "This action is unavailable.");
       const destination = destinationId === undefined ? peek.milestoneId : destinationId;
+      if (!parent && destination) throw new ApplicationError("VALIDATION", "General tasks cannot have a milestone.");
       const ids = [...new Set([peek.milestoneId, destination].filter((value): value is string => Boolean(value)))].sort();
       const checkpoints = new Map<string, Milestone>();
-      for (const checkpointId of ids) checkpoints.set(checkpointId, checkpoint(await tx.findMilestoneForUpdate(parent.id, checkpointId), actor, parent.id));
+      for (const checkpointId of ids) checkpoints.set(checkpointId, checkpoint(await tx.findMilestoneForUpdate(parent!.id, checkpointId), actor, parent!.id));
       const current = ownedAction(await tx.findForUpdate(id), actor.userId);
       if (current.goalId !== peek.goalId || current.milestoneId !== peek.milestoneId) throw new ApplicationError("NOT_FOUND", "This action is unavailable.");
       const next = change(current, parent, current.milestoneId ? checkpoints.get(current.milestoneId)! : null, destination ? checkpoints.get(destination)! : null);
@@ -62,6 +63,7 @@ export function actionService(repository: ActionRepository, clock = () => new Da
     },
     async getAction(actor: Actor, id: string): Promise<ActionView> {
       const value = ownedAction(await repository.findOwned(actor, actionId(id)), actor.userId);
+      if (!value.goalId) return { action: value, milestone: null, mutability: actionMutability(value, null, null) };
       const result = (await catalog(actor, value.goalId)).actions.find((view) => view.action.id === value.id);
       if (!result) throw new ApplicationError("NOT_FOUND", "This action is unavailable.");
       return result;

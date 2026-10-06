@@ -21,11 +21,11 @@ export function reviewInsightCandidates(input:ContextSources) {
  const next=input.following,plan=next?.workspace.view?.plan;
  const nextCommitments=plan?.state==='committed'?next?.effective?.commitments??plan.commitments:plan?.commitments??[];
  const nextState=plan?.state??'absent';
- const nextFor=(actionId:string|null,goalId:string):ReviewInsightCandidate['following']=>{
-  const matching=nextCommitments.filter(c=>actionId?c.actionId===actionId:(c.snapshot?.goal.id??next?.workspace.view?.sources.find(s=>s.actionId===c.actionId)?.context.goal.id)===goalId);
+ const nextFor=(actionId:string|null,goalId:string|null):ReviewInsightCandidate['following']=>{
+  const matching=nextCommitments.filter(c=>actionId?c.actionId===actionId:(c.snapshot?.goal?.id??next?.workspace.view?.sources.find(s=>s.actionId===c.actionId)?.context.goal?.id)===goalId);
   return {state:nextState,budgetMinutes:matching.reduce((n,c)=>n+c.budgetMinutes,0),scheduledMinutes:matching.reduce((n,c)=>n+(next?.scheduling?.commitments.find(s=>s.id===c.id)?.scheduledMinutes??0),0),carryIntentMinutes:null as number|null};
  };
- const followingFact=(actionId:string|null,goalId:string,title:string)=>{
+ const followingFact=(actionId:string|null,goalId:string|null,title:string)=>{
   const value=nextFor(actionId,goalId);
   const carry=review?.review?.status==='finalized'?review.review.decisions.find(d=>d.actionId===actionId&&d.kind==='carry'):null;
   value.carryIntentMinutes=carry?.proposedBudgetMinutes??null;
@@ -55,10 +55,10 @@ export function reviewInsightCandidates(input:ContextSources) {
  };
  if(!review)return {facts,candidates,state:{...state,following:null}};
  add('review_summary',`Week ${week}: ${review.originalSummary.totalMinutes}m baseline commitments → ${review.finalSummary.totalMinutes}m final commitments; ${review.scheduledMilliseconds/60000}m scheduled; ${review.recordedMilliseconds/60000}m recorded Focus`,{original:review.originalSummary,final:review.finalSummary});
- const eligible=(actionId:string,goalId:string)=>input.sources.some(s=>s.actionId===actionId&&s.eligible)&&(!cycle||cycle.goals.some(g=>g.goalId===goalId&&!g.archivedAt));
+ const eligible=(actionId:string,goalId:string|null)=>input.sources.some(s=>s.actionId===actionId&&s.eligible)&&(goalId===null||!cycle||cycle.goals.some(g=>g.goalId===goalId&&!g.archivedAt));
  for(const entry of [...review.commitments].sort((a,b)=>a.commitment.id.localeCompare(b.commitment.id))){
   const c=entry.commitment,goal=c.snapshot.goal;
-  if(!eligible(c.actionId,goal.id))continue;
+  if(!eligible(c.actionId,goal?.id??null))continue;
   const decision=review.review?.status==='finalized'?review.review.decisions.find(d=>d.commitmentId===c.id):null;
   if(decision?.kind==='defer'||decision?.kind==='drop')continue;
   const recorded=entry.recordedMilliseconds/60000,scheduled=entry.scheduledMilliseconds/60000,budget=entry.latestBudgetMinutes;
@@ -74,8 +74,8 @@ export function reviewInsightCandidates(input:ContextSources) {
   const gap=budget>=60&&budget-recorded>=Math.max(60,budget/2);
   if(!gap&&carries.length<2)continue;
   const ref:Reference={kind:'commitment',id:c.id};
-  const amount=add(`review_commitment:${c.id}`,`${c.snapshot.action.title}: ${budget}m committed; ${scheduled}m scheduled; ${recorded}m recorded Focus in ${week}`,{budgetMinutes:budget,scheduledMinutes:scheduled,recordedMinutes:recorded,actionId:c.actionId,goalId:goal.id},ref);
-  const next=followingFact(c.actionId,goal.id,c.snapshot.action.title);
+  const amount=add(`review_commitment:${c.id}`,`${c.snapshot.action.title}: ${budget}m committed; ${scheduled}m scheduled; ${recorded}m recorded Focus in ${week}`,{budgetMinutes:budget,scheduledMinutes:scheduled,recordedMinutes:recorded,actionId:c.actionId,goalId:goal?.id??null},ref);
+  const next=followingFact(c.actionId,goal?.id??null,c.snapshot.action.title);
   const refs=[amount,next.key],dates=new Set(entry.blocks.map(b=>Temporal.Instant.from(b.start).toZonedDateTimeISO(review.timezone).toPlainDate().toString()));
   const reflectionRefs=reflect(dates);refs.push(...reflectionRefs);
   if(carries.length>=2)refs.push(add(`review_carry:${c.actionId}`,`${c.snapshot.action.title}: human Carry decisions in ${carries.map(c=>c.week).join(', ')} (${carries.length} distinct finalized Reviews)`,{actionId:c.actionId,carries}));
@@ -85,14 +85,14 @@ export function reviewInsightCandidates(input:ContextSources) {
    const after=entry.sessions.reduce((total,s)=>total+Math.max(0,Math.min(Date.parse(s.session.endedAt??input.requestTime??review.range.end),Date.parse(review.range.end))-Math.max(Date.parse(s.session.startedAt),Date.parse(a.createdAt),Date.parse(review.range.start))),0)/60000;
    refs.push(add(`review_amendment:${a.id}:${c.id}`,`Amendment saved ${a.createdAt}: capacity ${a.provisionalCapacityMinutes}m (baseline ${review.plan.provisionalCapacityMinutes}m); Action budget ${a.commitments.find(v=>v.actionId===c.actionId)?.budgetMinutes??0}m (first committed ${entry.firstBudgetMinutes}m); ${after}m recorded Focus after this save within the reviewed week`,{date:a.createdAt,baselineCapacity:review.plan.provisionalCapacityMinutes,savedCapacity:a.provisionalCapacityMinutes,recordedAfterMinutes:after}));
   }
-  addCandidate(carries.length>=2?'repeated_carry':'planning_execution_gap',c.snapshot.action.title,[ref,{kind:'action',id:c.actionId},{kind:'goal',id:goal.id}],refs,reflectionRefs,next.value,[carries.length>=2?'Examine what condition would distinguish a fresh attempt from unchanged intent; never choose the rollover decision.':'Separate how much time was protected from what happened during execution. Do not label the gap failure or assume more time is required.']);
+  addCandidate(carries.length>=2?'repeated_carry':'planning_execution_gap',c.snapshot.action.title,[ref,{kind:'action',id:c.actionId},...(goal?[{kind:'goal' as const,id:goal.id}]:[])],refs,reflectionRefs,next.value,[carries.length>=2?'Examine what condition would distinguish a fresh attempt from unchanged intent; never choose the rollover decision.':'Separate how much time was protected from what happened during execution. Do not label the gap failure or assume more time is required.']);
  }
  // A historical membership gap must still be relevant to today's active cycle,
  // span the reviewed week, have an eligible source, and be unaddressed next week.
  if(cycle&&cycle.startDate<=addDays(week,6)&&cycle.endDate>=week)for(const goal of cycle.goals){
-  if(goal.archivedAt||!input.sources.some(s=>s.eligible&&s.context.goal.id===goal.goalId))continue;
-  if(review.commitments.some(c=>c.commitment.snapshot.goal.id===goal.goalId)||review.otherWork.some(c=>c.block.snapshot.goal.id===goal.goalId&&c.recordedMilliseconds>0))continue;
-  const deferred=[review,...input.recent.slice(0,1)].some(h=>h.review?.status==='finalized'&&h.review.decisions.some(d=>d.kind==='defer'&&h.commitments.some(c=>c.commitment.actionId===d.actionId&&c.commitment.snapshot.goal.id===goal.goalId)));
+  if(goal.archivedAt||!input.sources.some(s=>s.eligible&&s.context.goal?.id===goal.goalId))continue;
+  if(review.commitments.some(c=>c.commitment.snapshot.goal?.id===goal.goalId)||review.otherWork.some(c=>c.block.snapshot.goal?.id===goal.goalId&&c.recordedMilliseconds>0))continue;
+  const deferred=[review,...input.recent.slice(0,1)].some(h=>h.review?.status==='finalized'&&h.review.decisions.some(d=>d.kind==='defer'&&h.commitments.some(c=>c.commitment.actionId===d.actionId&&c.commitment.snapshot.goal?.id===goal.goalId)));
   if(deferred)continue;
   const next=followingFact(null,goal.goalId,goal.title);
   if(next.value.budgetMinutes>=30&&next.value.scheduledMinutes>=30)continue;

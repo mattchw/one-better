@@ -147,7 +147,7 @@ it("Action edits/completion/archive and Goal/Milestone edits/terminal transition
   const history = await service.get(a, committed.id); expect(history.plan).toEqual(committed); expect(history.sources).toEqual([]); expect(history.plan.commitments.map((c) => c.snapshot?.action.title)).toContain(f.plain.title); expect(history.plan.commitments.find((c) => c.actionId === f.plain.id)?.snapshot?.action.estimateMinutes).toBe(120);
 });
 it("foreign/missing plans and source IDs have indistinguishable responses and no writes or leakage", async () => {
-  const f = await draft(); const bPlan = await service.create(b, create()); const foreign = await fixture(b); expect((await service.workspace(b)).savedWeeks).toHaveLength(1); expect((await service.workspace(b)).view?.plan.id).toBe(bPlan.id); expect((await service.candidates(b)).every((s) => s.context.goal.id === foreign.parent.id)).toBe(true);
+  const f = await draft(); const bPlan = await service.create(b, create()); const foreign = await fixture(b); expect((await service.workspace(b)).savedWeeks).toHaveLength(1); expect((await service.workspace(b)).view?.plan.id).toBe(bPlan.id); expect((await service.candidates(b)).every((s) => s.context.goal?.id === foreign.parent.id)).toBe(true);
   for (const id of [f.value.id, randomUUID()]) { const read = await error(service.get(b, id)); const update = await error(service.save(b, id, save(bPlan, []))); const commit = await error(service.commit(b, id, transition(1))); for (const response of [read, update, commit]) expect(response).toEqual({ code: "NOT_FOUND", message: "This weekly plan is unavailable.", details: undefined }); }
   for (const id of [f.plain.id, randomUUID()]) expect(await error(service.save(b, bPlan.id, save(bPlan, [{ ...f.selections[0], actionId: id }])))).toEqual({ code: "NOT_FOUND", message: "One or more selected Actions are unavailable.", details: { issues: [{ actionId: id, kind: "UNAVAILABLE", message: "This Action is unavailable. Remove this commitment or choose another Action." }] } }); expect((await service.get(a, f.value.id)).plan).toEqual(f.value);
 });
@@ -158,4 +158,53 @@ it("source mutation racing commit has a serialized outcome and never snapshots t
 it("opposite selections across Plans/Goals lock deterministically without deadlock or source changes", async () => {
   const first = await fixture(); const second = await fixture(); const p1 = await service.create(a, create()); const p2 = await service.create(a, create({ weekStartDate: "2026-10-05" })); const selections = [first.selections[0], second.selections[1]];
   const saved = await Promise.all([service.save(a, p1.id, save(p1, selections)), service.save(a, p2.id, save(p2, [...selections].reverse()))]); const committed = await Promise.all(saved.map((p) => service.commit(a, p.id, transition(2)))); expect(committed.every((p) => p.state === "committed")).toBe(true);
+});
+it('quick commit persists an immutable baseline once, replays receipts, scopes ownership and resolves concurrent creation',async()=>{
+ const f=await fixture();const input={...create(),commitments:f.selections};
+ const result=await service.quickCommit(a,input);expect(result).toMatchObject({state:'committed',version:2});
+ expect((await service.get(a,result.id)).plan).toEqual(result);
+ expect(await service.quickCommit(a,input)).toEqual(result);
+ expect((await pool.query('SELECT count(*)::int AS n FROM weekly_plan WHERE owner_id=$1',[a.userId])).rows[0].n).toBe(1);
+ expect((await pool.query('SELECT count(*)::int AS n FROM commitment_identity WHERE owner_id=$1',[a.userId])).rows[0].n).toBe(3);
+ await expect(service.quickCommit(b,{...input,mutationId:randomUUID()})).rejects.toMatchObject({code:'NOT_FOUND'});
+ await expect(service.quickCommit(a,{...input,mutationId:randomUUID(),planId:result.id,expectedVersion:result.version})).rejects.toMatchObject({code:'CONFLICT'});
+ const fresh={...input,weekStartDate:'2026-10-05'};
+ await oneWinner([service.quickCommit(a,{...fresh,mutationId:randomUUID()}),service.quickCommit(a,{...fresh,mutationId:randomUUID()})]);
+});
+it('quick commit rolls back fully on unavailable sources and preserves draft commitment identity',async()=>{
+ const f=await fixture();await expect(service.quickCommit(b,{...create(),commitments:f.selections})).rejects.toMatchObject({code:'NOT_FOUND'});
+ expect((await pool.query('SELECT count(*)::int AS n FROM weekly_plan WHERE owner_id=$1',[b.userId])).rows[0].n).toBe(0);
+ const created=await service.create(a,create());const draft=await service.save(a,created.id,save(created,f.selections));
+ const result=await service.quickCommit(a,{...create(),mutationId:randomUUID(),planId:draft.id,expectedVersion:draft.version,commitments:f.selections});
+ expect(result.commitments.map(c=>c.id).sort()).toEqual(draft.commitments.map(c=>c.id).sort());
+});
+it('first-task onboarding atomically saves one General Action and immutable baseline with exact replay',async()=>{
+ const input={mutationId:randomUUID(),weekStartDate:'2026-09-28',title:'  Draft project proposal  ',budgetMinutes:120};
+ const result=await service.firstTask(a,input);expect(result).toMatchObject({state:'committed',version:2,provisionalCapacityMinutes:160,reserveMinutes:40,commitments:[{budgetMinutes:120,snapshot:{goal:null,action:{title:'Draft project proposal',estimateMinutes:120}}}]});
+ expect(await service.firstTask(a,input)).toEqual(result);expect((await service.get(a,result.id)).plan).toEqual(result);
+ for(const table of ['goal','action','weekly_plan','weekly_commitment','commitment_identity','mutation_receipt'])expect((await pool.query(`SELECT count(*)::int AS n FROM ${table} WHERE owner_id=$1`,[a.userId])).rows[0].n).toBe(table==='goal'?0:1);
+ await expect(service.firstTask(a,{...input,title:'Different task'})).rejects.toMatchObject({code:'CONFLICT',details:{kind:'MUTATION_ID'}});
+ await expect(service.firstTask(a,{...input,mutationId:randomUUID()})).rejects.toMatchObject({code:'CONFLICT',details:{kind:'WEEK_EXISTS'}});
+});
+it('first-task failure rolls back the source, plan and receipt; concurrent submissions create one baseline',async()=>{
+ const input={mutationId:randomUUID(),weekStartDate:'2026-09-21',title:'First task',budgetMinutes:60};
+ await expect(service.firstTask(a,input)).rejects.toMatchObject({code:'VALIDATION'});
+ for(const table of ['goal','action','weekly_plan','mutation_receipt'])expect((await pool.query(`SELECT count(*)::int AS n FROM ${table} WHERE owner_id=$1`,[a.userId])).rows[0].n).toBe(0);
+ await oneWinner([service.firstTask(a,{...input,weekStartDate:'2026-09-28',mutationId:randomUUID()}),service.firstTask(a,{...input,weekStartDate:'2026-09-28',mutationId:randomUUID()})]);
+ for(const table of ['goal','action','weekly_plan','weekly_commitment'])expect((await pool.query(`SELECT count(*)::int AS n FROM ${table} WHERE owner_id=$1`,[a.userId])).rows[0].n).toBe(table==='goal'?0:1);
+});
+it('first-task foreign/stale draft failures leave no generated source behind',async()=>{
+ const draft=await service.create(a,create());const input={mutationId:randomUUID(),weekStartDate:draft.weekStartDate,planId:draft.id,expectedVersion:99,title:'Quick task',budgetMinutes:60};
+ await expect(service.firstTask(a,input)).rejects.toMatchObject({code:'CONFLICT'});
+ await expect(service.firstTask(b,{...input,expectedVersion:draft.version})).rejects.toMatchObject({code:'NOT_FOUND'});
+ expect((await pool.query('SELECT count(*)::int AS n FROM goal WHERE owner_id=ANY($1)',[[a.userId,b.userId]])).rows[0].n).toBe(0);
+ expect((await service.get(a,draft.id)).plan).toEqual(draft);
+});
+it('first task expands an undersized empty draft once and persists the same baseline on replay',async()=>{
+ const draft=await service.create(a,create({provisionalCapacityMinutes:60,reserveMinutes:30}));
+ const input={mutationId:randomUUID(),weekStartDate:draft.weekStartDate,planId:draft.id,expectedVersion:draft.version,title:'First longer task',budgetMinutes:180};
+ const result=await service.firstTask(a,input);
+ expect(result).toMatchObject({id:draft.id,state:'committed',version:draft.version+1,provisionalCapacityMinutes:240,reserveMinutes:60,commitments:[{budgetMinutes:180}]});
+ expect(await service.firstTask(a,input)).toEqual(result);expect((await service.get(a,draft.id)).plan).toEqual(result);
+ for(const table of ['goal','action','weekly_plan','weekly_commitment'])expect((await pool.query(`SELECT count(*)::int AS n FROM ${table} WHERE owner_id=$1`,[a.userId])).rows[0].n).toBe(table==='goal'?0:1);
 });

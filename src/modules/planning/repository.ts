@@ -1,4 +1,7 @@
+import { focusableHours } from "../../db/schema";
+import { randomUUID } from "node:crypto";
 import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { taskGoal } from './task-goal';
 import type { Database } from "../../db/connect";
 import { executeReceipt, type Transaction } from "../../db/command-receipt";
 import { action, goal, milestone, user, weeklyCommitment, weeklyPlan, commitmentIdentity, weeklyReview, weeklyReviewDecision } from "../../db/schema";
@@ -22,12 +25,12 @@ export async function readPlan(tx: Transaction, actor: Actor, row: typeof weekly
 export async function sources(tx: Transaction, actor: Actor, ids?: string[]): Promise<PlanningSource[]> {
   if (ids && !ids.length) return [];
   const rows = await tx.select({ a: action, g: goal, m: milestone }).from(action)
-    .innerJoin(goal, and(eq(goal.id, action.goalId), eq(goal.ownerId, action.ownerId)))
+    .leftJoin(goal, and(eq(goal.id, action.goalId), eq(goal.ownerId, action.ownerId)))
     .leftJoin(milestone, and(eq(milestone.id, action.milestoneId), eq(milestone.ownerId, action.ownerId), eq(milestone.goalId, action.goalId)))
     .where(and(eq(action.ownerId, actor.userId), ids ? inArray(action.id, ids) : undefined)).orderBy(asc(goal.title), asc(action.title), asc(action.id));
   return rows.map(({ a, g, m }) => planningSource(
     { ...instantFields(a), completedAt: a.completedAt?.toISOString() ?? null, archivedAt: a.archivedAt?.toISOString() ?? null },
-    { ...instantFields(g), archivedAt: g.archivedAt?.toISOString() ?? null },
+    g ? { ...instantFields(g), archivedAt: g.archivedAt?.toISOString() ?? null } : null,
     m ? { ...instantFields(m), completedAt: m.completedAt?.toISOString() ?? null, archivedAt: m.archivedAt?.toISOString() ?? null } : null,
   ));
 }
@@ -37,7 +40,7 @@ export async function lockSources(tx: Transaction, actor: Actor, ids: string[]) 
   if (!ids.length) return [];
   const scope = and(eq(action.ownerId, actor.userId), inArray(action.id, ids));
   const discovered = await tx.select({ goalId: action.goalId }).from(action).where(scope);
-  const goalIds = [...new Set(discovered.map((a) => a.goalId))].sort();
+  const goalIds = [...new Set(discovered.map((a) => a.goalId).filter((id): id is string => id !== null))].sort();
   if (goalIds.length) await tx.select().from(goal).where(and(eq(goal.ownerId, actor.userId), inArray(goal.id, goalIds))).orderBy(asc(goal.id)).for("update");
   const current = await tx.select({ milestoneId: action.milestoneId }).from(action).where(scope);
   const milestoneIds = [...new Set(current.flatMap((a) => a.milestoneId ? [a.milestoneId] : []))].sort();
@@ -62,7 +65,18 @@ export function planRepository(db: Database): PlanRepository {
     }, { isolationLevel: "repeatable read", accessMode: "read only" })),
     candidates: (actor) => operation(() => db.transaction((tx) => sources(tx, actor), { isolationLevel: "repeatable read", accessMode: "read only" })),
     executeOwned: (actor, mutationId, requestHash, apply) => operation(() => executeReceipt(db, actor, mutationId, requestHash, (tx) => apply({
+      async firstTaskSource(title, minutes, now, selectedGoal) {
+        const [owner] = await tx.select({ id: user.id }).from(user).where(eq(user.id, actor.userId)).for("no key update");
+        if (!owner) throw new ApplicationError("UNAUTHENTICATED", "Sign in again to continue.");
+        const stamp = new Date(now);
+        const parent = await taskGoal(tx, actor, now, selectedGoal);
+        const [task] = await tx.insert(action).values({ id: randomUUID(), ownerId: actor.userId, goalId: parent?.id ?? null, milestoneId: null,
+          title, doneWhen: null, estimateMinutes: minutes, state: "open", version: 1, createdAt: stamp, updatedAt: stamp,
+          completedAt: null, archivedAt: null }).returning();
+        return planningSource({ ...instantFields(task), completedAt: null, archivedAt: null }, parent ? { ...instantFields(parent), archivedAt: null } : null, null);
+      },
       timezone: () => timezone(tx, actor),
+      sparePercent: async () => (await tx.select({value:focusableHours.sparePercent}).from(focusableHours).where(eq(focusableHours.ownerId,actor.userId)))[0]?.value ?? 25,
       async insert(value) {
         const { commitments: _rows, ...record } = value; void _rows;
         const [row] = await tx.insert(weeklyPlan).values({ ...record, ownerId: actor.userId, createdAt: new Date(value.createdAt), updatedAt: new Date(value.updatedAt), committedAt: null }).onConflictDoNothing().returning();

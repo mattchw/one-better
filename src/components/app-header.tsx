@@ -1,5 +1,6 @@
 /* Native links deliberately preserve unsaved-note/form beforeunload guards. */
 import { AccountMenu } from "./account-menu";
+import { ThemeToggle } from "./theme-toggle";
 type Section = "calendar" | "goals" | "focus" | "review" | "settings";
 export function AppHeader({ section, accountName }: { section: Section; accountName?: string }) {
   return <header className="workspace-header app-header">
@@ -8,6 +9,7 @@ export function AppHeader({ section, accountName }: { section: Section; accountN
       {([['calendar','Calendar','/calendar'],['goals','Goals','/goals'],['focus','Focus','/focus'],['review','Review','/review']] as const).map(([key,label,url]) => <a key={key} href={url} aria-current={section===key?'page':undefined}>{label}</a>)}
     </nav>
     <div className="app-utilities">
+      <ThemeToggle/>
       <a className="header-settings-link" href="/settings" aria-current={section==='settings'?'page':undefined}>Settings</a>
       <AccountMenu accountName={accountName}/>
     </div>

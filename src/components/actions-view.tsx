@@ -1,4 +1,5 @@
 "use client";
+import { goalGroupKey, goalTitle } from '@/modules/planning/general';
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { actionFieldsSchema, type Action, type ActionState, type ActionView } from "@/modules/actions/domain";
 import type { ActionCatalog } from "@/modules/actions/service";
@@ -10,7 +11,7 @@ const estimate = (minutes: number) => minutes >= 60 ? `${Math.floor(minutes / 60
 export function ActionsView({ initialCatalog, initialState, timezone, refreshKey, chosen = {}, week, onAddToWeek, onChanged, currentWeek }: { currentWeek?: string; onChanged?: () => void; chosen?: Record<string, number>; week?: string; onAddToWeek?: (action: ActionView, trigger: HTMLElement) => void; initialCatalog: ActionCatalog; initialState: ActionState; timezone: string; refreshKey: number }) {
   const [catalog, setCatalog] = useState(initialCatalog); const [state, setState] = useState(initialState);
   const [dialog, setDialog] = useState<DialogState | null>(null); const [loading, setLoading] = useState(false); const [error, setError] = useState(""); const [notice, setNotice] = useState("");
-  const goalId = catalog.goal.id; const sequence = useRef(0); const trigger = useRef<HTMLElement | null>(null); const add = useRef<HTMLButtonElement>(null); const openTab = useRef<HTMLButtonElement>(null);
+  const goalId = goalGroupKey(catalog.goal); const sequence = useRef(0); const trigger = useRef<HTMLElement | null>(null); const add = useRef<HTMLButtonElement>(null); const openTab = useRef<HTMLButtonElement>(null);
   async function refresh() {
     const current = ++sequence.current; setLoading(true); setError("");
     try { const latest = await request<ActionCatalog>(`/api/goals/${goalId}/actions`); if (current === sequence.current) { setCatalog(latest); onChanged?.(); } }
@@ -66,7 +67,7 @@ function ActionDialog({ state, catalog, onClose, onSaved, onRefresh }: { state: 
       command.current = { mutationId: crypto.randomUUID(), ...(base ? { expectedVersion: base.action.version } : {}), ...(parsed?.success ? parsed.data : {}) };
     }
     inFlight.current = true; setPending(true);
-    try { const url = state.kind === "create" ? `/api/goals/${catalog.goal.id}/actions` : `/api/actions/${base!.action.id}${state.kind === "edit" ? "" : `/${state.kind}`}`;
+    try { const url = state.kind === "create" ? `/api/goals/${goalGroupKey(catalog.goal)}/actions` : `/api/actions/${base!.action.id}${state.kind === "edit" ? "" : `/${state.kind}`}`;
       await request(url, { method: state.kind === "edit" ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(command.current) }); await onSaved(state.kind);
     } catch (failure) { const info = errorInfo<Action>(failure); setError(info); if (["GOAL_ARCHIVED", "MILESTONE_TERMINAL"].includes(info.kind ?? "") || info.fields?.milestoneId || info.code === "NOT_FOUND") void onRefresh(); if (["VALIDATION", "CONFLICT", "NOT_FOUND", "FORBIDDEN", "UNAUTHENTICATED"].includes(info.code)) command.current = null; }
     finally { inFlight.current = false; setPending(false); }
@@ -82,7 +83,7 @@ function ActionDialog({ state, catalog, onClose, onSaved, onRefresh }: { state: 
   const heading = state.kind === "create" ? "Add an action" : state.kind === "edit" ? "Edit action" : state.kind === "complete" ? "Complete this action?" : "Archive this action?";
   const unavailableSelection = milestoneId && !catalog.assignableMilestones.some((m) => m.id === milestoneId);
   return <dialog ref={dialog} className="goal-dialog" aria-labelledby="action-dialog-title" onCancel={(event) => { event.preventDefault(); if (!locked) onClose(); }}><form onSubmit={submit} noValidate>
-    <p className="eyebrow">Concrete work for your goal</p><h2 id="action-dialog-title">{heading}</h2><p className="action-context">Goal: {catalog.goal.title}</p>
+    <p className="eyebrow">Concrete work for your goal</p><h2 id="action-dialog-title">{heading}</h2><p className="action-context">Goal: {goalTitle(catalog.goal)}</p>
     {fields ? <><p className="muted">Name something you can do. Add detail only if it helps.</p>
       <label htmlFor="action-title">Title</label><input id="action-title" data-initial-focus disabled={locked} value={title} onChange={(e) => changed(() => setTitle(e.target.value))} aria-invalid={Boolean(error?.fields?.title)} aria-describedby="action-title-error" placeholder="Draft the weekly planning wireframe" /><p id="action-title-error" className="error-message">{error?.fields?.title}</p>
       <label htmlFor="action-done">Done when (optional)</label><textarea id="action-done" rows={3} disabled={locked} value={doneWhen} onChange={(e) => changed(() => setDoneWhen(e.target.value))} aria-invalid={Boolean(error?.fields?.doneWhen)} aria-describedby="action-done-help action-done-error" placeholder="The main planning flow is ready to walk through with one user." /><p className="field-help" id="action-done-help">A clear finish line, if the title alone isn’t enough.</p><p id="action-done-error" className="error-message">{error?.fields?.doneWhen}</p>

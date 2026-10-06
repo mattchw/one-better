@@ -6,7 +6,7 @@ import { calendarInitial } from "@/server/calendar-workspace";
 import { AppHeader } from "@/components/app-header";
 import { CalendarWorkspace } from "@/components/calendar-workspace";
 export const dynamic = "force-dynamic";
-export default async function CalendarPage({ searchParams }: { searchParams: Promise<{ week?: string;view?:string;date?:string }> }) {
+export default async function CalendarPage({ searchParams }: { searchParams: Promise<{ week?: string;view?:string;date?:string;placeFirst?:string;taskAdded?:string }> }) {
   let initial;
   try {
     const actor = await requireActor(await headers());

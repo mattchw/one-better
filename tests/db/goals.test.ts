@@ -38,7 +38,7 @@ it("persists actor-owned goals with stable ordering, duplicate titles and Unicod
   const first = await service.createGoal(a, create());
   const second = await service.createGoal(a, create());
   const unicode = await service.createGoal(a, create({ title: "😀".repeat(160), outcome: "😀".repeat(2000) }));
-  const rows = await db.select().from(goal); expect(rows).toHaveLength(3); expect(rows.every((r) => r.ownerId === a.userId)).toBe(true);
+  const rows = await db.select().from(goal).where(inArray(goal.ownerId, [a.userId, b.userId])); expect(rows).toHaveLength(3); expect(rows.every((r) => r.ownerId === a.userId)).toBe(true);
   const before = (await service.listGoals(a, "active")).map((g) => g.id);
   expect(before).toEqual([unicode.id, second.id, first.id]);
   await service.updateGoal(a, first.id, { mutationId: randomUUID(), expectedVersion: 1, title: "Edited", outcome: "Same intent" });
@@ -49,12 +49,12 @@ it("validation prevents goals and receipts from being written", async () => {
   for (const invalid of [{ title: " \t " }, { outcome: " " }, { title: "😀".repeat(161) }, { outcome: "x".repeat(2001) }, { ownerId: b.userId }, { targetDate: "2026-10-02" }]) {
     await expect(service.createGoal(a, create(invalid))).rejects.toMatchObject({ code: "VALIDATION" });
   }
-  expect(await db.select().from(goal)).toHaveLength(0); expect(await db.select().from(mutationReceipt)).toHaveLength(0);
+  expect(await db.select().from(goal).where(inArray(goal.ownerId, [a.userId, b.userId]))).toHaveLength(0); expect(await db.select().from(mutationReceipt).where(inArray(mutationReceipt.ownerId, [a.userId, b.userId]))).toHaveLength(0);
 });
 it("simultaneous duplicate creates return one original result and one persisted receipt", async () => {
   const command = create(); const results = await Promise.all(Array.from({ length: 5 }, () => service.createGoal(a, command)));
   expect(results.every((g) => JSON.stringify(g) === JSON.stringify(results[0]))).toBe(true);
-  expect(await db.select().from(goal)).toHaveLength(1); expect(await db.select().from(mutationReceipt)).toHaveLength(1);
+  expect(await db.select().from(goal).where(inArray(goal.ownerId, [a.userId, b.userId]))).toHaveLength(1); expect(await db.select().from(mutationReceipt).where(inArray(mutationReceipt.ownerId, [a.userId, b.userId]))).toHaveLength(1);
   await expect(service.createGoal(a, { ...command, outcome: "Different" })).rejects.toMatchObject({ code: "CONFLICT", details: { kind: "MUTATION_ID" } });
 });
 it("receipt replay returns the original create/edit snapshot after newer edits/archive", async () => {
@@ -79,7 +79,7 @@ it("concurrent edits of one version have exactly one winner and preserve its sta
   if (winners[0].status !== "fulfilled" || losers[0].status !== "rejected") throw new Error("Unexpected result");
   expect(losers[0].reason).toMatchObject({ code: "CONFLICT", details: { kind: "VERSION", current: winners[0].value } });
   expect(await service.getGoal(a, first.id)).toEqual(winners[0].value);
-  expect(await db.select().from(mutationReceipt)).toHaveLength(2);
+  expect(await db.select().from(mutationReceipt).where(inArray(mutationReceipt.ownerId, [a.userId, b.userId]))).toHaveLength(2);
 });
 it("concurrent duplicate edits and archives increment the version once each", async () => {
   const first = await service.createGoal(a, create());
@@ -132,7 +132,7 @@ it("rolls back receipt and goal together; a failed command can be retried", asyn
     await tx.insert({ id, title: "Rollback", outcome: "Rollback", version: 1, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), archivedAt: null });
     throw new ApplicationError("INTERNAL", "Injected transaction failure");
   })).rejects.toMatchObject({ code: "INTERNAL" });
-  expect(await db.select().from(goal)).toHaveLength(0); expect(await db.select().from(mutationReceipt)).toHaveLength(0);
+  expect(await db.select().from(goal).where(inArray(goal.ownerId, [a.userId, b.userId]))).toHaveLength(0); expect(await db.select().from(mutationReceipt).where(inArray(mutationReceipt.ownerId, [a.userId, b.userId]))).toHaveLength(0);
   expect((await service.createGoal(a, create({ mutationId }))).version).toBe(1);
 });
 it("database failures are sanitized and cannot become an empty list", async () => {
@@ -145,5 +145,5 @@ it("database failures are sanitized and cannot become an empty list", async () =
     await expect(unavailable.archiveGoal(a, randomUUID(), { mutationId: randomUUID(), expectedVersion: 1 })).rejects.toMatchObject({ code: "DATABASE_UNAVAILABLE" });
   }
   finally { await bad.pool.end(); }
-  expect((await db.execute(sql`select count(*) from goal`)).rows[0].count).toBe("0");
+  expect((await db.execute(sql`select count(*) from goal where owner_id in (${a.userId}, ${b.userId})`)).rows[0].count).toBe("0");
 });

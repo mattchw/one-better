@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { ApplicationError } from "../../domain/errors";
+import { boundedText } from "../goals/domain";
 import { actionMutability, type Action } from "../actions/domain";
 import type { Goal } from "../goals/domain";
 import type { Milestone } from "../milestones/domain";
@@ -26,18 +27,31 @@ export function currentWeek(now: string, timezone: string): string {
 export const weekSchema = z.string().refine((v) => calendarDate(v) && mondayOf(v) === v, "Choose a Monday-start week (YYYY-MM-DD).");
 const minutes = z.number().int("Use whole minutes.").min(1, "Use at least 1 minute.").max(10080, "Use 10,080 minutes or fewer.");
 const version = z.number().int().min(1).max(2147483646);
-export const sourceGuardSchema = z.object({ actionVersion: version, goalId: z.uuid(), goalVersion: version, milestoneId: z.uuid().nullable(), milestoneVersion: version.nullable() }).strict().refine((v) => (v.milestoneId === null) === (v.milestoneVersion === null), "Milestone identity and version must agree.");
+export const sourceGuardSchema = z.object({ actionVersion: version, goalId: z.uuid().nullable(), goalVersion: version.nullable(), milestoneId: z.uuid().nullable(), milestoneVersion: version.nullable() }).strict().refine((v) => (v.milestoneId === null) === (v.milestoneVersion === null), "Milestone identity and version must agree.").refine(v => (v.goalId === null) === (v.goalVersion === null) && (v.goalId !== null || v.milestoneId === null), "Goal identity and version must agree; General tasks have no milestone.");
 export type SourceGuard = z.infer<typeof sourceGuardSchema>;
 const selection = z.object({ actionId: z.uuid(), budgetMinutes: minutes, source: sourceGuardSchema }).strict();
 const capacityFields = { provisionalCapacityMinutes: minutes, reserveMinutes: z.number().int("Use whole minutes.").min(0).max(10079) };
 const reserveValid = (v: { provisionalCapacityMinutes: number; reserveMinutes: number }) => v.reserveMinutes < v.provisionalCapacityMinutes;
 export const createPlanSchema = z.object({ mutationId: z.uuid(), weekStartDate: weekSchema, ...capacityFields }).strict().refine(reserveValid, { message: "Reserve must be less than weekly capacity.", path: ["reserveMinutes"] });
 export const savePlanSchema = z.object({ mutationId: z.uuid(), expectedVersion: version, ...capacityFields, carry: z.strictObject({ reviewId: z.uuid(), commitmentId: z.uuid() }).optional(), commitments: z.array(selection).max(50, "Choose at most 50 commitments.") }).strict().refine(reserveValid, { message: "Reserve must be less than weekly capacity.", path: ["reserveMinutes"] }).refine((v) => new Set(v.commitments.map((c) => c.actionId)).size === v.commitments.length, { message: "An Action may be selected only once per week.", path: ["commitments"] });
+// Calendar's compact flow submits reviewed choices once. The existing advanced
+// draft/amendment routes remain available for larger plans and deliberate Carry.
+export const quickCommitSchema = z.object({
+  mutationId: z.uuid(), weekStartDate: weekSchema, planId: z.uuid().optional(), expectedVersion: version.optional(),
+  provisionalCapacityMinutes: minutes.optional(), reserveMinutes: z.number().int().min(0).max(10079).optional(), commitments: z.array(selection).min(1).max(50),
+}).strict().refine(v => v.provisionalCapacityMinutes === undefined && v.reserveMinutes === undefined || v.provisionalCapacityMinutes !== undefined && v.reserveMinutes !== undefined && reserveValid({provisionalCapacityMinutes:v.provisionalCapacityMinutes,reserveMinutes:v.reserveMinutes}), { message: "Supply both capacity fields or neither.", path: ["reserveMinutes"] })
+  .refine(v => !!v.planId === !!v.expectedVersion, "A draft identity and version must be supplied together.")
+  .refine(v => new Set(v.commitments.map(c => c.actionId)).size === v.commitments.length, "Choose each Action once.");
+export const firstTaskSchema = z.object({
+  mutationId: z.uuid(), weekStartDate: weekSchema, planId: z.uuid().optional(), expectedVersion: version.optional(),
+  title: boundedText("Task", 160), budgetMinutes: z.union([z.literal(30), z.literal(60), z.literal(120), z.literal(180)]),
+  goal: z.strictObject({ id: z.uuid(), version }).optional(),
+}).strict().refine(v => !!v.planId === !!v.expectedVersion, "A draft identity and version must be supplied together.");
 export const commitPlanSchema = z.object({ mutationId: z.uuid(), expectedVersion: version }).strict();
 export type PlanSelection = z.infer<typeof selection>;
 export type PlanningSnapshot = {
   action: Pick<Action, "id" | "title" | "doneWhen" | "estimateMinutes">;
-  goal: Pick<Goal, "id" | "title" | "outcome">;
+  goal: Pick<Goal, "id" | "title" | "outcome"> | null;
   milestone: Pick<Milestone, "id" | "title" | "successCondition"> | null;
 };
 export type WeeklyCommitment = { id: string; planId: string; actionId: string; budgetMinutes: number; source: SourceGuard; snapshot: PlanningSnapshot | null; createdAt: string; updatedAt: string };
@@ -45,9 +59,9 @@ export type WeeklyPlan = { id: string; weekStartDate: string; timezone: string; 
 export type OwnedPlan = WeeklyPlan & { ownerId: string };
 export type PlanningSource = { actionId: string; source: SourceGuard; context: PlanningSnapshot; eligible: boolean; reason: string | null };
 export type SourceIssue = { actionId: string; kind: "UNAVAILABLE" | "INELIGIBLE" | "CHANGED"; message: string };
-export function planningSource(action: Action, goal: Goal, milestone: Milestone | null): PlanningSource {
+export function planningSource(action: Action, goal: Goal | null, milestone: Milestone | null): PlanningSource {
   const status = actionMutability(action, goal, milestone);
-  return { actionId: action.id, source: { actionVersion: action.version, goalId: goal.id, goalVersion: goal.version, milestoneId: milestone?.id ?? null, milestoneVersion: milestone?.version ?? null }, context: { action: { id: action.id, title: action.title, doneWhen: action.doneWhen, estimateMinutes: action.estimateMinutes }, goal: { id: goal.id, title: goal.title, outcome: goal.outcome }, milestone: milestone ? { id: milestone.id, title: milestone.title, successCondition: milestone.successCondition } : null }, eligible: status.editable, reason: status.message };
+  return { actionId: action.id, source: { actionVersion: action.version, goalId: goal?.id ?? null, goalVersion: goal?.version ?? null, milestoneId: milestone?.id ?? null, milestoneVersion: milestone?.version ?? null }, context: { action: { id: action.id, title: action.title, doneWhen: action.doneWhen, estimateMinutes: action.estimateMinutes }, goal: goal ? { id: goal.id, title: goal.title, outcome: goal.outcome } : null, milestone: milestone ? { id: milestone.id, title: milestone.title, successCondition: milestone.successCondition } : null }, eligible: status.editable, reason: status.message };
 }
 export function sourceIssues(selections: Pick<PlanSelection, "actionId" | "source">[], sources: PlanningSource[]): SourceIssue[] {
   return selections.flatMap<SourceIssue>((c) => {

@@ -18,6 +18,13 @@ test("appearance persists across pages, follows system changes, and remains usab
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await page.reload();
   await expect(page.getByRole("radio", { name: /^Dark/ })).toBeChecked();
+  // The shared header changes the same saved preference as Settings.
+  await page.getByRole("button", {name:"Switch to light mode"}).click();
+  await expect(page.getByRole("radio", {name:/^Light/})).toBeChecked();
+  await page.goto("/goals");
+  await page.getByRole("button", {name:"Switch to dark mode"}).click();
+  await page.goto("/settings/appearance");
+  await expect(page.getByRole("radio", {name:/^Dark/})).toBeChecked();
   const colours = await page.locator(".settings-content").evaluate(el => {
     const style = getComputedStyle(el);
     return { background: style.backgroundColor, text: style.color };

@@ -1,4 +1,5 @@
 "use client";
+import { goalGroupKey, goalTitle } from '@/modules/planning/general';
 
 import { memo, useCallback, useEffect, useId, useRef, useState, type RefObject } from "react";
 import { createPortal } from "react-dom";
@@ -89,10 +90,10 @@ export default function CalendarTimeGrid(props: Props) {
     {hover && hoveredBlock && createPortal(<div id={tooltipId} className="calendar-hover-details" role="tooltip" style={{ left: hover.left, top: hover.top, transform: hover.below ? undefined : "translateY(-100%)" }}>
       <p>{new Intl.DateTimeFormat("en-GB", { timeZone: zone, weekday: "short", day: "numeric", month: "short" }).format(new Date(hoveredBlock.start))} · {stamp(hoveredBlock.start, zone)}–{stamp(hoveredBlock.end, zone)}</p>
       <strong>{hoveredBlock.snapshot.action.title}</strong>
-      <p>{hoveredBlock.snapshot.goal.title}{hoveredBlock.snapshot.milestone && ` · ${hoveredBlock.snapshot.milestone.title}`}</p>
+      <p>{goalTitle(hoveredBlock.snapshot.goal)}{hoveredBlock.snapshot.milestone && ` · ${hoveredBlock.snapshot.milestone.title}`}</p>
       {hoveredBlock.snapshot.action.doneWhen && <p className="calendar-hover-done">Done when: {hoveredBlock.snapshot.action.doneWhen}</p>}
       {hoveredBlock.reviewRequired && <p>Review required · commitment removed</p>}
-      {outsideCurrentHours(hoveredBlock, hours, accountZone) && <p>Outside Focusable Hours</p>}
+      {outsideCurrentHours(hoveredBlock, hours, accountZone) && <span className="outside-hours-tag">Outside Focusable Hours</span>}
     </div>, document.body)}
   </div>;
 }
@@ -170,7 +171,7 @@ const CalendarSurface = memo(function CalendarSurface({ value: props, calendar, 
       slotEventOverlap={false}
       eventClass={info => {
         const block = info.event.extendedProps.block as SchedulingView["blocks"][number];
-        return `calendar-block tone-${goalTone(block.snapshot.goal.id)} ${selected === block.id ? "is-selected" : ""} ${block.reviewRequired ? "needs-review" : ""}`;
+        return `calendar-block tone-${goalTone(goalGroupKey(block.snapshot.goal))} ${selected === block.id ? "is-selected" : ""} ${block.reviewRequired ? "needs-review" : ""}`;
       }}
       eventContent={info => {
         const block = info.event.extendedProps.block as SchedulingView["blocks"][number];
@@ -179,7 +180,7 @@ const CalendarSurface = memo(function CalendarSurface({ value: props, calendar, 
           <strong>{block.snapshot.action.title}</strong>
           {block.reviewRequired && <span className="calendar-block-state">Review required</span>}
           {info.event.extendedProps.outside && <span className="calendar-block-outside">◆ Outside hours</span>}
-          <span className="calendar-block-goal">{block.snapshot.goal.title}</span>
+          <span className="calendar-block-goal">{goalTitle(block.snapshot.goal)}</span>
           {day&&block.snapshot.milestone&&<span className="calendar-block-goal">◇ {block.snapshot.milestone.title}</span>}
         </div>;
       }}

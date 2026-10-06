@@ -4,7 +4,7 @@ import { executeReceipt } from "../../db/command-receipt";
 import { focusableHours, user } from "../../db/schema";
 import { ApplicationError } from "../../domain/errors";
 import type { HoursRepository } from "./service";
-const dto = (row: typeof focusableHours.$inferSelect) => ({ id: row.id, version: row.version, windows: row.windows, createdAt: row.createdAt.toISOString(), updatedAt: row.updatedAt.toISOString() });
+const dto = (row: typeof focusableHours.$inferSelect) => ({ id: row.id, version: row.version, windows: row.windows, sparePercent: row.sparePercent as 0|25|40, createdAt: row.createdAt.toISOString(), updatedAt: row.updatedAt.toISOString() });
 async function operation<T>(work: () => Promise<T>) { try { return await work(); } catch (error) { if (error instanceof ApplicationError) throw error; throw new ApplicationError("DATABASE_UNAVAILABLE", "Your Focusable Hours could not be confirmed. Please retry."); } }
 export function hoursRepository(db: Database): HoursRepository {
   return {
@@ -25,7 +25,7 @@ export function hoursRepository(db: Database): HoursRepository {
       const [current] = await tx.select().from(focusableHours).where(key).for("update");
       const result = apply(current ? dto(current) : null);
       const value = { ...result, createdAt: new Date(result.createdAt), updatedAt: new Date(result.updatedAt) };
-      const [saved] = current ? await tx.update(focusableHours).set({ windows: value.windows, version: value.version, updatedAt: value.updatedAt }).where(and(key, eq(focusableHours.version, current.version))).returning() : await tx.insert(focusableHours).values({ ...value, ownerId: actor.userId }).returning();
+      const [saved] = current ? await tx.update(focusableHours).set({ windows: value.windows, sparePercent: value.sparePercent, version: value.version, updatedAt: value.updatedAt }).where(and(key, eq(focusableHours.version, current.version))).returning() : await tx.insert(focusableHours).values({ ...value, ownerId: actor.userId }).returning();
       if (!saved) throw new ApplicationError("CONFLICT", "Focusable Hours changed elsewhere.", { kind: "HOURS_VERSION" });
       return dto(saved);
     })),

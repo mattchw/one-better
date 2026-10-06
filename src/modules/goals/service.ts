@@ -1,3 +1,4 @@
+import { isLegacyGeneralGoal } from '../planning/general';
 import { createHash, randomUUID } from "node:crypto";
 import type { Actor } from "../../domain/actor";
 import { archiveGoalSchema, createGoalSchema, editGoal, goalId, ownedGoal, parseCommand, softArchiveGoal, updateGoalSchema, type Goal, type GoalStatus, type OwnedGoal } from "./domain";
@@ -16,7 +17,7 @@ const hash = (command: object) => createHash("sha256").update(JSON.stringify(com
 export function goalService(repository: GoalRepository, clock = () => new Date().toISOString(), newId: () => string = randomUUID) {
   return {
     async listGoals(actor: Actor, status: GoalStatus) {
-      return (await repository.listOwned(actor, status)).map((g) => ownedGoal(g, actor.userId));
+      return (await repository.listOwned(actor, status)).filter(g => !isLegacyGeneralGoal(g)).map((g) => ownedGoal(g, actor.userId));
     },
     async getGoal(actor: Actor, id: string) { return ownedGoal(await repository.findOwned(actor, goalId(id)), actor.userId); },
     async createGoal(actor: Actor, input: unknown) {

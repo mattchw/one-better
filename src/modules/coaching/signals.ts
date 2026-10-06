@@ -39,7 +39,7 @@ export function coachingSignals(input:ContextSources, facts:Fact[], candidates:S
     if (goal.archivedAt || !facts.some(f=>f.key===key)) continue;
     if (!commitments.some(c=>c.data.goalId===goal.goalId)) add('focus_without_commitment',goal.title,[key],{kind:'goal',id:goal.goalId});
     const recent=input.recent.filter(h=>h.review?.status==='finalized').slice(0,2);
-    if (recent.length===2 && recent.every(h=>!h.commitments.some(c=>c.commitment.snapshot.goal.id===goal.goalId&&c.recordedMilliseconds>0)) && !commitments.some(c=>c.data.goalId===goal.goalId&&Number(c.data.scheduledMinutes)>0)) {
+    if (recent.length===2 && recent.every(h=>!h.commitments.some(c=>c.commitment.snapshot.goal?.id===goal.goalId&&c.recordedMilliseconds>0)) && !commitments.some(c=>c.data.goalId===goal.goalId&&Number(c.data.scheduledMinutes)>0)) {
       const evidence=`attention:${goal.goalId}`;
       facts.push({key:evidence,label:`${goal.title}: no recorded Focus in the most recent finalized reviewed weeks`,reference:null,data:{goalId:goal.goalId,weeks:recent.map(h=>h.plan.weekStartDate)}});
       add('attention',goal.title,[key,evidence],{kind:'goal',id:goal.goalId});

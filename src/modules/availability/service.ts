@@ -17,7 +17,7 @@ export function hoursService(repository: HoursRepository, clock = () => new Date
       return repository.execute(actor, mutationId, hash, current => {
         if (command.scheduleId && current?.id !== command.scheduleId) throw new ApplicationError("NOT_FOUND", "These Focusable Hours are unavailable.");
         if ((current?.version ?? 0) !== command.expectedVersion) throw new ApplicationError("CONFLICT", "Focusable Hours changed elsewhere. Review the latest saved hours.", { kind: "HOURS_VERSION", current });
-        const now = clock(); return { id: current?.id ?? newId(), version: (current?.version ?? 0)+1, windows: command.windows, createdAt: current?.createdAt ?? now, updatedAt: now };
+        const now = clock(); return { id: current?.id ?? newId(), version: (current?.version ?? 0)+1, windows: command.windows, sparePercent: command.sparePercent ?? current?.sparePercent ?? 25, createdAt: current?.createdAt ?? now, updatedAt: now };
       });
     },
   };

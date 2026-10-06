@@ -1,7 +1,8 @@
+import { goalTitle } from '@/modules/planning/general';
 import { capacitySummary, type PlanningSnapshot } from "@/modules/planning/domain";
 export const duration = (minutes: number) => { const hours = Math.floor(minutes / 60); const rest = minutes % 60; return [hours ? `${hours}h` : "", rest || !hours ? `${rest}m` : ""].filter(Boolean).join(" "); };
 export function Context({ value }: { value: PlanningSnapshot }) {
-  return <div className="planning-context"><p><strong>Goal:</strong> {value.goal.title}</p><p className="muted">{value.goal.outcome}</p>{value.milestone && <p><strong>Milestone:</strong> {value.milestone.title}</p>}<h3>{value.action.title}</h3>{value.action.doneWhen && <p className="muted">Done when: {value.action.doneWhen}</p>}<p className="planning-estimate">Action estimate: {value.action.estimateMinutes === null ? "not set" : duration(value.action.estimateMinutes)} <span>· total effort, separate from this week’s budget</span></p></div>;
+  return <div className="planning-context"><p><strong>Goal:</strong> {goalTitle(value.goal)}</p><p className="muted">{value.goal?.outcome}</p>{value.milestone && <p><strong>Milestone:</strong> {value.milestone.title}</p>}<h3>{value.action.title}</h3>{value.action.doneWhen && <p className="muted">Done when: {value.action.doneWhen}</p>}<p className="planning-estimate">Action estimate: {value.action.estimateMinutes === null ? "not set" : duration(value.action.estimateMinutes)} <span>· total effort, separate from this week’s budget</span></p></div>;
 }
 export function Capacity({ capacity, reserve, budgets }: { capacity: number; reserve: number; budgets: number[] }) {
   const summary = capacitySummary({ provisionalCapacityMinutes: capacity, reserveMinutes: reserve, commitments: budgets.map((budgetMinutes) => ({ budgetMinutes })) });

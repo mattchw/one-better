@@ -55,6 +55,6 @@ export function schedulingService(repository: SchedulingRepository, clock=()=>ne
 function checkApproval(review: PlacementReview, input: {expectedPlanVersion:number;reviewKey:string;acknowledgeOutsideHours:boolean;acknowledgeBusy:boolean}) {
   if (input.expectedPlanVersion!==review.planVersion) throw new ApplicationError("CONFLICT","The Current Plan changed. Review this placement against the latest plan.",{kind:"EFFECTIVE_VERSION"});
   if (input.reviewKey!==review.reviewKey) throw new ApplicationError("CONFLICT","Scheduling context changed. Review the times and warnings again before confirming.",{kind:"REVIEW_CHANGED"});
-  if (review.outsideHours&&!input.acknowledgeOutsideHours) throw new ApplicationError("CONFLICT","Part of this block is outside your normal Focusable Hours. Explicitly acknowledge it to schedule anyway.",{kind:"OUTSIDE_HOURS"});
+  // Focusable Hours are advisory. The placement review retains the outside-hours tag.
   if (review.busyConflict&&!input.acknowledgeBusy) throw new ApplicationError("CONFLICT","This overlaps Google-reported busy time. Explicitly acknowledge it to schedule anyway.",{kind:"GOOGLE_BUSY"});
 }

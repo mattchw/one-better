@@ -16,6 +16,7 @@ import { commitmentHistory, deriveWeek, localWeekRange, type WeeklyReview } from
 import type { WeeklyReviewRepository } from "./service";
 import { effectivePlan, type Amendment } from "../amendments/domain";
 import type { WeeklyPlan } from "../planning/domain";
+import {readHabitProgress} from "../reviews/habit-repository";
 import { deriveReviewAnalytics } from "./analytics";
 const unavailable = () => new ApplicationError("NOT_FOUND","This weekly review is unavailable.");
 async function readReview(tx: Transaction, actor: Actor, row: typeof weeklyReview.$inferSelect): Promise<WeeklyReview> {
@@ -46,11 +47,12 @@ export function weeklyReviewRepository(db: Database): WeeklyReviewRepository {
       const zone=await timezone(tx,actor),current=currentWeek(now,zone);
       const plans=await tx.select().from(weeklyPlan).where(eq(weeklyPlan.ownerId,actor.userId)).orderBy(desc(weeklyPlan.weekStartDate));
       const weeks=plans.filter(p=>p.state==="committed"&&p.weekStartDate<current).map(p=>({id:p.id,weekStartDate:p.weekStartDate}));
-      // Prefer useful finished evidence; without any, orient the empty state to the current local week.
-      const selected=week??weeks[0]?.weekStartDate??current,row=plans.find(p=>p.weekStartDate===selected);
+      // Open the current local week; historical reviews are an explicit navigation choice.
+      const selected=week??current,row=plans.find(p=>p.weekStartDate===selected);
       const plan=row?.state==="committed"?ownedPlan(await readPlan(tx,actor,row),actor.userId):null,amendments=plan?await history(tx,actor,plan.id):[];
       const dashboard=await analytics(tx,actor,selected,zone,now,plan,amendments);
-      if(!plan||selected>=current)return {weekStartDate:selected,currentWeekStartDate:current,timezone:zone,weeks,state:selected>=current?"unfinished":"uncommitted",facts:null,analytics:dashboard};
+      const habit=await readHabitProgress(tx,actor,zone,now);
+      if(!plan||selected>=current)return {habit,weekStartDate:selected,currentWeekStartDate:current,timezone:zone,weeks,state:selected>=current?"unfinished":"uncommitted",facts:null,analytics:dashboard};
       const [r]=await tx.select().from(weeklyReview).where(and(eq(weeklyReview.ownerId,actor.userId),eq(weeklyReview.planId,plan.id)));
       const review=r?await readReview(tx,actor,r):null;
       const blocks=await tx.select().from(timeBlock).where(and(eq(timeBlock.ownerId,actor.userId),eq(timeBlock.planId,plan.id))).orderBy(asc(timeBlock.start),asc(timeBlock.id));
@@ -64,7 +66,7 @@ export function weeklyReviewRepository(db: Database): WeeklyReviewRepository {
       const dates=Array.from({length:7},(_,i)=>addDays(selected,i));
       const reflections=await tx.select().from(dailyReflection).where(and(eq(dailyReflection.ownerId,actor.userId),inArray(dailyReflection.localDate,dates)));
       const live=await sources(tx,actor,[...new Set(commitmentHistory(plan,amendments).map(c=>c.commitment.actionId))]);
-      return {weekStartDate:selected,currentWeekStartDate:current,timezone:zone,weeks,state:"ready",facts:deriveWeek(plan,amendments,zone,now,[...unique.values()].map(blockDTO),sessions.map(sessionDTO),live,reflections.map(dailyDTO),review),analytics:dashboard};
+      return {habit,weekStartDate:selected,currentWeekStartDate:current,timezone:zone,weeks,state:"ready",facts:deriveWeek(plan,amendments,zone,now,[...unique.values()].map(blockDTO),sessions.map(sessionDTO),live,reflections.map(dailyDTO),review),analytics:dashboard};
     },{isolationLevel:"repeatable read",accessMode:"read only"})),
     get:(actor,id)=>operation(()=>db.transaction(async tx=>{const [r]=await tx.select().from(weeklyReview).where(and(eq(weeklyReview.ownerId,actor.userId),eq(weeklyReview.id,id)));if(!r)throw unavailable();return readReview(tx,actor,r);},{isolationLevel:"repeatable read",accessMode:"read only"})),
     carries:(actor,week)=>operation(()=>db.transaction(async tx=>{
@@ -85,10 +87,10 @@ export function weeklyReviewRepository(db: Database): WeeklyReviewRepository {
         archive:async(id,version,now)=>{
           // Source locks have already been taken in Goal/Milestone/Action order.
           const [a]=await tx.select().from(action).where(and(eq(action.ownerId,actor.userId),eq(action.id,id)));
-          const [g]=await tx.select().from(goal).where(and(eq(goal.ownerId,actor.userId),eq(goal.id,a.goalId)));
+          const [g]=a.goalId?await tx.select().from(goal).where(and(eq(goal.ownerId,actor.userId),eq(goal.id,a.goalId))):[];
           const [m]=a.milestoneId?await tx.select().from(milestone).where(and(eq(milestone.ownerId,actor.userId),eq(milestone.id,a.milestoneId))):[];
           const value={...times(a),completedAt:a.completedAt?.toISOString()??null,archivedAt:a.archivedAt?.toISOString()??null};
-          const parent={...times(g),archivedAt:g.archivedAt?.toISOString()??null};
+          const parent=g?{...times(g),archivedAt:g.archivedAt?.toISOString()??null}:null;
           const checkpoint=m?{...times(m),completedAt:m.completedAt?.toISOString()??null,archivedAt:m.archivedAt?.toISOString()??null}:null;
           await replaceAction(tx,actor,archiveAction(value,version,parent,checkpoint,now),version);
         },

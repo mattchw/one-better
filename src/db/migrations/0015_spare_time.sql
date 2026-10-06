@@ -1,0 +1,2 @@
+ALTER TABLE "focusable_hours" ADD COLUMN "spare_percent" integer DEFAULT 25 NOT NULL;--> statement-breakpoint
+ALTER TABLE "focusable_hours" ADD CONSTRAINT "focusable_hours_spare" CHECK ("focusable_hours"."spare_percent" IN (0,25,40));

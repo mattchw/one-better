@@ -49,7 +49,7 @@ export function deriveWeek(plan: WeeklyPlan, amendments: Amendment[], timezone: 
   return { plan, amendments, effective, timezone, range, commitments, otherWork, originalSummary: capacitySummary(plan), finalSummary: capacitySummary(effective), scheduledMilliseconds: commitments.reduce((n,c) => n+c.scheduledMilliseconds,0), recordedMilliseconds: commitments.reduce((n,c) => n+c.recordedMilliseconds,0) + otherWork.reduce((n,c)=>n+c.recordedMilliseconds,0), daily: dailyContext(plan.weekStartDate, reflections, review?.finalizedAt ?? null), review };
 }
 export type WeeklyFacts = ReturnType<typeof deriveWeek>;
-export type ReviewWorkspace = { weekStartDate: string; currentWeekStartDate: string; timezone: string; weeks: { id: string; weekStartDate: string }[]; state: "ready" | "uncommitted" | "unfinished"; facts: WeeklyFacts | null; analytics?: ReviewAnalytics };
+export type ReviewWorkspace = { habit?:import("../reviews/habit").HabitProgress; weekStartDate: string; currentWeekStartDate: string; timezone: string; weeks: { id: string; weekStartDate: string }[]; state: "ready" | "uncommitted" | "unfinished"; facts: WeeklyFacts | null; analytics?: ReviewAnalytics };
 export type CarryIntent = { reviewId: string; commitmentId: string; actionId: string; context: WeeklyFacts["commitments"][0]["commitment"]["snapshot"]; priorBudgetMinutes: number; proposedBudgetMinutes: number; eligible: boolean };
 export function validateDecisions(plan: WeeklyPlan, amendments: Amendment[], decisions: Decision[], sources: PlanningSource[], complete: boolean) {
   const entries = commitmentHistory(plan, amendments);

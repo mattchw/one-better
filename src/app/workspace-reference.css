@@ -1,0 +1,245 @@
+/* Shared workspace proportions from Standalone (4). Persistent UI uses real facts. */
+:root { --canvas-radius:20px; --theme-surface-soft:#fbfaf6; --theme-surface-inset:#eeeae0; }
+:root[data-theme=dark] { --paper:#121815; --surface:#1e2621; --ink:#e7ece6; --muted:#b3beb6; --line:#2b3530; --theme-surface-soft:#19201c; --theme-surface-inset:#262f2a; }
+.app-header { height:64px; padding:12px 24px; justify-content:flex-start; }
+.primary-nav { margin-left:0; }
+.header-theme-toggle { width:34px; height:34px; display:grid; place-items:center; border:1px solid var(--line); background:var(--theme-surface-soft); border-radius:50%; padding:8px; cursor:pointer; }
+.header-theme-toggle svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.header-settings-link[aria-current=page] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+.app-header .account-menu-trigger { background:var(--theme-success-surface,#dce5da); }
+.calendar-main { padding-top:6px; }
+.calendar-canvas { grid-template-columns:240px minmax(0,1fr) 280px; }
+.work-rail { padding:22px 20px; }
+.work-rail .canvas-section-heading h2 { font-size:17px; }
+.calendar-commitment { padding:12px; border-radius:14px; }
+.calendar-commitment h3 { font-size:14px; font-weight:600; margin-bottom:10px; }
+.weekly-task-controls { margin:8px 0 12px; }
+.weekly-task-stepper { gap:2px; background:var(--theme-surface-soft); }
+.weekly-task-stepper span { min-width:40px; font-weight:600; }
+.weekly-task-stepper button { width:26px; height:26px; }
+.work-goal-group { margin-top:22px; }
+.calendar-titlebar { padding:24px 24px 16px; }
+.calendar-top-actions { flex-wrap:wrap; }
+.calendar-titlebar h1 { font-size:30px; margin-bottom:7px; }
+.calendar-titlebar .canvas-description { font-size:12px; }
+.calendar-top-actions .primary-button,.calendar-top-actions .quiet-button { font-size:12px; padding:9px 12px; }
+.calendar-view-controls { padding:0 24px 14px; }
+.calendar-view-controls .view-switch { padding:3px; }
+.calendar-view-controls .view-switch button { font-size:12px; padding:6px 12px; }
+.calendar-grid-stage .quick-week-overlay { width:calc(100% - 40px); max-width:400px; border-radius:16px; padding:20px; box-shadow:0 12px 36px #17231d18; }
+.quick-week-choice { padding:10px; border-radius:10px; }
+.quick-week-choice strong { font-weight:600; }
+.quick-week-choice input[type=checkbox] { width:18px; height:18px; }
+.quick-week-planner .quick-week-actions .primary-button { border-radius:999px; }
+.quick-week-planner .small-note { font-size:11px; line-height:1.6; margin:14px 0; }
+.quick-week-actions .text-button { padding-inline:4px; color:var(--theme-positive,#2f6b50); }
+.context-rail { gap:16px; }
+.context-rail .workspace-panel { padding:20px; background:var(--theme-surface-soft); }
+.context-rail .selected-block-panel { background:var(--surface); }
+.calendar-quick-focus h2 { font-size:19px; }
+.week-summary-hero { display:flex; align-items:baseline; gap:8px; font-size:30px!important; }
+.week-summary-hero span { font-size:12px; color:var(--muted); font-weight:400; }
+.calendar-context-panel h2 { font-size:15px; }
+.calendar-context-panel p,.calendar-context-panel .quiet-button { font-size:12px; }
+.calendar-bottom-note { padding-block:8px; font-size:10px; }
+.goals-page { background:var(--paper); }
+.goals-page .workspace-main,.focus-page .workspace-main,.daily-page .workspace-main,.review-page .workspace-main { max-width:1600px; padding:6px 24px 32px; }
+.goals-page .goals-heading { margin:4px 0 16px; align-items:center; }
+.goals-page .goals-heading .eyebrow { display:none; }
+.goals-page .goals-heading h1 { font-size:20px; }
+.goals-page .goal-notice:empty { display:none; }
+.goals-reference-layout,.goal-detail-layout { grid-template-columns:256px minmax(0,1fr) 280px; }
+.goals-page .goal-tabs { margin:12px 0; gap:4px; }
+.goal-selector .goal-tabs button { padding:6px 10px; font-size:12px; }
+.goal-selector .goal-card .goal-actions { margin-top:6px; }
+.goal-list-progress { height:4px; border-radius:99px; background:var(--theme-surface-inset); overflow:hidden; margin:10px 0; }
+.goal-list-progress span { display:block; height:100%; border-radius:inherit; background:var(--theme-positive,#528065); }
+.goals-page .goal-selector .goal-card.goal-selected { background:var(--surface); border-color:var(--line); box-shadow:0 1px 3px #17231d08; }
+.goal-preview-surface { padding:28px; }
+.goal-preview-group { border:0; padding-top:18px; }
+.goal-preview-group>.small-note { font-size:12px; }
+.goal-checkpoint-evidence { font-size:11px; color:var(--muted); margin:8px 0; }
+.goal-checkpoint-evidence summary { cursor:pointer; }
+.preview-action { padding:12px 4px; font-size:14px; }
+.preview-checkbox { width:21px; height:21px; border-radius:6px; }
+.preview-checkbox.is-done { background:var(--theme-positive,#2f6b50); color:var(--paper); border-color:transparent; }
+.preview-action:has(.is-done)>span:nth-child(2) { text-decoration:line-through; color:var(--muted); }
+.goal-cycle-disclosure { border:1px dashed var(--line); border-radius:16px; padding:16px; color:var(--muted); font-size:12px; min-width:0; }
+.goal-cycle-disclosure>summary { cursor:pointer; line-height:1.5; }
+.goal-cycle-disclosure .focus-cycles-section { padding:12px 0 0; margin:0; border:0; }
+.goal-cycle-disclosure .cycle-section-heading { display:grid; gap:10px; }
+.goal-cycle-disclosure .cycle-section-heading h2 { font-size:17px; }
+.goal-cycle-disclosure .focus-cycle-card { padding:12px; }
+.goals-page .workspace-footer { font-size:11px; padding:16px 0; }
+/* Keep the analytics rich, with the daily habit in a compact companion card. */
+.feedback-workspace { margin-top:8px; }
+.feedback-workspace .focus-heading { margin-bottom:14px; }
+.feedback-workspace .focus-heading h1 { font-size:28px; }
+.feedback-workspace .review-mode-tabs { margin-bottom:18px; }
+.review-overview { margin-top:20px; }
+.review-overview.has-habit { display:grid; grid-template-columns:minmax(0,1fr) 280px; gap:20px; align-items:stretch; }
+.review-analytics-hero { padding:24px; gap:24px; }
+.review-analytics-hero h2 { font-size:28px; }
+.review-analytics-hero p { font-size:13px; line-height:1.65; }
+.review-analytics-mark { width:92px; height:92px; }
+.review-analytics-state { font-size:10px; }
+.review-overview .better-streak { display:flex; flex-direction:column; gap:12px; margin:0; padding:20px; border-radius:20px; background:var(--theme-surface-soft); }
+.review-overview .better-streak h2 { font-size:26px; margin:8px 0; }
+.review-overview .better-streak p { margin:0 0 8px; font-size:12px; }
+.review-overview .better-streak-week { gap:6px; width:100%; justify-content:space-between; }
+.review-overview .better-streak-week>div>span:first-child { width:24px; height:24px; font-size:14px; }
+.review-overview .better-streak-week small { font-size:9px; }
+.review-overview .better-streak-rule { font-size:10px!important; margin:0; }
+.review-analytics-metrics>div,.review-analytics-metrics .feedback-metric,.weekly-summaries>div { background:var(--theme-surface-soft); }
+.review-analytics-card { padding:24px; }
+.feedback-layout { gap:20px; grid-template-columns:minmax(0,1fr) 280px; }
+.feedback-reflection { border-radius:20px; padding:20px; background:var(--theme-surface-soft); }
+.feedback-reflection textarea { border-radius:12px; font-size:13px; background:var(--surface); }
+.feedback-work-card { border-radius:14px; }
+.feedback-insights { display:none; } /* No empty 'Coming later' card. */
+/* Focus retains execution guards and notes while sharing the app header. */
+.focus-mode-main { max-width:1260px; width:100%; margin:0 auto; padding:6px 24px 32px; }
+.focus-is-active { margin:0; max-width:none; }
+.focus-mode-main .r3-active-focus { margin:0; border:1px solid var(--line); border-radius:20px; background:var(--surface); overflow:hidden; }
+.focus-mode-main .focus-mode-hero { padding:28px; text-align:left; }
+.focus-mode-main .focus-timer { justify-items:start; }
+.focus-mode-main .focus-timer output { font-size:64px; }
+.focus-current-label { font-size:12px; color:var(--muted); margin:20px 0 8px; }
+.focus-mode-main .focus-mode-hero h1 { font-size:26px; margin:0 0 8px; }
+.focus-mode-main .focus-mode-body { padding:24px 28px; border-top:1px solid var(--line); }
+.focus-mode-main .focus-mode-actions { padding:16px 28px; border-top:1px solid var(--line); }
+.focus-launch-heading h1 { font-size:28px; }
+.focus-launch-content { max-width:980px; }
+.focus-launch-empty { background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:40px 28px; }
+.settings-layout { max-width:1100px; grid-template-columns:220px minmax(0,1fr); gap:20px; padding-top:6px; }
+.settings-sidebar { padding:14px; }
+.settings-sidebar h1 { font-size:18px; padding:10px; }
+.settings-sidebar>a { padding:12px 10px; border-radius:14px; }
+.settings-sidebar>a span { display:none; }
+.settings-sidebar>a strong { font-size:13px; font-weight:500; }
+.settings-content { padding:28px; }
+.settings-intro h2 { font-size:26px; }
+.settings-spare { padding:18px!important; background:var(--theme-surface-inset); border-radius:16px; margin-top:20px; }
+.settings-spare legend { float:left; width:100%; margin-bottom:8px; font-size:14px; }
+.settings-spare>.canvas-description { clear:both; font-size:12px; }
+.settings-spare span { background:var(--surface); }
+@media(min-width:761px) and (max-width:1199px) {
+ .calendar-canvas { grid-template-columns:210px minmax(0,1fr); }
+ .calendar-canvas .context-rail { display:flex; gap:12px; overflow:auto; }
+ .context-rail>.workspace-panel { min-width:240px; flex:1; }
+ .goals-reference-layout,.goal-detail-layout { grid-template-columns:210px minmax(0,1fr); }
+ .goal-context-rail { grid-column:1/-1; grid-template-columns:repeat(3,minmax(0,1fr)); }
+ .review-overview.has-habit { grid-template-columns:minmax(0,1fr) 260px; }
+}
+@media(max-width:760px) {
+ .app-header { height:auto; min-height:64px; padding:12px; gap:10px; flex-wrap:wrap; }
+ .app-utilities { margin-left:auto; gap:8px; }
+ .primary-nav { order:3; width:100%; justify-content:center; margin:0; }
+ .primary-nav a { flex:1; text-align:center; padding:8px 6px; }
+ .calendar-canvas { grid-template-columns:minmax(0,1fr); }
+ .calendar-titlebar { padding:16px; }
+ .calendar-titlebar h1 { font-size:25px; }
+ .calendar-view-controls { padding:0 16px 12px; }
+ .goals-page .workspace-main,.focus-page .workspace-main,.daily-page .workspace-main,.review-page .workspace-main { padding:6px 12px 24px; }
+ .goals-reference-layout,.goal-detail-layout { grid-template-columns:minmax(0,1fr); gap:14px; }
+ .goal-context-rail { grid-column:auto; grid-template-columns:minmax(0,1fr); }
+ .goal-preview-surface { padding:20px; }
+ .goal-preview-surface>h2 { font-size:25px; }
+ .review-overview.has-habit,.feedback-layout { grid-template-columns:minmax(0,1fr); gap:14px; }
+ .review-analytics-hero { padding:20px; gap:14px; flex-wrap:wrap; }
+ .review-analytics-mark { width:60px; height:60px; padding-bottom:15px; gap:4px; }
+ .review-analytics-mark i { width:8px; height:14px; }.review-analytics-mark i:nth-child(2){height:22px;}.review-analytics-mark i:nth-child(3){height:30px;}
+ .review-analytics-hero h2 { font-size:23px; }
+ .review-overview .better-streak-week { max-width:300px; align-self:start; }
+ .focus-mode-main { padding:6px 12px 24px; }
+ .focus-mode-main .focus-mode-hero,.focus-mode-main .focus-mode-body { padding:20px; }
+ .settings-layout { grid-template-columns:minmax(0,1fr); padding:6px 12px 24px; }
+ .settings-sidebar { grid-template-columns:repeat(4,minmax(0,1fr)); padding:10px; }
+ .settings-sidebar>a { padding:10px 4px; text-align:center; }
+ .settings-content { padding:20px 16px; }
+}
+@media(prefers-reduced-motion:reduce) { .header-theme-toggle { transition:none; } }
+.goal-context-rail { align-items:start; }
+.review-overview-main { min-width:0; }
+.review-overview-main .review-analytics-hero { min-height:168px; }
+.review-overview-main .feedback-metrics { margin:16px 0 0; }
+.review-analytics-grid { margin-top:20px; }
+.focus-mode-main .r3-active-focus { gap:0; }
+.focus-mode-main .focus-mode-hero { max-height:40dvh; }
+@media(max-width:760px) { .focus-mode-main .focus-mode-hero { padding:16px 20px; }.focus-mode-main .focus-mode-body { padding:16px 20px; gap:16px; }.focus-mode-main .focus-mode-actions { padding:12px 20px; gap:8px; }.focus-mode-main .focus-timer output { font-size:52px; } }
+.calendar-add-block { border-radius:999px; padding:7px 12px; font-size:12px; }
+@media(min-width:761px) { .calendar-titlebar { flex-wrap:nowrap; }.calendar-titlebar>div:first-child { min-width:0; }.calendar-top-actions { flex-shrink:0; } }
+.focus-mode-page .app-header { flex-shrink:0; }
+.focus-launch-main,.focus-mode-main { display:grid; grid-template-columns:minmax(0,1fr) 280px; gap:20px; align-items:start; }
+.focus-launch-main .focus-workspace { min-width:0; }
+.focus-day-rail { display:grid; gap:16px; min-width:0; }
+.focus-day-rail .reference-panel { padding:20px; }
+.focus-day-rail h2 { font-size:28px; margin-bottom:20px; }
+.focus-day-item { padding:12px; margin-top:12px; border:1px solid var(--line); border-radius:14px; background:var(--surface); }
+.focus-day-item.is-current { background:var(--theme-success-surface,#e2f1e7); border-color:var(--theme-success-edge,#a9c4b0); }
+.focus-day-item p { display:flex; justify-content:space-between; gap:8px; margin:0 0 8px; font-size:11px; color:var(--muted); }
+.focus-day-item strong { font-size:13px; line-height:1.5; font-weight:600; overflow-wrap:anywhere; }
+.focus-mode-main { align-items:stretch; }
+.focus-mode-main .focus-day-rail { align-content:start; overflow:auto; min-height:0; }
+.focus-mode-main:has(.focus-completion) { grid-template-columns:minmax(0,1fr); }
+@media(max-width:760px) { .focus-launch-main,.focus-mode-main { grid-template-columns:minmax(0,1fr); }.focus-mode-main { grid-template-rows:minmax(0,1fr); }.focus-mode-main .focus-day-rail { display:none; }.focus-launch-main .focus-day-rail { margin-top:16px; } }
+.app-header .brand-mark { background:var(--ink); }
+.app-header .account-menu>summary { background:var(--theme-success-surface,#dce5da); }
+.add-weekly-task { width:auto; max-width:100%; border-radius:999px; border-style:dashed; padding:8px 14px; font-size:12px; background:transparent; }
+.calendar-task-toast { border-radius:999px; }
+.review-period-header { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px 24px; align-items:center; margin-top:8px; }
+.review-period-header .review-mode-tabs { grid-column:2; grid-row:1; margin:0; }
+.review-period-header .focus-heading { grid-column:1; grid-row:1; margin:0; }
+.review-period-header .focus-heading .eyebrow { display:none; }
+.review-period-header .focus-heading h1 { font-size:24px; }
+.review-period-header .feedback-date { font-size:12px; margin-top:8px; }
+.review-period-header .review-week-navigation { grid-column:1/-1; margin:0; }
+.review-week-context { margin:10px 0 0; font-size:11px; }
+.review-dashboard { margin-top:16px; }
+@media(max-width:760px) { .review-period-header { grid-template-columns:minmax(0,1fr); gap:14px; }.review-period-header .review-mode-tabs { grid-column:1; grid-row:1; justify-self:start; }.review-period-header .focus-heading { grid-row:2; }.review-period-header .review-week-navigation { grid-row:3; } }
+
+/* Goal selection stays in the short Calendar task form, including empty Goals. */
+.task-goal-picker { margin:12px 0; min-width:0; }
+.task-goal-picker label { display:block; font-size:12px; color:var(--muted); }
+.task-goal-picker select { display:block; width:100%; min-width:0; min-height:40px; margin-top:6px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:var(--theme-surface-soft,#faf9f5); color:var(--ink); font:inherit; }
+.task-goal-picker .small-note { margin:6px 0 0; }
+
+/* Compact weekly task cards follow the Goal → work hierarchy. */
+.work-rail { padding:22px 20px; }
+.work-goal-group { margin-top:24px; }
+.work-goal { margin-bottom:12px; font-size:13px; line-height:1.35; }
+.work-goal > span.goal-dot:last-child { flex:none; margin-top:5px; margin-left:0; background:var(--goal-color); }
+.work-goal-group.is-general { --goal-color:var(--muted); }
+.calendar-commitment { margin:10px 0; padding:12px; border-radius:16px; }
+.calendar-commitment h3 { margin:0 0 10px; font-size:14px; line-height:1.4; }
+.calendar-commitment .commitment-progress { margin:0 0 9px; height:4px; }
+.calendar-commitment .weekly-task-controls { margin:0 0 9px; }
+.calendar-commitment .work-budget { display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap; font-size:12px; }
+.work-scheduled { color:var(--goal-color); white-space:nowrap; }
+.calendar-commitment .work-card-footer { margin:9px 0 0; }
+.outside-hours-tag { display:inline-flex; padding:5px 9px; border-radius:999px; font-size:12px; color:var(--theme-warning-text,#886025); background:var(--theme-warning-surface,#f5ecd8); }
+@media(max-width:767px) { .work-rail { padding:14px 16px; } }
+
+/* Task organization follows the reference rail; moves preserve scheduled times. */
+.calendar-work-list .calendar-commitment { border-radius:14px; padding:12px 12px 11px; }
+.weekly-task-title-row { display:flex; align-items:flex-start; gap:8px; margin-bottom:9px; }
+.weekly-task-title-row h3 { flex:1; min-width:0; margin:0; line-height:1.3; font-weight:500; text-wrap:pretty; }
+.weekly-task-name { flex:1; min-width:0; width:100%; height:30px; border:1px solid var(--theme-positive,#2f6b50); border-radius:8px; padding:0 8px; background:var(--surface); color:var(--ink); font-size:14px; }
+.weekly-task-menu-anchor { position:relative; flex:none; margin:-4px -4px 0 0; }
+.weekly-task-options { width:30px; height:28px; padding:0; border:0; border-radius:8px; background:transparent; color:var(--muted); font-size:20px; cursor:pointer; }
+.weekly-task-options:hover { background:var(--theme-surface-inset); }
+.weekly-task-menu { position:absolute; right:0; top:32px; z-index:35; display:flex; flex-direction:column; min-width:130px; padding:4px; border:1px solid var(--line); border-radius:12px; background:var(--surface); box-shadow:0 8px 24px #0003; }
+.weekly-task-menu button { text-align:left; border:0; background:transparent; color:var(--ink); padding:8px 10px; border-radius:8px; font-size:13px; cursor:pointer; }
+.weekly-task-menu button:hover,.weekly-task-menu button:focus-visible { background:var(--theme-surface-inset); }
+.weekly-task-menu .weekly-task-delete { color:var(--theme-danger,#8a2f1e); }
+.calendar-work-list .weekly-task-stepper button { width:28px; height:26px; }
+.calendar-work-list .weekly-task-stepper span { min-width:40px; font-size:12.5px; }
+.calendar-work-list .work-budget { flex-wrap:wrap; gap:6px 8px; font-size:12px; }
+.calendar-work-list .schedule-work-button { padding:4px 10px; font-size:12px; }
+.calendar-commitment.is-draggable { cursor:grab; }
+.calendar-commitment.task-dragging { opacity:.4; cursor:grabbing; }
+.work-goal-group.accepts-task-drop { outline:1px dashed var(--line); outline-offset:5px; border-radius:10px; }
+.work-goal-group.is-drop-target { background:var(--theme-success-surface,#e5efe7); outline-color:var(--theme-positive,#2f6b50); }
+.empty-goal-drop { margin:8px 0 0; padding:14px 8px; color:var(--muted); font-size:12px; text-align:center; }
+.move-task-destination { width:100%; text-align:left; border:1px dashed var(--line); border-radius:8px; background:transparent; padding:8px; cursor:pointer; }
+.calendar-work-list button:disabled { cursor:default; }

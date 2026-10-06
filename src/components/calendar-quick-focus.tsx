@@ -1,3 +1,4 @@
+import { goalGroupKey, goalTitle } from '@/modules/planning/general';
 /* Read-only entry into the existing guarded Focus workflow. */
 import type { FocusWorkspace } from "@/modules/focus/domain";
 import { elapsedMinutes } from "@/modules/scheduling/domain";
@@ -13,10 +14,10 @@ export function CalendarQuickFocus({ execution, week, now, onInspect }: { execut
   const detail = active?.detail ?? current ?? next;
   const block = detail?.block;
   const time = (value: string) => new Intl.DateTimeFormat("en-GB", { timeZone: detail!.timezone, hour: "2-digit", minute: "2-digit" }).format(new Date(value));
-  return <Panel className={`calendar-quick-focus ${block ? `tone-${goalTone(block.snapshot.goal.id)}` : ""}`} label="Quick focus">
+  return <Panel className={`calendar-quick-focus ${block ? `tone-${goalTone(goalGroupKey(block.snapshot.goal))}` : ""}`} label="Quick focus">
     <div className="canvas-section-heading"><p className="summary-eyebrow">Quick focus</p>{detail && <span className={`block-detail-status ${active ? "focus-running-badge" : ""}`}>{active ? "● In focus" : current ? "Scheduled now" : "Up next today"}</span>}</div>
     {detail && block ? <>
-      <p className="selected-goal"><span className="goal-dot" aria-hidden="true"/>{block.snapshot.goal.title}</p>
+      <p className="selected-goal"><span className="goal-dot" aria-hidden="true"/>{goalTitle(block.snapshot.goal)}</p>
       {block.snapshot.milestone && <p className="work-milestone">◇ {block.snapshot.milestone.title}</p>}
       <h2>{block.snapshot.action.title}</h2>
       <p className="selected-time">{new Intl.DateTimeFormat("en-GB", { timeZone: detail.timezone, weekday: "short", day: "numeric", month: "short" }).format(new Date(block.start))} · {time(block.start)} – {time(block.end)} ({duration(elapsedMinutes(block))})</p>

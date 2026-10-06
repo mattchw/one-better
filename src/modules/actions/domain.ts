@@ -4,7 +4,7 @@ import { boundedText, parseCommand, type Goal } from "../goals/domain";
 import type { Milestone } from "../milestones/domain";
 export type ActionState = "open" | "completed" | "archived";
 export type Action = {
-  id: string; goalId: string; milestoneId: string | null; title: string; doneWhen: string | null; estimateMinutes: number | null;
+  id: string; goalId: string | null; milestoneId: string | null; title: string; doneWhen: string | null; estimateMinutes: number | null;
   state: ActionState; version: number; createdAt: string; updatedAt: string; completedAt: string | null; archivedAt: string | null;
 };
 export type OwnedAction = Action & { ownerId: string };
@@ -27,36 +27,36 @@ export function ownedAction(value: OwnedAction | null, ownerId: string): Action 
 }
 export type ActionMutability = { editable: boolean; kind: "GOAL_ARCHIVED" | "MILESTONE_TERMINAL" | "TERMINAL" | null; message: string | null };
 export type ActionView = { action: Action; milestone: Milestone | null; mutability: ActionMutability };
-export function actionMutability(value: Action, parent: Goal, checkpoint: Milestone | null): ActionMutability {
-  if (value.goalId !== parent.id || (value.milestoneId ? !checkpoint || checkpoint.id !== value.milestoneId || checkpoint.goalId !== parent.id : checkpoint !== null)) throw new ApplicationError("NOT_FOUND", "This action is unavailable.");
+export function actionMutability(value: Action, parent: Goal | null, checkpoint: Milestone | null): ActionMutability {
+  if (value.goalId !== (parent?.id ?? null) || (value.milestoneId ? !checkpoint || checkpoint.id !== value.milestoneId || checkpoint.goalId !== parent?.id : checkpoint !== null)) throw new ApplicationError("NOT_FOUND", "This action is unavailable.");
   if (value.state !== "open") return { editable: false, kind: "TERMINAL", message: `This action is ${value.state} and is kept as read-only history.` };
-  if (parent.archivedAt) return { editable: false, kind: "GOAL_ARCHIVED", message: "This goal is archived. Its actions are kept unchanged as read-only history." };
+  if (parent?.archivedAt) return { editable: false, kind: "GOAL_ARCHIVED", message: "This goal is archived. Its actions are kept unchanged as read-only history." };
   if (checkpoint && checkpoint.state !== "active") return { editable: false, kind: "MILESTONE_TERMINAL", message: `Its milestone is ${checkpoint.state}. This action remains open as read-only history.` };
   return { editable: true, kind: null, message: null };
 }
 export function requireActionGoal(parent: Goal) {
-  if (parent.archivedAt) throw new ApplicationError("CONFLICT", "This goal is archived. Its actions are kept unchanged as read-only history.", { kind: "GOAL_ARCHIVED" });
+  if (parent?.archivedAt) throw new ApplicationError("CONFLICT", "This goal is archived. Its actions are kept unchanged as read-only history.", { kind: "GOAL_ARCHIVED" });
 }
-export function requireAssignableMilestone(parent: Goal, checkpoint: Milestone | null) {
-  if (checkpoint && (checkpoint.goalId !== parent.id || checkpoint.state !== "active")) throw new ApplicationError("VALIDATION", "Choose an active milestone from this goal.", { fields: { milestoneId: "Choose an active milestone from this goal." } });
+export function requireAssignableMilestone(parent: Goal | null, checkpoint: Milestone | null) {
+  if (checkpoint && (checkpoint.goalId !== parent?.id || checkpoint.state !== "active")) throw new ApplicationError("VALIDATION", "Choose an active milestone from this goal.", { fields: { milestoneId: "Choose an active milestone from this goal." } });
 }
-export function requireActionMutable(value: Action, expected: number, parent: Goal, checkpoint: Milestone | null) {
+export function requireActionMutable(value: Action, expected: number, parent: Goal | null, checkpoint: Milestone | null) {
   if (value.version !== expected) throw new ApplicationError("CONFLICT", "This action changed elsewhere. Review the latest saved version before trying again.", { kind: "VERSION", current: value });
   const status = actionMutability(value, parent, checkpoint);
   if (!status.editable) throw new ApplicationError("CONFLICT", status.message!, { kind: status.kind, current: value });
 }
-export function editAction(value: Action, expected: number, fields: ActionFields, parent: Goal, currentMilestone: Milestone | null, destination: Milestone | null, now: string): Action {
+export function editAction(value: Action, expected: number, fields: ActionFields, parent: Goal | null, currentMilestone: Milestone | null, destination: Milestone | null, now: string): Action {
   requireActionMutable(value, expected, parent, currentMilestone);
   const normalized = parseCommand(actionFieldsSchema, fields);
   if (normalized.milestoneId !== (destination?.id ?? null)) throw new ApplicationError("NOT_FOUND", "This milestone is unavailable.");
   requireAssignableMilestone(parent, destination);
   return { ...value, ...normalized, version: value.version + 1, updatedAt: now };
 }
-export function completeAction(value: Action, expected: number, parent: Goal, checkpoint: Milestone | null, now: string): Action {
+export function completeAction(value: Action, expected: number, parent: Goal | null, checkpoint: Milestone | null, now: string): Action {
   requireActionMutable(value, expected, parent, checkpoint);
   return { ...value, state: "completed", completedAt: now, updatedAt: now, version: value.version + 1 };
 }
-export function archiveAction(value: Action, expected: number, parent: Goal, checkpoint: Milestone | null, now: string): Action {
+export function archiveAction(value: Action, expected: number, parent: Goal | null, checkpoint: Milestone | null, now: string): Action {
   requireActionMutable(value, expected, parent, checkpoint);
   return { ...value, state: "archived", archivedAt: now, updatedAt: now, version: value.version + 1 };
 }

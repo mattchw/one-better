@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 import { randomUUID } from "node:crypto";
-import { addDays, calendarDate, capacitySummary, commitPlanSchema, createPlanSchema, currentWeek, mondayOf, ownedPlan, planningSource, planningView, requireDraft, savePlanSchema, sourceIssues, weekSchema } from "../../src/modules/planning/domain";
+import { addDays, calendarDate, capacitySummary, commitPlanSchema, createPlanSchema, currentWeek, mondayOf, ownedPlan, planningSource, planningView, requireDraft, savePlanSchema, sourceIssues, sourceGuardSchema, weekSchema } from "../../src/modules/planning/domain";
 import { action, checkpoint, now, parent, plan, source } from "../planning-fixtures";
 const create = { mutationId: randomUUID(), weekStartDate: plan.weekStartDate, provisionalCapacityMinutes: 720, reserveMinutes: 180 };
 const save = { mutationId: randomUUID(), expectedVersion: 2, provisionalCapacityMinutes: 720, reserveMinutes: 180, commitments: [{ actionId: action.id, source: source.source, budgetMinutes: 180 }] };
@@ -55,4 +55,15 @@ it("Draft version and terminal lifecycle are distinct typed conflicts; committed
 });
 it("foreign and missing Plans are indistinguishable and DTOs omit owner identity", () => {
   for (const value of [null, { ...plan, ownerId: "other" }]) expect(() => ownedPlan(value, "owner")).toThrow(expect.objectContaining({ code: "NOT_FOUND", message: "This weekly plan is unavailable." })); expect(ownedPlan(plan, "owner")).not.toHaveProperty("ownerId");
+});
+
+it("General sources have no Goal or milestone and reject incomplete linkage guards", () => {
+  const general = planningSource({ ...action, goalId:null, milestoneId:null },null,null);
+  expect(general.eligible).toBe(true);
+  expect(general.context.goal).toBeNull();
+  expect(sourceGuardSchema.parse(general.source)).toMatchObject({goalId:null,goalVersion:null,milestoneId:null,milestoneVersion:null});
+  for (const extra of [{goalId:parent.id},{goalVersion:1},{milestoneId:checkpoint.id,milestoneVersion:1}]) {
+    expect(sourceGuardSchema.safeParse({...general.source,...extra}).success).toBe(false);
+  }
+  expect(()=>planningSource({...action,goalId:null,milestoneId:null},parent,null)).toThrow();
 });

@@ -1,3 +1,4 @@
+import { goalGroupKey, goalTitle } from '../planning/general';
 import { addDays, type PlanningSnapshot } from "../planning/domain";
 import { localDate, type FocusSession } from "../focus/domain";
 import { intervalMilliseconds, localDayRange } from "../reviews/domain";
@@ -28,8 +29,8 @@ export function deriveReviewAnalytics(input: {
   });
   const goals = new Map<string, { id: string; title: string; budgetMinutes: number | null; scheduledMilliseconds: number; recordedMilliseconds: number }>();
   function goal(snapshot: PlanningSnapshot) {
-    let value = goals.get(snapshot.goal.id);
-    if (!value) { value = { id:snapshot.goal.id,title:snapshot.goal.title,budgetMinutes:plan ? 0 : null,scheduledMilliseconds:0,recordedMilliseconds:0 }; goals.set(value.id,value); }
+    let value = goals.get(goalGroupKey(snapshot.goal));
+    if (!value) { value = { id:goalGroupKey(snapshot.goal),title:goalTitle(snapshot.goal),budgetMinutes:plan ? 0 : null,scheduledMilliseconds:0,recordedMilliseconds:0 }; goals.set(value.id,value); }
     return value;
   }
   for (const c of plan?.commitments ?? []) goal(c.snapshot).budgetMinutes! += c.budgetMinutes;

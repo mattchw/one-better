@@ -103,7 +103,7 @@ export const milestone = pgTable("milestone", {
 ]);
 
 export const action = pgTable("action", {
-  id: uuid("id").primaryKey(), ownerId: text("owner_id").notNull(), goalId: uuid("goal_id").notNull(), milestoneId: uuid("milestone_id"),
+  id: uuid("id").primaryKey(), ownerId: text("owner_id").notNull().references(() => user.id, { onDelete: "restrict" }), goalId: uuid("goal_id"), milestoneId: uuid("milestone_id"),
   title: text("title").notNull(), doneWhen: text("done_when"), estimateMinutes: integer("estimate_minutes"),
   state: text("state").$type<"open" | "completed" | "archived">().notNull().default("open"), version: integer("version").notNull().default(1),
   createdAt: instant("created_at").notNull().defaultNow(), updatedAt: instant("updated_at").notNull().defaultNow(),
@@ -113,6 +113,7 @@ export const action = pgTable("action", {
   foreignKey({ columns: [t.ownerId, t.goalId, t.milestoneId], foreignColumns: [milestone.ownerId, milestone.goalId, milestone.id], name: "action_owned_milestone_fk" }).onDelete("restrict"),
   uniqueIndex("action_owner_identity_idx").on(t.ownerId, t.id),
   index("action_owner_goal_state_created_idx").on(t.ownerId, t.goalId, t.state, t.createdAt, t.id),
+  check("action_general_has_no_milestone", sql`${t.goalId} IS NOT NULL OR ${t.milestoneId} IS NULL`),
   check("action_title_length", sql`char_length(${t.title}) BETWEEN 1 AND 160 AND char_length(btrim(${t.title})) > 0`),
   check("action_done_when_length", sql`${t.doneWhen} IS NULL OR char_length(${t.doneWhen}) BETWEEN 1 AND 2000`),
   check("action_estimate_bounds", sql`${t.estimateMinutes} IS NULL OR ${t.estimateMinutes} BETWEEN 1 AND 10080`),
@@ -204,10 +205,12 @@ export const calendarAvailabilityCache = pgTable("calendar_availability_cache", 
 export const focusableHours = pgTable("focusable_hours", {
   id: uuid("id").primaryKey(), ownerId: text("owner_id").notNull().references(() => user.id, { onDelete: "restrict" }),
   version: integer("version").notNull(), windows: jsonb("windows").$type<FocusableWindow[]>().notNull(),
+  sparePercent: integer("spare_percent").notNull().default(25),
   createdAt: instant("created_at").notNull(), updatedAt: instant("updated_at").notNull(),
 }, t => [
   uniqueIndex("focusable_hours_owner_idx").on(t.ownerId),
   check("focusable_hours_version", sql`${t.version} > 0`),
+  check("focusable_hours_spare", sql`${t.sparePercent} IN (0,25,40)`),
   check("focusable_hours_windows", sql`jsonb_typeof(${t.windows}) = 'array' AND jsonb_array_length(${t.windows}) <= 70`),
   check("focusable_hours_times", sql`${t.updatedAt} >= ${t.createdAt}`),
 ]);

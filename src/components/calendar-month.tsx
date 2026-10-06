@@ -1,4 +1,5 @@
 'use client';
+import { goalGroupKey } from '@/modules/planning/general';
 import {useEffect,useRef,useState} from 'react';
 import { calendarRange, type CalendarScale } from './calendar-navigation';
 import type { CalendarRangeBlock } from '@/modules/scheduling/calendar-reader';
@@ -16,7 +17,7 @@ export function CalendarMonth({compact,date,zone,today,blocks,selected,locked,on
  const boundary=calendarRange(day,'day',zone),start=Date.parse(boundary.start),end=Date.parse(boundary.end),intersections=intervals.filter(b=>b.start<end&&b.end>start),entries=intersections.map(b=>b.block),minutes=intersections.reduce((n,b)=>n+(Math.min(end,b.end)-Math.max(start,b.start))/60000,0);
  return <section key={day} className={`month-cell ${day.slice(0,7)!==date.slice(0,7)?'month-adjacent':''} ${day===date?'month-selected':''} ${day===today?'month-today':''}`} aria-label={label(day)} onClick={e=>{if(!locked&&!(e.target as HTMLElement).closest('button'))onDate(day);}}>
  <button className="month-date" disabled={locked} aria-label={`Select ${label(day)}`} aria-pressed={day===date} onClick={()=>onDate(day)}>{Number(day.slice(-2))}{day===today&&<span className="month-today-label">Today</span>}</button>
- <div className="month-blocks">{entries.slice(0,limit).map(b=><button key={b.id} data-month-block={b.id} disabled={locked} aria-pressed={selected===b.id} className={`month-block tone-${goalTone(b.snapshot.goal.id)}`} onClick={()=>onSelect(b)} aria-label={b.snapshot.action.title} title={b.snapshot.action.title}>{compact?'•':b.snapshot.action.title}</button>)}</div>
+ <div className="month-blocks">{entries.slice(0,limit).map(b=><button key={b.id} data-month-block={b.id} disabled={locked} aria-pressed={selected===b.id} className={`month-block tone-${goalTone(goalGroupKey(b.snapshot.goal))}`} onClick={()=>onSelect(b)} aria-label={b.snapshot.action.title} title={b.snapshot.action.title}>{compact?'•':b.snapshot.action.title}</button>)}</div>
  {entries.length>(limit)&&<button disabled={locked} className="month-overflow" onClick={()=>onView('day',day)}>+{entries.length-(limit)} more</button>}
  {minutes>0&&(rowHeight>=100||entries.length<=1)&&<small className="month-day-total">{duration(minutes)} scheduled</small>}
  </section>;

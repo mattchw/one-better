@@ -54,7 +54,7 @@ export function deriveDay(date: string, timezone: string, now: string, blocks: E
     commitmentCount: new Set(entries.filter(b => b.scheduledMilliseconds > 0 || b.sessions.length).map(b => b.block.commitmentId)).size,
     live, canReflect: date <= today, activeSessionId: live ? active!.id : null };
 }
-export type DailyExecution = ReturnType<typeof deriveDay> & { reflection: DailyReflection | null };
+export type DailyExecution = ReturnType<typeof deriveDay> & { habit?:import("./habit").HabitProgress; reflection: DailyReflection | null };
 export function ownedReflection(value: OwnedReflection | null, ownerId: string): DailyReflection {
   if (!value || value.ownerId !== ownerId) throw new ApplicationError("NOT_FOUND", "This daily reflection is unavailable.");
   const { ownerId: _owner, ...dto } = value; void _owner; return dto;

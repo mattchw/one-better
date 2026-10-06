@@ -1,3 +1,4 @@
+import {readHabitProgress} from "./habit-repository";
 import { and, asc, eq, gt, inArray, isNull, lt, or } from "drizzle-orm";
 import { ApplicationError } from "../../domain/errors";
 import type { Database } from "../../db/connect";
@@ -29,7 +30,7 @@ export function reviewRepository(db: Database): ReviewRepository {
       // All associated sessions distinguish 'none recorded' from execution on a different day.
       const sessions = unique.size ? await tx.select().from(focusSession).where(and(eq(focusSession.ownerId, actor.userId), inArray(focusSession.timeBlockId, [...unique.keys()]))).orderBy(asc(focusSession.startedAt), asc(focusSession.id)) : [];
       const [reflection] = await tx.select().from(dailyReflection).where(and(eq(dailyReflection.ownerId, actor.userId), eq(dailyReflection.localDate, requested)));
-      return { ...deriveDay(requested, account.timezone, now, [...unique.values()].map(v => ({ block: blockDTO(v.block), planTimezone: v.planTimezone })), sessions.map(sessionDTO)), reflection: reflection ? publicReflection(reflection) : null };
+      return { habit:await readHabitProgress(tx,actor,account.timezone,now), ...deriveDay(requested, account.timezone, now, [...unique.values()].map(v => ({ block: blockDTO(v.block), planTimezone: v.planTimezone })), sessions.map(sessionDTO)), reflection: reflection ? publicReflection(reflection) : null };
     }, { isolationLevel: "repeatable read", accessMode: "read only" })),
     get: (actor, id) => operation(async () => { const [row] = await db.select().from(dailyReflection).where(and(eq(dailyReflection.ownerId, actor.userId), eq(dailyReflection.id, id))); return row ? reflectionDTO(row) : null; }),
     execute: (actor, mutationId, hash, apply) => operation(() => executeReceipt(db, actor, mutationId, hash, async tx => {

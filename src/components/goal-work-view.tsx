@@ -1,4 +1,5 @@
 "use client";
+import { goalGroupKey } from '@/modules/planning/general';
 /* Full-document goal navigation preserves native pending-command unload guards. */
 /* eslint-disable @next/next/no-html-link-for-pages */
 import { useRef, useState } from "react";
@@ -20,7 +21,7 @@ export function GoalWorkView({ goal: initialGoal, milestones, milestoneState, ca
   const [dialog, setDialog] = useState<DialogState | null>(null), [adding, setAdding] = useState<ActionView | null>(null), [notice, setNotice] = useState("");
   const weekSequence = useRef(0);
   const trigger = useRef<HTMLElement | null>(null), heading = useRef<HTMLHeadingElement>(null);
-  const work = weekWork(week).filter(c => c.context?.goal.id === goal.id), plan = week.workspace.view?.plan;
+  const work = weekWork(week).filter(c => goalGroupKey(c.context?.goal) === goal.id), plan = week.workspace.view?.plan;
   function restore() { setTimeout(() => (trigger.current?.isConnected ? trigger.current : heading.current)?.focus(), 0); }
   async function refreshWeek() { const id = ++weekSequence.current; try { const latest = await readGoalWeek(week.workspace.weekStartDate); if (id === weekSequence.current) setWeek(latest); } catch { if (id === weekSequence.current) setNotice("Weekly choices may be out of date. Refresh this page to review the latest context."); } }
   async function savedGoal() {
@@ -44,14 +45,14 @@ export function GoalWorkView({ goal: initialGoal, milestones, milestoneState, ca
       <ActionsView currentWeek={week.workspace.currentWeekStartDate} onChanged={() => void refreshWeek()} initialCatalog={catalog} initialState={actionState} timezone={timezone} refreshKey={revision} week={week.workspace.weekStartDate} chosen={Object.fromEntries(work.map(c => [c.actionId, c.budgetMinutes]))} onAddToWeek={(action, element) => { trigger.current = element; setAdding(action); }} />
     </div></div><aside className="goal-context-rail" aria-label="Goal context">
       <section className="goal-this-week" aria-labelledby="goal-this-week-title"><div className="milestones-heading"><div><p className="eyebrow">Am I choosing this now?</p><h2 id="goal-this-week-title">{week.workspace.weekStartDate === week.workspace.currentWeekStartDate ? "This week’s work" : `Week of ${week.workspace.weekStartDate}`}</h2></div><Link className="quiet-button" href={`/calendar?week=${week.workspace.weekStartDate}`}>Calendar →</Link></div>
-        <p className="week-choice-caption">Week of {week.workspace.weekStartDate} · {plan?.state === "draft" ? "Draft choices · review to schedule" : plan ? "Current committed plan" : "Choose work below"}</p>
-        {work.length ? <div className="goal-week-work">{work.map(c => <Link href={`/calendar?week=${week.workspace.weekStartDate}`} key={c.actionId}><span><strong>{c.context!.action.title}</strong><small>{duration(c.budgetMinutes)} {plan?.state === "draft" ? "chosen" : "committed"}</small></span><span aria-hidden="true">→</span></Link>)}</div> : <p className="muted">A little meaningful work is enough. Add an Action when you’re ready to choose it.</p>}
-        {!!week.workspace.view?.issues.length && <p className="canvas-warning">Draft source context needs review before committing.</p>}
-        {plan?.state === "draft" && <Link className="goal-open-link" href={`/planning?week=${week.workspace.weekStartDate}`}>Review and commit this week →</Link>}
-        {plan?.state === "committed" && <Link className="goal-open-link" href={`/planning?week=${week.workspace.weekStartDate}`}>Deliberately amend this week →</Link>}
+        <p className="week-choice-caption">Week of {week.workspace.weekStartDate} · {plan?.state === "draft" ? "Your chosen tasks" : plan ? "Your weekly tasks" : "Choose work below"}</p>
+        {work.length ? <div className="goal-week-work">{work.map(c => <Link href={`/calendar?week=${week.workspace.weekStartDate}`} key={c.actionId}><span><strong>{c.context!.action.title}</strong><small>{duration(c.budgetMinutes)} picked</small></span><span aria-hidden="true">→</span></Link>)}</div> : <p className="muted">A little meaningful work is enough. Add an Action when you’re ready to choose it.</p>}
+        {!!week.workspace.view?.issues.length && <p className="canvas-warning">A task or Goal changed. Check your choices on Calendar.</p>}
+        {plan?.state === "draft" && <Link className="goal-open-link" href={`/planning?week=${week.workspace.weekStartDate}`}>Plan this week on Calendar →</Link>}
+        {plan?.state === "committed" && <Link className="goal-open-link" href={`/planning?week=${week.workspace.weekStartDate}`}>Edit this week on Calendar →</Link>}
       </section>
       <section className="reference-panel reference-prompt"><h3>Make progress observable</h3><p>Keep checkpoints about outcomes. Choose Actions for the week when you have room for them.</p></section></aside></div>
     {dialog && <GoalDialog state={dialog} onClose={() => { setDialog(null); restore(); }} onSaved={savedGoal} />}
-    {adding && <AddToWeekDialog action={adding} initialWeek={week.workspace.weekStartDate} onClose={() => { setAdding(null); restore(); }} onSaved={value => { ++weekSequence.current; const url = new URL(window.location.href); if (value.workspace.weekStartDate === value.workspace.currentWeekStartDate) url.searchParams.delete("week"); else url.searchParams.set("week", value.workspace.weekStartDate); window.history.replaceState(null, "", url); setWeek(value); setAdding(null); setRevision(v => v + 1); setNotice(weekWork(value).some(c => c.actionId === adding.action.id) ? "Action chosen for the week. Open Calendar to see it; review and commit before scheduling a Draft." : "Command confirmed. The current week has changed since that command; review its latest choices."); restore(); }} />}
+    {adding && <AddToWeekDialog action={adding} initialWeek={week.workspace.weekStartDate} onClose={() => { setAdding(null); restore(); }} onSaved={value => { ++weekSequence.current; const url = new URL(window.location.href); if (value.workspace.weekStartDate === value.workspace.currentWeekStartDate) url.searchParams.delete("week"); else url.searchParams.set("week", value.workspace.weekStartDate); window.history.replaceState(null, "", url); setWeek(value); setAdding(null); setRevision(v => v + 1); setNotice(weekWork(value).some(c => c.actionId === adding.action.id) ? "Task picked for the week. Open Calendar to give it time." : "Command confirmed. The current week has changed since that command; review its latest choices."); restore(); }} />}
   </>;
 }

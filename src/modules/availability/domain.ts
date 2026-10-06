@@ -2,8 +2,11 @@ import { Temporal } from "@js-temporal/polyfill";
 import { z } from "zod";
 import { timezoneSchema } from "../../domain/timezone";
 import { busyTotals, freshnessMinutes, mergeBusyIntervals, validate, weekRange, type Availability, type BusyInterval } from "../calendar/domain";
+export const sparePercentSchema = z.union([z.literal(0), z.literal(25), z.literal(40)]);
+export type SparePercent = z.infer<typeof sparePercentSchema>;
+export function reserveForBudget(minutes: number, percent: number) { return Math.ceil(minutes * percent / (100 - percent)); }
 export type FocusableWindow = { weekday: number; startMinute: number; endMinute: number };
-export type FocusableHoursSchedule = { id: string; version: number; windows: FocusableWindow[]; createdAt: string; updatedAt: string };
+export type FocusableHoursSchedule = { id: string; version: number; windows: FocusableWindow[]; sparePercent?: SparePercent; createdAt: string; updatedAt: string };
 export type HoursSettings = { schedule: FocusableHoursSchedule | null; timezone: string };
 export const weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 export const maxWindows = 70;
@@ -14,7 +17,7 @@ export const windowsSchema = z.array(windowSchema).max(maxWindows).superRefine((
     for (let i = 1; i < entries.length; i++) if (entries[i].startMinute < entries[i-1].endMinute) ctx.addIssue({ code: "custom", path: [entries[i].index], message: `${weekdayNames[day-1]} windows overlap. Adjust or remove a window.` });
   }
 });
-export const saveHoursSchema = z.strictObject({ mutationId: z.uuid(), scheduleId: z.uuid().nullable(), expectedVersion: z.number().int().min(0).max(2147483646), windows: windowsSchema }).refine(v => (v.scheduleId === null) === (v.expectedVersion === 0), "Review the saved hours before saving.");
+export const saveHoursSchema = z.strictObject({ mutationId: z.uuid(), scheduleId: z.uuid().nullable(), expectedVersion: z.number().int().min(0).max(2147483646), windows: windowsSchema, sparePercent: sparePercentSchema.optional() }).refine(v => (v.scheduleId === null) === (v.expectedVersion === 0), "Review the saved hours before saving.");
 export const wallTime = (minutes: number) => `${String(Math.floor(minutes/60)).padStart(2,"0")}:${String(minutes%60).padStart(2,"0")}`;
 export function wallMinutes(value: string): number | null {
   if (value === "24:00") return 1440;

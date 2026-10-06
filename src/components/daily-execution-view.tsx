@@ -1,4 +1,5 @@
 "use client";
+import { goalTitle } from '@/modules/planning/general';
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { activeChangesDay, intervalMilliseconds, type DailyExecution, type DailyReflection } from "@/modules/reviews/domain";
@@ -24,7 +25,7 @@ function ExecutionEntry({ entry, view, now }: { entry: Entry; view: DailyExecuti
   for (const {session} of entry.sessions) counts[session.outcome ?? "active"]++;
   return <article className="daily-block feedback-work-card" data-daily-block={entry.block.id}>
     <div className="feedback-work-heading"><h3>{entry.block.snapshot.action.title}</h3>{entry.block.state === "cancelled" && <span className="feedback-status">Cancelled before execution</span>}</div>
-    <p className="feedback-goal">Goal · {entry.block.snapshot.goal.title}</p>
+    <p className="feedback-goal">Goal · {goalTitle(entry.block.snapshot.goal)}</p>
     <p className="feedback-schedule">{timestamp(entry.block.start, view.timezone)} → {timestamp(entry.block.end, view.timezone)}</p>
     <div className="feedback-work-result"><strong>Recorded {recordedTime(actual)}{liveContribution(entry,view,now) ? " so far" : ""}</strong>{Object.entries(counts).filter(([,count])=>count>0).map(([kind,count])=><span className="feedback-status" key={kind}>{kind === "active" ? "Active session" : labels[kind as keyof typeof labels]}{count > 1 ? ` · ${count}` : ""}</span>)}</div>
     {entry.sessionCount === 0 ? <p className="feedback-no-session">No focus session recorded</p> : entry.sessions.length === 0 ? <p className="feedback-no-session">Sessions for this block occurred on other dates. No recorded time on this date.</p> : null}
@@ -32,7 +33,7 @@ function ExecutionEntry({ entry, view, now }: { entry: Entry; view: DailyExecuti
       <p className="small-note">{entry.block.state === "cancelled" ? "Cancelled interval · excluded from scheduled total" : "Scheduled on this date"}: {recordedTime(entry.scheduledMilliseconds)}</p>
       <p className="small-note">Recorded on this date · {recordedTime(actual)}</p>
       {entry.planTimezone !== view.timezone && <p className="small-note">Shown in {view.timezone}; planning timezone {entry.planTimezone}.</p>}
-      <h4>Frozen context</h4><p>{entry.block.snapshot.goal.outcome}</p>{entry.block.snapshot.milestone && <p>Milestone · {entry.block.snapshot.milestone.title} · {entry.block.snapshot.milestone.successCondition}</p>}{entry.block.snapshot.action.doneWhen && <p>Done when · {entry.block.snapshot.action.doneWhen}</p>}
+      <h4>Frozen context</h4><p>{entry.block.snapshot.goal?.outcome}</p>{entry.block.snapshot.milestone && <p>Milestone · {entry.block.snapshot.milestone.title} · {entry.block.snapshot.milestone.successCondition}</p>}{entry.block.snapshot.action.doneWhen && <p>Done when · {entry.block.snapshot.action.doneWhen}</p>}
       {entry.sessions.map(({ session }) => <article key={session.id} data-daily-session={session.id}><p><strong>{session.outcome ? labels[session.outcome] : "Active session"}</strong> · {recordedTime(intervalMilliseconds(session.startedAt, session.endedAt ?? now, view.range))} on this date</p><p className="small-note">{timestamp(session.startedAt, view.timezone)} → {session.endedAt ? timestamp(session.endedAt, view.timezone) : "Still active"}</p>{!session.endedAt && view.localDate < localDate(now, view.timezone) && <p className="small-note">This date&apos;s contribution is fixed at its day boundary.</p>}{session.endNote && <p className="focus-note">{session.endNote}</p>}</article>)}
       <a className="text-link" href={`/focus?block=${entry.block.id}`}>View block in Focus</a>
     </FeedbackDetails>
@@ -102,8 +103,9 @@ export function DailyExecutionView({ initial }: { initial: DailyExecution }) {
   const dayLink = (date: string, label: string) => <a href={`/today?date=${date}`} aria-disabled={navBlocked} onClick={e => { if (navBlocked) e.preventDefault(); }}>{label}</a>;
   const reviewLink = (href: string, label: string) => <a href={href} aria-disabled={navBlocked} onClick={e => { if (navBlocked) e.preventDefault(); }}>{label}</a>;
   return <div className="daily-workspace reference-review feedback-workspace feedback-daily">
-    <nav className="review-mode-tabs" aria-label="Review mode"><a href="/today" aria-current="page" aria-disabled={navBlocked} onClick={e => { if (navBlocked) e.preventDefault(); }}>Daily</a>{reviewLink("/review", "Weekly")}</nav>
+    <div className="review-period-header"><nav className="review-mode-tabs" aria-label="Review mode"><a href="/today" aria-current="page" aria-disabled={navBlocked} onClick={e => { if (navBlocked) e.preventDefault(); }}>Daily</a>{reviewLink("/review", "Weekly")}</nav>
     <div className="focus-heading"><div><p className="eyebrow">Understand the day</p><h1>{view.localDate === today ? "Today" : "Daily execution"}</h1><h2 className="feedback-date">{dateTitle(view.localDate)}</h2></div><button className="quiet-button" disabled={blocked} onClick={() => void refresh().catch(e => setError(errorInfo<DailyReflection>(e)))}>Refresh day</button></div>
+    </div>
     <div className="review-toolbar">    
     <nav className="daily-navigation" aria-label="Review dates">{view.localDate > "2000-01-01" && dayLink(addDays(view.localDate, -1), "← Previous day")}{dayLink(today, "Today")}{view.localDate < "9999-12-31" && dayLink(addDays(view.localDate, 1), "Next day →")}</nav>
     <form className="daily-date-picker" onSubmit={e => { e.preventDefault(); if (!navBlocked) router.push(`/today?date=${chosenDate}`); }}><label htmlFor="review-date">Review date</label><input id="review-date" type="date" min="2000-01-01" max="9999-12-31" required value={chosenDate} disabled={navBlocked} onChange={e => setChosenDate(e.target.value)}/><button className="quiet-button" disabled={navBlocked}>Open date</button></form>
@@ -111,7 +113,7 @@ export function DailyExecutionView({ initial }: { initial: DailyExecution }) {
     {navBlocked && <p className="small-note">Save or discard your unsaved note before changing day. An unconfirmed command must be retried first.</p>}
     {notice && <p role="status" className="plan-notice">{notice}</p>}
     {error && !reviewing && <div role="alert" className="daily-error"><p>{error.message}</p>{pending && <button className="quiet-button" disabled={busy} onClick={() => void send(pending)}>Retry same command</button>}{conflict && <><p className="focus-note">Latest saved note: {error.current?.note ?? view.reflection?.note ?? "Not available"}</p><button className="quiet-button" disabled={blocked} onClick={() => void latest()}>Review latest saved reflection</button></>}</div>}
-    <ReviewDashboard data={analytics} weekly={false} navigationBlocked={navBlocked} summary={<Summary scheduled={view.scheduledMilliseconds} recorded={recorded} live={live} sessions={[...view.scheduled,...view.otherWork].reduce((n,e)=>n+e.sessions.length,0)}/>}/>
+    <ReviewDashboard habit={view.habit} data={analytics} weekly={false} navigationBlocked={navBlocked} summary={<Summary scheduled={view.scheduledMilliseconds} recorded={recorded} live={live} sessions={[...view.scheduled,...view.otherWork].reduce((n,e)=>n+e.sessions.length,0)}/>}/>
     <div className="feedback-layout"><div className="feedback-main-column">
     <section className="feedback-work-list review-scheduled" aria-label="Scheduled work"><div className="feedback-section-heading"><h2>What happened</h2><span>{view.scheduled.length} scheduled {view.scheduled.length === 1 ? "block" : "blocks"}</span></div>{view.scheduled.length ? view.scheduled.map(entry => <ExecutionEntry key={entry.block.id} entry={entry} view={view} now={now}/>) : <p>No scheduled blocks for this date.</p>}</section>
     {view.otherWork.length > 0 && <section className="feedback-work-list" aria-label="Recorded work from other scheduled dates"><h2>Recorded work from other scheduled dates</h2>{view.otherWork.map(entry => <ExecutionEntry key={entry.block.id} entry={entry} view={view} now={now}/>)}</section>}

@@ -1,7 +1,7 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, isNull } from "drizzle-orm";
 import type { Database } from "../../db/connect";
 import { executeReceipt, type Transaction } from "../../db/command-receipt";
-import { action, goal, milestone } from "../../db/schema";
+import { action, goal, milestone, user } from "../../db/schema";
 import { ApplicationError } from "../../domain/errors";
 import type { OwnedGoal } from "../goals/domain";
 import type { OwnedMilestone } from "../milestones/domain";
@@ -17,7 +17,7 @@ async function operation<T>(apply: () => Promise<T>): Promise<T> {
 }
 // Shared persistence for the existing Action lifecycle, including atomic Weekly Review Drop.
 export async function replaceAction(tx: Transaction, actor: Actor, value: Action, expectedVersion: number): Promise<OwnedAction> {
-  const [row] = await tx.update(action).set({ title: value.title, doneWhen: value.doneWhen, estimateMinutes: value.estimateMinutes, milestoneId: value.milestoneId, state: value.state, version: value.version, updatedAt: new Date(value.updatedAt), completedAt: value.completedAt ? new Date(value.completedAt) : null, archivedAt: value.archivedAt ? new Date(value.archivedAt) : null }).where(and(eq(action.ownerId, actor.userId), eq(action.id, value.id), eq(action.goalId, value.goalId), eq(action.version, expectedVersion), eq(action.state, "open"))).returning();
+  const [row] = await tx.update(action).set({ title: value.title, doneWhen: value.doneWhen, estimateMinutes: value.estimateMinutes, milestoneId: value.milestoneId, state: value.state, version: value.version, updatedAt: new Date(value.updatedAt), completedAt: value.completedAt ? new Date(value.completedAt) : null, archivedAt: value.archivedAt ? new Date(value.archivedAt) : null }).where(and(eq(action.ownerId, actor.userId), eq(action.id, value.id), value.goalId ? eq(action.goalId, value.goalId) : isNull(action.goalId), eq(action.version, expectedVersion), eq(action.state, "open"))).returning();
   if (!row) throw new ApplicationError("CONFLICT", "This action changed elsewhere. Review the latest saved version.", { kind: "VERSION" }); return record(row);
 }
 export function actionRepository(db: Database): ActionRepository {
@@ -31,6 +31,7 @@ export function actionRepository(db: Database): ActionRepository {
     }, { isolationLevel: "repeatable read", accessMode: "read only" })),
     findOwned: (actor, id) => operation(async () => { const [row] = await db.select().from(action).where(and(eq(action.ownerId, actor.userId), eq(action.id, id))); return row ? record(row) : null; }),
     executeOwned: (actor, mutationId, requestHash, apply) => operation(() => executeReceipt(db, actor, mutationId, requestHash, async (tx) => {
+      await tx.select({id:user.id}).from(user).where(eq(user.id,actor.userId)).for("no key update");
       const scoped = (id: string) => and(eq(action.ownerId, actor.userId), eq(action.id, id));
       return apply({
         async findOwned(id) { const [row] = await tx.select().from(action).where(scoped(id)); return row ? record(row) : null; },
