@@ -1,3 +1,5 @@
+import type {ClientSchedule} from '@/client/calendar-state';
+import {Temporal} from '@js-temporal/polyfill';
 import { goalGroupKey, goalTitle } from '@/modules/planning/general';
 /* Read-only entry into the existing guarded Focus workflow. */
 import type { FocusWorkspace } from "@/modules/focus/domain";
@@ -6,9 +8,11 @@ import { goalTone } from "./calendar-layout";
 import { duration } from "./planning-presentation";
 import { Metric, Panel } from "./workspace-ui";
 
-export function CalendarQuickFocus({ execution, week, now, onInspect }: { execution: FocusWorkspace | null; week: string; now: number; onInspect: (id: string) => void }) {
+export function CalendarQuickFocus({ execution, schedule, week, now, onInspect }: { execution: FocusWorkspace | null;schedule?:ClientSchedule|null; week: string; now: number; onInspect: (id: string) => void }) {
   const active = execution?.active;
-  const candidates = execution?.todayBlocks.filter(detail => detail.canStart && detail.weekStartDate === week && !detail.sessions.some(session => session.endedAt)) ?? [];
+
+  const details=execution?.todayBlocks.map(detail=>{const block=schedule?.blocks.find(b=>b.id===detail.block.id);if(!block)return detail;const commitment=schedule?.commitments.find(c=>c.id===block.commitmentId);return {...detail,block,canStart:detail.canStart&&!block.pending&&block.state==='planned'&&Temporal.Instant.from(block.start).toZonedDateTimeISO(schedule?.userTimezone??detail.timezone).toPlainDate().equals(Temporal.Instant.fromEpochMilliseconds(now).toZonedDateTimeISO(schedule?.userTimezone??detail.timezone).toPlainDate()),scheduledMinutes:commitment?.scheduledMinutes??detail.scheduledMinutes};})??[];
+  const candidates = details.filter(detail => detail.canStart && detail.weekStartDate === week && !detail.sessions.some(session => session.endedAt)) ?? [];
   const current = candidates.find(detail => Date.parse(detail.block.start) <= now && now < Date.parse(detail.block.end));
   const next = candidates.find(detail => Date.parse(detail.block.start) > now);
   const detail = active?.detail ?? current ?? next;

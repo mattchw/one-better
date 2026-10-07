@@ -9,11 +9,11 @@ import { addDays, currentWeek, type PlanningSnapshot } from "@/modules/planning/
 import { Context, duration } from "./planning-presentation";
 import { errorInfo, request, type CommandError } from "./mutation-client";
 export type Editor = { commitmentId: string; snapshot: PlanningSnapshot; chooseCommitment?: boolean; block?: TimeBlock; cancel?: boolean; prefill?: { date: string; startTime: string; endTime: string }; coaching?:{runId:string;index:number}; initialReview?:PlacementReview };
-type Pending = { url: string; method: string; body: object };
+export type Pending = { url: string; method: string; body: object };
 const wall = (instant: string, timezone: string) => { const v=Temporal.Instant.from(instant).toZonedDateTimeISO(timezone); return {date:v.toPlainDate().toString(),time:v.toPlainTime().toString({smallestUnit:"minute"})}; };
 const stamp = (instant: string, timezone: string) => new Intl.DateTimeFormat("en-GB",{timeZone:timezone,weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",timeZoneName:"shortOffset"}).format(new Date(instant));
 function Balance({budget,scheduled}:{budget:number;scheduled:number}) {return <p className="small-note">{scheduled>budget ? `${duration(scheduled-budget)} scheduled beyond this week’s commitment budget.` : `${duration(budget-scheduled)} still unscheduled.`}</p>;}
-export function BlockEditor({editor,view,now,onClose,onSaved}:{editor:Editor;view:SchedulingView;now:number;onClose:()=>void;onSaved:(view:SchedulingView)=>void}) {
+export function BlockEditor({editor,view,now,onClose,onSaved,onOptimistic}:{editor:Editor;view:SchedulingView;now:number;onClose:()=>void;onSaved:(view:SchedulingView)=>void;onOptimistic?:(command:Pending,change:{kind:'create'|'place'|'cancel';block?:TimeBlock;interval:{start:string;end:string};snapshot:PlanningSnapshot;commitmentId:string})=>boolean}) {
   const dialog=useRef<HTMLDialogElement>(null),first=useRef<HTMLInputElement>(null),cancel=useRef<HTMLButtonElement>(null);
   const [block,setBlock]=useState(editor.block),[date,setDate]=useState(editor.block?wall(editor.block.start,view.timezone).date:editor.prefill?.date??""),[start,setStart]=useState(editor.block?wall(editor.block.start,view.timezone).time:editor.prefill?.startTime??""),[end,setEnd]=useState(editor.block?wall(editor.block.end,view.timezone).time:editor.prefill?.endTime??"");
   const [review,setReview]=useState<PlacementReview|null>(editor.initialReview??null),[busyAck,setBusyAck]=useState(false),[busy,setBusy]=useState(false),[pending,setPending]=useState<Pending|null>(null),[error,setError]=useState<CommandError<TimeBlock>|null>(null);
@@ -35,6 +35,7 @@ export function BlockEditor({editor,view,now,onClose,onSaved}:{editor:Editor;vie
     } catch(e){setError(errorInfo<TimeBlock>(e));}finally{setBusy(false);}
   }
   async function confirm(command:Pending) {
+    if(onOptimistic){const interval=editor.cancel&&block?{start:block.start,end:block.end}:review?.interval;if(!interval)return;if(!onOptimistic(command,{kind:editor.cancel?'cancel':block?'place':'create',block,interval,snapshot,commitmentId}))setError({code:'CONFLICT',message:'This schedule changed. Close the editor and review the latest facts.'});return;}
     setPending(command);setBusy(true);setError(null);
     try {await request(command.url,{method:command.method,headers:{"Content-Type":"application/json"},body:JSON.stringify(command.body)});onSaved(await request<SchedulingView>(url));}
     catch(e){const info=errorInfo<TimeBlock>(e);setError(info);if(info.code!=="UNCERTAIN"&&info.code!=="DATABASE_UNAVAILABLE"){setPending(null);setReview(null);setBusyAck(false);}}

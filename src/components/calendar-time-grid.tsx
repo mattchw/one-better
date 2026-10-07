@@ -3,7 +3,7 @@ import { goalGroupKey, goalTitle } from '@/modules/planning/general';
 
 import { memo, useCallback, useEffect, useId, useRef, useState, type RefObject } from "react";
 import { createPortal } from "react-dom";
-import FullCalendar, { type CalendarRef, type EventInput, type EventDisplayInfo } from "@fullcalendar/react";
+import FullCalendar, { type CalendarRef, type EventInput, type EventDisplayInfo, type EventDropInfo, type EventResizeDoneInfo } from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/react/timegrid";
 import interactionPlugin from "@fullcalendar/react/interaction";
 import classicTheme from "@fullcalendar/react/themes/classic";
@@ -26,11 +26,13 @@ type Props = {
   day: string | null; weekends: boolean; selected: string | null;
   blocks: SchedulingView["blocks"]; busy: BusyInterval[]; focusable: BusyInterval[];
   hours: FocusableHoursSchedule | null; stale: boolean; canSchedule: boolean;
+  pendingIds?:string[];
+  onMove?:(id:string,start:string,end:string)=>boolean;
   onSelect: (id: string) => void;
   onPlace: (placement: PlacementPrefill, trigger: HTMLElement) => void;
 };
 
-// The library owns layout only. Events are read models; editable/dragging are disabled.
+// FullCalendar owns the pointer preview. Only drop/resize completion submits an intention.
 export default function CalendarTimeGrid(props: Props) {
   const { week, zone, accountZone, now, day, weekends, selected, blocks, busy, hours } = props;
   const calendar = useRef<CalendarRef>(null), container = useRef<HTMLDivElement>(null);
@@ -57,8 +59,12 @@ export default function CalendarTimeGrid(props: Props) {
     return () => cancelAnimationFrame(frame);
   }, [week, day, weekends]);
   useEffect(() => {
-    container.current?.querySelectorAll<HTMLElement>("[data-calendar-block]").forEach(el => el.setAttribute("aria-pressed", String(el.dataset.calendarBlock === selected)));
-  }, [selected]);
+    container.current?.querySelectorAll<HTMLElement>("[data-calendar-block]").forEach(el => {
+      el.setAttribute("aria-pressed", String(el.dataset.calendarBlock === selected));
+      const block=blocks.find(b=>b.id===el.dataset.calendarBlock);
+      if(block)el.setAttribute("aria-label",`${block.snapshot.action.title}, ${stamp(block.start,zone)} to ${stamp(block.end,zone)}${block.reviewRequired?", review required":""}${outsideCurrentHours(block,hours,accountZone)?", outside Focusable Hours":""}`);
+    });
+  }, [selected,blocks,zone,hours,accountZone]);
   useEffect(() => {
     container.current?.querySelectorAll<HTMLElement>("[data-calendar-block]").forEach(el => {
       if (el.dataset.calendarBlock === hover?.id) el.setAttribute("aria-describedby", tooltipId);
@@ -70,7 +76,7 @@ export default function CalendarTimeGrid(props: Props) {
     onFocusCapture={e => { const el = (e.target as HTMLElement).closest<HTMLElement>("[data-calendar-block]"); if (el?.dataset.calendarBlock) showDetails(el.dataset.calendarBlock, el); }}
     onBlurCapture={e => { if (!(e.relatedTarget instanceof Node) || !(e.target as HTMLElement).closest("[data-calendar-block]")?.contains(e.relatedTarget)) setHover(null); }}
     onPointerMove={e => {
-      if (e.pointerType === "touch" || !props.canSchedule || (e.target as HTMLElement).closest("[data-calendar-block]")) { setGhost(null); return; }
+      if (e.buttons || e.pointerType === "touch" || !props.canSchedule || (e.target as HTMLElement).closest("[data-calendar-block]")) { setGhost(null); return; }
       const root = container.current!, bounds = root.getBoundingClientRect();
       const lane = Array.from(root.querySelectorAll<HTMLElement>("[data-calendar-date]")).find(el => { const r = el.getBoundingClientRect(); return e.clientX >= r.left && e.clientX < r.right && e.clientY >= r.top && e.clientY < r.bottom; });
       const slot = Array.from(root.querySelectorAll<HTMLElement>("[data-slot-time]")).find(el => { const r = el.getBoundingClientRect(); return e.clientY >= r.top && e.clientY < r.bottom; });
@@ -114,6 +120,8 @@ const CalendarSurface = memo(function CalendarSurface({ value: props, calendar, 
     })),
     ...blocks.map(block => ({
       id: block.id, start: block.start, end: block.end, title: block.snapshot.action.title,
+      startEditable:!!props.onMove&&props.canSchedule&&block.canEdit&&Date.parse(block.start)>now,
+      durationEditable:!!props.onMove&&props.canSchedule&&block.canEdit&&Date.parse(block.start)>now,
       extendedProps: { kind: "block", block, outside: outsideCurrentHours(block, hours, accountZone) },
     })),
   ];
@@ -123,6 +131,10 @@ const CalendarSurface = memo(function CalendarSurface({ value: props, calendar, 
     return `${block.snapshot.action.title}, ${stamp(block.start, zone)} to ${stamp(block.end, zone)}${block.reviewRequired ? ", review required" : ""}${info.event.extendedProps.outside ? ", outside Focusable Hours" : ""}`;
   }
 
+  function changedEvent(info:EventDropInfo|EventResizeDoneInfo){
+    const start=info.event.start,end=info.event.end;onClear();
+    if(!start||!end||!props.onMove?.(info.event.id,start.toISOString(),end.toISOString()))info.revert();
+  }
   return <FullCalendar
       ref={calendar}
       key={`${week}-${day ?? "week"}-${weekends}`}
@@ -163,7 +175,14 @@ const CalendarSurface = memo(function CalendarSurface({ value: props, calendar, 
       nowIndicatorLineClass="calendar-now"
       nowIndicatorDotClass="calendar-now-dot"
       events={events}
-      editable={false}
+      editable={!!props.onMove&&props.canSchedule}
+      eventResizableFromStart={false}
+      eventDragMinDistance={6}
+      snapDuration="00:30:00"
+      eventDragStart={onClear}
+      eventResizeStart={onClear}
+      eventDrop={info=>changedEvent(info)}
+      eventResize={info=>changedEvent(info)}
       selectable={false}
       eventInteractive
       eventMinHeight={26}
@@ -171,12 +190,12 @@ const CalendarSurface = memo(function CalendarSurface({ value: props, calendar, 
       slotEventOverlap={false}
       eventClass={info => {
         const block = info.event.extendedProps.block as SchedulingView["blocks"][number];
-        return `calendar-block tone-${goalTone(goalGroupKey(block.snapshot.goal))} ${selected === block.id ? "is-selected" : ""} ${block.reviewRequired ? "needs-review" : ""}`;
+        return `calendar-block tone-${goalTone(goalGroupKey(block.snapshot.goal))} ${selected === block.id ? "is-selected" : ""} ${block.reviewRequired ? "needs-review" : ""} ${props.pendingIds?.includes(block.id)?"block-saving":""}`;
       }}
       eventContent={info => {
         const block = info.event.extendedProps.block as SchedulingView["blocks"][number];
         return <div id={`calendar-label-${block.id}`} aria-label={eventLabel(info)} className="calendar-block-content">
-          <span className="calendar-block-time"><i aria-hidden="true"/>{stamp(block.start, zone).split(" ")[0]}–{stamp(block.end, zone).split(" ")[0]}{day&&block.canFocus&&<a className="day-start-focus" href={`/focus?block=${block.id}`} onClick={e=>e.stopPropagation()}>▶ Start focus</a>}</span>
+          <span className="calendar-block-time"><i aria-hidden="true"/>{stamp(info.event.start!.toISOString(), zone).split(" ")[0]}–{stamp(info.event.end!.toISOString(), zone).split(" ")[0]}{props.pendingIds?.includes(block.id)&&<span className="block-saving-dot" aria-label="Saving"> ·</span>}{day&&block.canFocus&&<a className="day-start-focus" href={`/focus?block=${block.id}`} onClick={e=>e.stopPropagation()}>▶ Start focus</a>}</span>
           <strong>{block.snapshot.action.title}</strong>
           {block.reviewRequired && <span className="calendar-block-state">Review required</span>}
           {info.event.extendedProps.outside && <span className="calendar-block-outside">◆ Outside hours</span>}
